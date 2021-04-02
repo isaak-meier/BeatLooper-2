@@ -14,15 +14,12 @@
 @end
 
 @implementation ViewController
-BOOL isPlaying;
 
 - (IBAction)addSong:(id)sender {
-    if (isPlaying) {
+    if (_player.playing) {
         [_player stop];
-        isPlaying = false;
     } else {
         [_player play];
-        isPlaying = true;
     }
 }
 
@@ -35,12 +32,24 @@ BOOL isPlaying;
 - (void)loadBundle {
     NSBundle *main = [NSBundle mainBundle];
     NSString *resourceURL = [main pathForResource:@"dunevibes" ofType:@"mp3"];
-    [self playAudio:resourceURL];
+    [self initAudioPlayer:resourceURL];
 }
 
-- (void)playAudio:(NSString*)resourceURL {
+- (void)initAudioPlayer:(NSString*)resourceURL {
     NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
     _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+}
+
+
+// MARK: UITableView Datasource
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    //
+    return [[UITableViewCell alloc] init];
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    //
+    return 6;
 }
 
 

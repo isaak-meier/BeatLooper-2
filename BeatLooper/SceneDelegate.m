@@ -53,5 +53,9 @@
     // to restore the scene back to its current state.
 }
 
+-(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
+    NSLog(@"%@", URLContexts);
+}
+
 
 @end
