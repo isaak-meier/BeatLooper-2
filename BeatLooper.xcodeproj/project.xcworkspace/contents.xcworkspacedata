@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/isaak/Documents/Git/BeatLooper/BeatLooper/dune_vibes.mp3">
+   </FileRef>
+   <FileRef
       location = "self:">
    </FileRef>
 </Workspace>

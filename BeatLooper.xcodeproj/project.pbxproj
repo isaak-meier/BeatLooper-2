@@ -16,6 +16,7 @@
 		EAC4ECED26176072006C9E87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECEC26176072006C9E87 /* main.m */; };
 		EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECF626176072006C9E87 /* BeatLooperTests.m */; };
 		EAC4ED0226176072006C9E87 /* BeatLooperUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */; };
+		EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		EAC4ECFD26176072006C9E87 /* BeatLooperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatLooperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeatLooperUITests.m; sourceTree = "<group>"; };
 		EAC4ED0326176072006C9E87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAC4ED1926176730006C9E87 /* dunevibes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dunevibes.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				EAC4ECE026176072006C9E87 /* ViewController.h */,
 				EAC4ECE126176072006C9E87 /* ViewController.m */,
 				EAC4ECE326176072006C9E87 /* Main.storyboard */,
+				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
 				EAC4ECE626176072006C9E87 /* Assets.xcassets */,
 				EAC4ECE826176072006C9E87 /* LaunchScreen.storyboard */,
 				EAC4ECEB26176072006C9E87 /* Info.plist */,
@@ -242,6 +245,7 @@
 				EAC4ECEA26176072006C9E87 /* LaunchScreen.storyboard in Resources */,
 				EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */,
 				EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */,
+				EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
