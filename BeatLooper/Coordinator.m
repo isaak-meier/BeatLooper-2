@@ -35,8 +35,9 @@
 }
 
 - (void) songAdded {
-	// Pop to homeViewController	
-//	[_homeViewController refreshSongs];
+    [_navigationController popToRootViewControllerAnimated:YES];
+    HomeViewController *vc = [_navigationController visibleViewController];
+    [vc refreshSongs];
 }
 
 @end

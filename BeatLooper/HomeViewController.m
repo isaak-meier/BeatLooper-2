@@ -30,6 +30,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self loadBundle];
+    [_songTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
+    [_songTableView setDelegate:self];
+    [_songTableView setDataSource:self];
     
 }
 
@@ -45,14 +48,21 @@
 }
 
 - (void)refreshSongs {
-//	_model	
+    NSArray *newSongs = [_model getAllSongs];
+    _songs = [NSMutableArray arrayWithArray:newSongs];
+    NSLog(@"%@", _songs);
+    [_songTableView reloadData];
 }
 
 
 // MARK: UITableView Datasource
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    //
-    return [[UITableViewCell alloc] init];
+    
+    UITableViewCell *cell = [_songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
+//    cell.textLabel.text = _songs[indexPath.row];
+    return cell;
+    
+    
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
