@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 @interface SceneDelegate ()
+@property Coordinator *coordinator;
 
 @end
 
@@ -19,6 +20,18 @@
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    
+    // Create UIWindow using bounds of screen, give it UIScene as UIWindowScene for "windowScene" property
+    CGRect frame = UIScreen.mainScreen.bounds;
+    UIWindow *window = [[UIWindow alloc] initWithFrame:frame];
+    UIWindowScene *windowScene = (UIWindowScene *)scene; // UIWindowScene inherits from UIScene
+    window.windowScene = windowScene;
+
+    // Init Coordinator using instance of window
+    _coordinator = [[Coordinator alloc] initWithWindow:window];
+    
+    // kickoff application
+    [_coordinator start];
 }
 
 
@@ -70,7 +83,7 @@
 	}
     NSLog(@"%@", data);
     
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
@@ -86,7 +99,7 @@
     
     NSLog(@"%@", managedObject);
     
-    
+	[_coordinator songAdded];
 }
 
 

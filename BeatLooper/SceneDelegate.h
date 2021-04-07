@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coordinator.h"
 
 @interface SceneDelegate : UIResponder <UIWindowSceneDelegate>
 

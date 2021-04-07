@@ -5,15 +5,18 @@
 //  Created by Isaak Meier on 4/2/21.
 //
 
-#import "ViewController.h"
+#import "HomeViewController.h"
 
-@interface ViewController ()
+@interface HomeViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
+
 @property AVAudioPlayer *player;
+
+@property NSMutableArray *songs;
 
 @end
 
-@implementation ViewController
+@implementation HomeViewController
 
 - (IBAction)addSong:(id)sender {
     if (_player.playing) {
@@ -27,6 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self loadBundle];
+    
 }
 
 - (void)loadBundle {
@@ -38,6 +42,10 @@
 - (void)initAudioPlayer:(NSString*)resourceURL {
     NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
     _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+}
+
+- (void)refreshSongs {
+//	_model	
 }
 
 

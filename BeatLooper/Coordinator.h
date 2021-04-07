@@ -6,10 +6,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "HomeViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Coordinator : NSObject
+- (instancetype)initWithWindow:(UIWindow*)window;
+- (void)start; // kickoff application
+- (void)songAdded;
 
 @end
 

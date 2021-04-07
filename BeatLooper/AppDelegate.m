@@ -6,9 +6,9 @@
 //
 
 #import "AppDelegate.h"
+#import "HomeViewController.h"
 
 @interface AppDelegate ()
-@property Coordinator *coordinator;
 
 @end
 
@@ -17,6 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+	//
+	// Initialize NSPersistentContainer and set AppDelegate Property
     NSPersistentContainer *container = [[NSPersistentContainer alloc] initWithName:@"BeatModel"];
     [container loadPersistentStoresWithCompletionHandler:^ (NSPersistentStoreDescription *description, NSError* error){
         if (error) {
@@ -24,6 +26,7 @@
         }
     }];
     _container = container;
+    
     return YES;
 }
 
@@ -44,8 +47,5 @@
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
-- (void)addSong {
-    
-}
 
 @end

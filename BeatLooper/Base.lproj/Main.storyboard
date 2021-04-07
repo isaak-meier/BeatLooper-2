@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="BYZ-38-t0r" customClass="HomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -27,7 +27,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Add Song"/>
                                 <connections>
-                                    <action selector="addSong:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8ge-Gw-5Qd"/>
+                                    <action selector="addSong:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rxa-b6-YGU"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ggH-9e-s6Z">
@@ -41,6 +41,8 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0fd-yO-EGo" secondAttribute="trailing" constant="20" id="7QP-PF-Ssy"/>
                             <constraint firstItem="ggH-9e-s6Z" firstAttribute="top" secondItem="KAL-yU-MS7" secondAttribute="bottom" constant="8" symbolic="YES" id="B7L-BX-3Nb"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="centerY" secondItem="KAL-yU-MS7" secondAttribute="centerY" id="Imh-mz-lxJ"/>
+                            <constraint firstItem="0fd-yO-EGo" firstAttribute="leading" relation="lessThanOrEqual" secondItem="KAL-yU-MS7" secondAttribute="trailing" constant="200" id="Jnn-AE-DFV"/>
+                            <constraint firstItem="0fd-yO-EGo" firstAttribute="leading" relation="lessThanOrEqual" secondItem="KAL-yU-MS7" secondAttribute="trailing" constant="200" id="Jxc-bz-jHr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ggH-9e-s6Z" secondAttribute="trailing" id="K1Y-S8-19e"/>
                             <constraint firstItem="ggH-9e-s6Z" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bIL-ap-fR3"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="dnq-WR-Vzl"/>
@@ -50,7 +52,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="songTableView" destination="ggH-9e-s6Z" id="EGQ-Yk-aQl"/>
+                        <outlet property="songTableView" destination="ggH-9e-s6Z" id="Ld8-HR-B46"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

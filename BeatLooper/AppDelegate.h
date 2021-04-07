@@ -11,7 +11,5 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 @property NSPersistentContainer *container;
 
-- (void)songAdded;
-
 @end
 
