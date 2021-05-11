@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA34221F263DDD4A0046EB1B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
+		EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB5ECA32644A89300C4D535 /* PlayerViewController.m */; };
 		EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDB26176072006C9E87 /* AppDelegate.m */; };
 		EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDE26176072006C9E87 /* SceneDelegate.m */; };
-		EAC4ECE226176072006C9E87 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECE126176072006C9E87 /* ViewController.m */; };
+		EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECE126176072006C9E87 /* HomeViewController.m */; };
 		EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ECE326176072006C9E87 /* Main.storyboard */; };
 		EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ECE626176072006C9E87 /* Assets.xcassets */; };
 		EAC4ECEA26176072006C9E87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ECE826176072006C9E87 /* LaunchScreen.storyboard */; };
@@ -17,6 +19,9 @@
 		EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECF626176072006C9E87 /* BeatLooperTests.m */; };
 		EAC4ED0226176072006C9E87 /* BeatLooperUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */; };
 		EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
+		EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
+		EAC4ED47261978AE006C9E87 /* Coordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* Coordinator.m */; };
+		EACEEF94261E2F5C00B4ECA8 /* BeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BeatModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,13 +42,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
+		EAB5ECA32644A89300C4D535 /* PlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		EAC4ECD726176072006C9E87 /* BeatLooper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatLooper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC4ECDA26176072006C9E87 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EAC4ECDB26176072006C9E87 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		EAC4ECDD26176072006C9E87 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		EAC4ECDE26176072006C9E87 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		EAC4ECE026176072006C9E87 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		EAC4ECE126176072006C9E87 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EAC4ECE026176072006C9E87 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		EAC4ECE126176072006C9E87 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		EAC4ECE426176072006C9E87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EAC4ECE626176072006C9E87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAC4ECE926176072006C9E87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -56,6 +64,11 @@
 		EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeatLooperUITests.m; sourceTree = "<group>"; };
 		EAC4ED0326176072006C9E87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAC4ED1926176730006C9E87 /* dunevibes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dunevibes.mp3; sourceTree = "<group>"; };
+		EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BeatModel.xcdatamodel; sourceTree = "<group>"; };
+		EAC4ED45261978AE006C9E87 /* Coordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coordinator.h; sourceTree = "<group>"; };
+		EAC4ED46261978AE006C9E87 /* Coordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Coordinator.m; sourceTree = "<group>"; };
+		EACEEF92261E2F5C00B4ECA8 /* BeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeatModel.h; sourceTree = "<group>"; };
+		EACEEF93261E2F5C00B4ECA8 /* BeatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeatModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA34221F263DDD4A0046EB1B /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +97,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA34221D263DDD4A0046EB1B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EA34221E263DDD4A0046EB1B /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EAC4ECCE26176072006C9E87 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +112,7 @@
 				EAC4ECF526176072006C9E87 /* BeatLooperTests */,
 				EAC4ED0026176072006C9E87 /* BeatLooperUITests */,
 				EAC4ECD826176072006C9E87 /* Products */,
+				EA34221D263DDD4A0046EB1B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -110,14 +133,21 @@
 				EAC4ECDB26176072006C9E87 /* AppDelegate.m */,
 				EAC4ECDD26176072006C9E87 /* SceneDelegate.h */,
 				EAC4ECDE26176072006C9E87 /* SceneDelegate.m */,
-				EAC4ECE026176072006C9E87 /* ViewController.h */,
-				EAC4ECE126176072006C9E87 /* ViewController.m */,
+				EAC4ECE026176072006C9E87 /* HomeViewController.h */,
+				EAC4ECE126176072006C9E87 /* HomeViewController.m */,
 				EAC4ECE326176072006C9E87 /* Main.storyboard */,
+				EAB5ECA22644A89300C4D535 /* PlayerViewController.h */,
+				EAB5ECA32644A89300C4D535 /* PlayerViewController.m */,
 				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
 				EAC4ECE626176072006C9E87 /* Assets.xcassets */,
 				EAC4ECE826176072006C9E87 /* LaunchScreen.storyboard */,
 				EAC4ECEB26176072006C9E87 /* Info.plist */,
 				EAC4ECEC26176072006C9E87 /* main.m */,
+				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
+				EAC4ED45261978AE006C9E87 /* Coordinator.h */,
+				EAC4ED46261978AE006C9E87 /* Coordinator.m */,
+				EACEEF92261E2F5C00B4ECA8 /* BeatModel.h */,
+				EACEEF93261E2F5C00B4ECA8 /* BeatModel.m */,
 			);
 			path = BeatLooper;
 			sourceTree = "<group>";
@@ -270,9 +300,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAC4ECE226176072006C9E87 /* ViewController.m in Sources */,
+				EAC4ED47261978AE006C9E87 /* Coordinator.m in Sources */,
+				EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */,
+				EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */,
 				EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */,
 				EAC4ECED26176072006C9E87 /* main.m in Sources */,
+				EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */,
+				EACEEF94261E2F5C00B4ECA8 /* BeatModel.m in Sources */,
 				EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,7 +413,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -432,7 +466,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -446,11 +480,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Meier.BeatLooper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -463,11 +499,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Meier.BeatLooper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -586,6 +624,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */,
+			);
+			currentVersion = EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */;
+			path = BeatModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = EAC4ECCF26176072006C9E87 /* Project object */;
 }

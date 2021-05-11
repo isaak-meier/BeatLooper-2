@@ -14,6 +14,8 @@
     NSManagedObjectContext *context = delegate.container.viewContext;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beat"];
+//    [request setResultType:NSDictionaryResultType];
+//    [request setPropertiesToFetch:@[@"title", @"uuid"]];
     
     NSError *error = nil;
     NSArray *songs = [context executeFetchRequest:request error:&error];

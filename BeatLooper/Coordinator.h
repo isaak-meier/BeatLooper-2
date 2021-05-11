@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithWindow:(UIWindow*)window;
 - (void)start; // kickoff application
 - (void)songAdded;
+- (void)songTapped:(NSManagedObjectID *)songID;
 
 @end
 

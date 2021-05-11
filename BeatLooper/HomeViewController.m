@@ -7,33 +7,41 @@
 
 #import "HomeViewController.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
 
 @property AVAudioPlayer *player;
 
-@property NSMutableArray *songs;
+@property (strong, nonatomic) NSArray *songs;
+
+@property (strong, nonatomic) NSArray *content;
 
 @end
 
 @implementation HomeViewController
 
 - (IBAction)addSong:(id)sender {
-    if (_player.playing) {
-        [_player stop];
+    if ([self player].playing) {
+        [[self player] stop];
     } else {
-        [_player play];
+        [[self player] play];
     }
+}
+
+- (void)refreshSongs {
+    //
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self loadBundle];
+    [self songTableView].dataSource = self;
+    [self songTableView].delegate = self;
     [_songTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
-    [_songTableView setDelegate:self];
-    [_songTableView setDataSource:self];
-    
+    // setup data
+    _model = [[BeatModel alloc] init];
+    _songs = [_model getAllSongs];
 }
 
 - (void)loadBundle {
@@ -47,27 +55,28 @@
     _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
 }
 
-- (void)refreshSongs {
-    NSArray *newSongs = [_model getAllSongs];
-    _songs = [NSMutableArray arrayWithArray:newSongs];
-    NSLog(@"%@", _songs);
-    [_songTableView reloadData];
-}
-
 
 // MARK: UITableView Datasource
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [_songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
-//    cell.textLabel.text = _songs[indexPath.row];
+    Beat *beat = _songs[indexPath.row];
+    cell.textLabel.text = beat.title;
     return cell;
-    
     
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //
-    return 6;
+    return [_songs count];
+}
+
+// MARK: UITableView Delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"selected %ld row", (long)indexPath.row);
+    Beat *selectedBeat = _songs[indexPath.row];
+    NSManagedObjectID *beatID = selectedBeat.objectID;
+    [self.coordinator songTapped:beatID];
+    
 }
 
 

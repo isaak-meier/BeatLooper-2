@@ -26,18 +26,23 @@
     return self;
 }
 
+// MARK: Methods
 - (void)start {
     // Initialize homeViewController from storyboard
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     HomeViewController *homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeViewController"];
-    homeViewController.model = [[BeatModel alloc] init];
-    [_navigationController pushViewController:homeViewController animated:NO];
+    [self.navigationController pushViewController:homeViewController animated:NO];
+    homeViewController.coordinator = self;
 }
 
-- (void) songAdded {
-    [_navigationController popToRootViewControllerAnimated:YES];
-    HomeViewController *vc = [_navigationController visibleViewController];
+- (void)songAdded {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    HomeViewController *vc = (HomeViewController *)[_navigationController visibleViewController];
     [vc refreshSongs];
+}
+
+- (void)songTapped:(NSManagedObjectID *)songID {
+    NSLog(@"%@ was tapped", songID);
 }
 
 @end

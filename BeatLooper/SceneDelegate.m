@@ -67,6 +67,12 @@
     // to restore the scene back to its current state.
 }
 
+
+/*
+ Called when a user opens a file with this app. May be .mp3 or .wav format
+ 
+ Save into Core Data and refresh app. TODO refactor to model.
+ */
 -(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
     NSLog(@"%@", URLContexts);
     NSURL *openedFileURL = URLContexts.anyObject.URL;
