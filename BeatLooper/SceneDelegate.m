@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 @interface SceneDelegate ()
-@property Coordinator *coordinator;
+@property BLPCoordinator *coordinator;
 
 @end
 
@@ -28,7 +28,7 @@
     window.windowScene = windowScene;
 
     // Init Coordinator using instance of window
-    _coordinator = [[Coordinator alloc] initWithWindow:window];
+    _coordinator = [[BLPCoordinator alloc] initWithWindow:window];
     
     // kickoff application
     [_coordinator start];

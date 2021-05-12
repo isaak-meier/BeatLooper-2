@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BeatModel : NSObject
+@interface BLPBeatModel : NSObject
 - (NSArray*) getAllSongs;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  Coordinator.h
+//  BLPCoordinator.h
 //  BeatLooper
 //
 //  Created by Isaak Meier on 4/4/21.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Coordinator : NSObject
+@interface BLPCoordinator : NSObject
 - (instancetype)initWithWindow:(UIWindow*)window;
 - (void)start; // kickoff application
 - (void)songAdded;

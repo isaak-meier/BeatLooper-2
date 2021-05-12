@@ -5,9 +5,9 @@
 //  Created by Isaak Meier on 4/7/21.
 //
 
-#import "BeatModel.h"
+#import "BLPBeatModel.h"
 
-@implementation BeatModel
+@implementation BLPBeatModel
 
 - (NSArray*)getAllSongs {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];

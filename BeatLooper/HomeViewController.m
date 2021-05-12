@@ -20,6 +20,14 @@
 
 @implementation HomeViewController
 
+- (id)initWithCoordinator:(BLPCoordinator *)coordinator {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    if ((self = [storyboard instantiateViewControllerWithIdentifier:@"HomeViewController"])) {
+        _coordinator = coordinator;
+    }
+    return self;
+}
+
 - (IBAction)addSong:(id)sender {
     if ([self player].playing) {
         [[self player] stop];
@@ -40,8 +48,9 @@
     [self songTableView].delegate = self;
     [_songTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
     // setup data
-    _model = [[BeatModel alloc] init];
+    _model = [[BLPBeatModel alloc] init];
     _songs = [_model getAllSongs];
+    [self coordinator];
 }
 
 - (void)loadBundle {
@@ -75,7 +84,7 @@
     NSLog(@"selected %ld row", (long)indexPath.row);
     Beat *selectedBeat = _songs[indexPath.row];
     NSManagedObjectID *beatID = selectedBeat.objectID;
-    [self.coordinator songTapped:beatID];
+    [[self coordinator] songTapped:beatID];
     
 }
 

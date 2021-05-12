@@ -1,21 +1,22 @@
 //
-//  ViewController.h
+//  HomeViewController.h
 //  BeatLooper
 //
 //  Created by Isaak Meier on 4/2/21.
 //
 
 #import <UIKit/UIKit.h>
-#import "BeatModel.h"
-#import "Coordinator.h"
+#import "BLPBeatModel.h"
+#import "BLPCoordinator.h"
 #import <AVFoundation/AVAudioPlayer.h>
 #import "Beat+CoreDataClass.h"
-@class Coordinator;
+@class BLPCoordinator;
 
 @interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-@property BeatModel *model;
-@property (weak) Coordinator *coordinator;
+@property BLPBeatModel *model;
+@property (weak) BLPCoordinator *coordinator;
 
+- (id)initWithCoordinator:(BLPCoordinator *)coordinator;
 - (void)refreshSongs;
 
 @end

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EA34221F263DDD4A0046EB1B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
+		EAA3FA4F264B06AB008FFF92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
 		EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB5ECA32644A89300C4D535 /* PlayerViewController.m */; };
 		EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDB26176072006C9E87 /* AppDelegate.m */; };
 		EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDE26176072006C9E87 /* SceneDelegate.m */; };
@@ -20,8 +20,8 @@
 		EAC4ED0226176072006C9E87 /* BeatLooperUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */; };
 		EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
 		EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
-		EAC4ED47261978AE006C9E87 /* Coordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* Coordinator.m */; };
-		EACEEF94261E2F5C00B4ECA8 /* BeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BeatModel.m */; };
+		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
+		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,10 +65,10 @@
 		EAC4ED0326176072006C9E87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAC4ED1926176730006C9E87 /* dunevibes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dunevibes.mp3; sourceTree = "<group>"; };
 		EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BeatModel.xcdatamodel; sourceTree = "<group>"; };
-		EAC4ED45261978AE006C9E87 /* Coordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coordinator.h; sourceTree = "<group>"; };
-		EAC4ED46261978AE006C9E87 /* Coordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Coordinator.m; sourceTree = "<group>"; };
-		EACEEF92261E2F5C00B4ECA8 /* BeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeatModel.h; sourceTree = "<group>"; };
-		EACEEF93261E2F5C00B4ECA8 /* BeatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeatModel.m; sourceTree = "<group>"; };
+		EAC4ED45261978AE006C9E87 /* BLPCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPCoordinator.h; sourceTree = "<group>"; };
+		EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPCoordinator.m; sourceTree = "<group>"; };
+		EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPBeatModel.h; sourceTree = "<group>"; };
+		EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPBeatModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA34221F263DDD4A0046EB1B /* AVFoundation.framework in Frameworks */,
+				EAA3FA4F264B06AB008FFF92 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,10 +144,10 @@
 				EAC4ECEB26176072006C9E87 /* Info.plist */,
 				EAC4ECEC26176072006C9E87 /* main.m */,
 				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
-				EAC4ED45261978AE006C9E87 /* Coordinator.h */,
-				EAC4ED46261978AE006C9E87 /* Coordinator.m */,
-				EACEEF92261E2F5C00B4ECA8 /* BeatModel.h */,
-				EACEEF93261E2F5C00B4ECA8 /* BeatModel.m */,
+				EAC4ED45261978AE006C9E87 /* BLPCoordinator.h */,
+				EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */,
+				EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */,
+				EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */,
 			);
 			path = BeatLooper;
 			sourceTree = "<group>";
@@ -300,13 +300,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAC4ED47261978AE006C9E87 /* Coordinator.m in Sources */,
+				EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */,
 				EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */,
 				EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */,
 				EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */,
 				EAC4ECED26176072006C9E87 /* main.m in Sources */,
 				EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */,
-				EACEEF94261E2F5C00B4ECA8 /* BeatModel.m in Sources */,
+				EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */,
 				EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

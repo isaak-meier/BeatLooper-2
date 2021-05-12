@@ -1,19 +1,19 @@
 //
-//  Coordinator.m
+//  BLPCoordinator.m
 //  BeatLooper
 //
 //  Created by Isaak Meier on 4/4/21.
 //
 
-#import "Coordinator.h"
+#import "BLPCoordinator.h"
 
-@interface Coordinator ()
+@interface BLPCoordinator ()
 @property UIWindow *window;
 @property UINavigationController *navigationController;
 
 @end
 
-@implementation Coordinator
+@implementation BLPCoordinator
 
 
 // MARK: Initializer
@@ -21,7 +21,7 @@
     if (self = [super init]) {
         _window = window;
         _navigationController = [[UINavigationController alloc] init];
-        [_window setRootViewController:_navigationController];
+         [_window setRootViewController:_navigationController];
     }
     return self;
 }
@@ -29,10 +29,9 @@
 // MARK: Methods
 - (void)start {
     // Initialize homeViewController from storyboard
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    HomeViewController *homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeViewController"];
-    [self.navigationController pushViewController:homeViewController animated:NO];
-    homeViewController.coordinator = self;
+     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
+     [self.navigationController pushViewController:homeViewController animated:NO];
+    [[self window] makeKeyAndVisible];
 }
 
 - (void)songAdded {
