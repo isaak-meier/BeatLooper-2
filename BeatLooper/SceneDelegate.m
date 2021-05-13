@@ -78,7 +78,13 @@
     NSURL *openedFileURL = URLContexts.anyObject.URL;
     NSString *urlStr = openedFileURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSLog(@"%@", fileTitle);
+    NSLog(@"%@", openedFileURL);
+    
+    NSString *homeDirectoryString = NSHomeDirectory();
+    NSLog(@"Home directory: %@", homeDirectoryString);
+
+//    NSString *fullPath =
+    
     NSError *error;
 	NSData *data = [[NSData alloc] initWithContentsOfURL:openedFileURL options:0 error:&error];
 	if (!data) {

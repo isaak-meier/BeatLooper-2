@@ -8,12 +8,10 @@
 #import "HomeViewController.h"
 
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
+
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
-
 @property AVAudioPlayer *player;
-
 @property (strong, nonatomic) NSArray *songs;
-
 @property (strong, nonatomic) NSArray *content;
 
 @end
@@ -50,7 +48,7 @@
     
     [self songTableView].dataSource = self;
     [self songTableView].delegate = self;
-    [_songTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
+    [[self songTableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
 
 }
 
@@ -62,7 +60,7 @@
 
 - (void)initAudioPlayer:(NSString*)resourceURL {
     NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
-    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil]];
 }
 
 

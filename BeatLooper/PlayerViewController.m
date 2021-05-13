@@ -6,19 +6,28 @@
 //
 
 #import "PlayerViewController.h"
+#import "BLPBeatModel.h"
 
 @interface PlayerViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
+@property BLPBeatModel *model;
+@property NSManagedObjectID *songID;
+@property AVAudioPlayer *player;
+
+- (void)loadPlayer;
 
 @end
 
 @implementation PlayerViewController
 
-- (id)init {
+- (id)initWithSongID:(id)songID {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"PlayerViewController"])) {
         // assign properties
+        _model = [[BLPBeatModel alloc] init];
+        _songID = songID;
+
     }
     return self;
 }
@@ -27,6 +36,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[[self playButton] imageView] setContentMode:UIViewContentModeScaleAspectFit];
+    [self loadPlayer];
+}
+
+- (void)loadPlayer {
+     NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
+//    NSString *resourceURL = [[NSBundle mainBundle] pathForResource:@"temp" ofType:@"mp3"];
+
+    NSURL *url = [NSURL URLWithString:@"/temp/song.mp3"];
+    NSError *error;
+    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error]];
+}
+
+- (IBAction)playOrPauseSong:(id)sender {
+    if ([self player].playing) {
+        [[self player] stop];
+    } else {
+        [[self player] play];
+    }
 }
 
 /*

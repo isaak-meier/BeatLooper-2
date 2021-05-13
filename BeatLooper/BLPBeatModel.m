@@ -6,6 +6,7 @@
 //
 
 #import "BLPBeatModel.h"
+#import "Beat+CoreDataClass.h"
 
 @implementation BLPBeatModel
 
@@ -24,6 +25,20 @@
     }
 
 	return songs;
+}
+
+- (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID {
+    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = delegate.container.viewContext;
+    Beat *beatFromSongID = [context objectWithID:songID];
+    
+    NSData *songData = [beatFromSongID data];
+    NSError *error;
+    NSString *pathString = [NSString stringWithFormat:@"/temp/song.mp3", NSHomeDirectory()];
+    [songData writeToFile:pathString options:NSDataWritingAtomic error:&error];
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:pathString];
+    NSLog(@"%@", pathString);
+    return url;
 }
 
 @end

@@ -42,7 +42,7 @@
 
 - (void)songTapped:(NSManagedObjectID *)songID {
     NSLog(@"%@ was tapped", songID);
-    PlayerViewController *playerViewController = [[PlayerViewController alloc] init];
+    PlayerViewController *playerViewController = [[PlayerViewController alloc] initWithSongID:songID];
     [[self navigationController] pushViewController:playerViewController animated:YES];
 }
 
