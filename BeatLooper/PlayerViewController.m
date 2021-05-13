@@ -9,13 +9,24 @@
 
 @interface PlayerViewController ()
 
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
+
 @end
 
 @implementation PlayerViewController
 
+- (id)init {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    if ((self = [storyboard instantiateViewControllerWithIdentifier:@"PlayerViewController"])) {
+        // assign properties
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [[[self playButton] imageView] setContentMode:UIViewContentModeScaleAspectFit];
 }
 
 /*

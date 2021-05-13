@@ -24,6 +24,9 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"HomeViewController"])) {
         _coordinator = coordinator;
+        // setup data
+        _model = [[BLPBeatModel alloc] init];
+        _songs = [_model getAllSongs];
     }
     return self;
 }
@@ -44,13 +47,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self loadBundle];
+    
     [self songTableView].dataSource = self;
     [self songTableView].delegate = self;
     [_songTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
-    // setup data
-    _model = [[BLPBeatModel alloc] init];
-    _songs = [_model getAllSongs];
-    [self coordinator];
+
 }
 
 - (void)loadBundle {

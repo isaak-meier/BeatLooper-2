@@ -62,26 +62,36 @@
         <!--Player View Controller-->
         <scene sceneID="i6W-DN-UKO">
             <objects>
-                <viewController id="zY8-PV-nFk" customClass="PlayerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlayerViewController" id="zY8-PV-nFk" customClass="PlayerViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7kw-7J-CH3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZYv-Gc-1dc">
-                                <rect key="frame" x="0.0" y="38" width="414" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="dpS-ac-QBt"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="44" width="414" height="4"/>
                             </progressView>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cKd-hd-A3e">
+                                <rect key="frame" x="33" y="698" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="KtA-qh-77r"/>
+                                    <constraint firstAttribute="height" constant="100" id="Qxl-26-OBu"/>
+                                </constraints>
+                                <state key="normal" image="PlayButtonIcon"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hzu-r0-A9g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="leading" secondItem="7kw-7J-CH3" secondAttribute="leading" id="3E3-t8-9u9"/>
-                            <constraint firstItem="ZYv-Gc-1dc" firstAttribute="top" secondItem="7kw-7J-CH3" secondAttribute="top" constant="38" id="9xu-hy-Rkr"/>
                             <constraint firstAttribute="trailing" secondItem="ZYv-Gc-1dc" secondAttribute="trailing" id="INd-ve-1aJ"/>
+                            <constraint firstItem="cKd-hd-A3e" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="33" id="VL1-5d-YDM"/>
+                            <constraint firstItem="hzu-r0-A9g" firstAttribute="bottom" secondItem="cKd-hd-A3e" secondAttribute="bottom" constant="64" id="wub-EZ-k8A"/>
+                            <constraint firstItem="ZYv-Gc-1dc" firstAttribute="top" secondItem="hzu-r0-A9g" secondAttribute="top" id="y2O-wD-3Qe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="playButton" destination="cKd-hd-A3e" id="1CT-RZ-Wxn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5vv-YM-xTo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -89,6 +99,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="PlayButtonIcon" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -21,7 +21,7 @@
     if (self = [super init]) {
         _window = window;
         _navigationController = [[UINavigationController alloc] init];
-         [_window setRootViewController:_navigationController];
+        [_window setRootViewController:_navigationController];
     }
     return self;
 }
@@ -29,8 +29,8 @@
 // MARK: Methods
 - (void)start {
     // Initialize homeViewController from storyboard
-     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
-     [self.navigationController pushViewController:homeViewController animated:NO];
+    HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
+    [self.navigationController pushViewController:homeViewController animated:NO];
     [[self window] makeKeyAndVisible];
 }
 
@@ -42,6 +42,8 @@
 
 - (void)songTapped:(NSManagedObjectID *)songID {
     NSLog(@"%@ was tapped", songID);
+    PlayerViewController *playerViewController = [[PlayerViewController alloc] init];
+    [[self navigationController] pushViewController:playerViewController animated:YES];
 }
 
 @end

@@ -13,6 +13,7 @@
 @class BLPCoordinator;
 
 @interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+
 @property BLPBeatModel *model;
 @property (weak) BLPCoordinator *coordinator;
 
