@@ -32,12 +32,9 @@
     NSManagedObjectContext *context = delegate.container.viewContext;
     Beat *beatFromSongID = [context objectWithID:songID];
     
-    NSData *songData = [beatFromSongID data];
-    NSError *error;
-    NSString *pathString = [NSString stringWithFormat:@"/temp/song.mp3", NSHomeDirectory()];
-    [songData writeToFile:pathString options:NSDataWritingAtomic error:&error];
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:pathString];
-    NSLog(@"%@", pathString);
+    NSString *songPath = [beatFromSongID fileUrl];
+    NSURL *url = [NSURL fileURLWithPath:songPath];
+
     return url;
 }
 

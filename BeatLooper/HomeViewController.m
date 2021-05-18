@@ -37,8 +37,15 @@
     }
 }
 
+- (void)printWorkingDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    NSLog(@"%@", paths[0]);
+}
+
 - (void)refreshSongs {
-    //
+    NSArray *brandNewSongs = [[self model] getAllSongs];
+    [self setSongs:brandNewSongs];
+    [[self songTableView] reloadData];
 }
 
 - (void)viewDidLoad {
@@ -59,6 +66,7 @@
 }
 
 - (void)initAudioPlayer:(NSString*)resourceURL {
+    NSLog(@"Resource URL: %@", resourceURL);
     NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
     [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil]];
 }

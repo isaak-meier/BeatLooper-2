@@ -74,27 +74,32 @@
  Save into Core Data and refresh app. TODO refactor to model.
  */
 -(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
-    NSLog(@"%@", URLContexts);
     NSURL *openedFileURL = URLContexts.anyObject.URL;
     NSString *urlStr = openedFileURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSLog(@"%@", openedFileURL);
     
-    NSString *homeDirectoryString = NSHomeDirectory();
-    NSLog(@"Home directory: %@", homeDirectoryString);
-
-//    NSString *fullPath =
-    
-    NSError *error;
-	NSData *data = [[NSData alloc] initWithContentsOfURL:openedFileURL options:0 error:&error];
+    NSError *error1;
+	NSData *data = [[NSData alloc] initWithContentsOfURL:openedFileURL options:0 error:&error1];
 	if (!data) {
-		NSLog(@"Error: %@", error);
+		NSLog(@"Error: %@", error1);
 	}
-	else {
-		NSLog(@"File saved");
-	}
-    NSLog(@"%@", data);
     
+    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
+//    libraryRootPath = [libraryRootPath stringByAppendingPathComponent:@"Songs"];
+    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:[urlStr lastPathComponent]];
+    NSLog(@"Path i made: %@", newFilePath);
+    NSURL *newFileURL = [NSURL fileURLWithPath:newFilePath];
+    
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    BOOL success = [fileManager copyItemAtURL:openedFileURL toURL:newFileURL error:&error];
+    if (success) {
+        NSLog(@"The file was successfully saved to path %@", newFileURL);
+    } else {
+        NSLog(@"Error saving file: %@", error);
+    }
+        
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     
@@ -102,7 +107,8 @@
     NSManagedObject *managedObject = [[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
     [managedObject setValue:data forKey:@"data"];
     [managedObject setValue:fileTitle forKey:@"title"];
-    
+    [managedObject setValue:newFilePath forKey:@"fileUrl"];
+
     @try {
         [context save:nil];
     } @catch (NSException *exception) {

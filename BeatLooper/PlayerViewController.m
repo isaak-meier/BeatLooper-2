@@ -40,12 +40,17 @@
 }
 
 - (void)loadPlayer {
-     NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
+//     NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
 //    NSString *resourceURL = [[NSBundle mainBundle] pathForResource:@"temp" ofType:@"mp3"];
 
-    NSURL *url = [NSURL URLWithString:@"/temp/song.mp3"];
+    NSString *resourceUrl = @"/Users/isaak/Library/Developer/CoreSimulator/Devices/60B08052-9106-472A-BBD6-FBB004BE872E/data/Containers/Data/Application/5F82B57F-A319-4258-8BCD-664B8BAD15A8/Library/Ok.mp3";
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceUrl];
+
     NSError *error;
     [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error]];
+    if (error) {
+        NSLog(@"Error creating AVAudioPlayer: %@", error);
+    }
 }
 
 - (IBAction)playOrPauseSong:(id)sender {
