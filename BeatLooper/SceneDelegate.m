@@ -75,54 +75,10 @@
  */
 -(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
     NSURL *openedFileURL = URLContexts.anyObject.URL;
-    NSString *urlStr = openedFileURL.absoluteString;
-    NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    
-    NSError *error1;
-	NSData *data = [[NSData alloc] initWithContentsOfURL:openedFileURL options:0 error:&error1];
-	if (!data) {
-		NSLog(@"Error: %@", error1);
-	}
-    
-    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
-//    libraryRootPath = [libraryRootPath stringByAppendingPathComponent:@"Songs"];
-    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:[urlStr lastPathComponent]];
-    NSURL *newFileURL = [NSURL fileURLWithPath:newFilePath];
-    
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    
-    BOOL exists = [fileManager fileExistsAtPath:newFileURL.path];
-
-    if (!exists) {
-        BOOL success = [fileManager copyItemAtURL:openedFileURL toURL:newFileURL error:&error];
-        if (success) {
-            NSLog(@"The file was successfully saved to path %@", newFileURL);
-        } else {
-            NSLog(@"Error saving file: %@", error);
-        }
-    } else {
-        NSLog(@"File already exists at path: %@", newFileURL.path);
+    BLPBeatModel *model = [[BLPBeatModel alloc] init];
+    if ([model saveSongFromURL:openedFileURL]) {
+        [_coordinator songAdded];
     }
-    
-        
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
-    NSManagedObject *managedObject = [[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
-    [managedObject setValue:data forKey:@"data"];
-    [managedObject setValue:fileTitle forKey:@"title"];
-    [managedObject setValue:newFileURL.path forKey:@"fileUrl"];
-
-    @try {
-        [context save:nil];
-    } @catch (NSException *exception) {
-        NSLog(@"%@", exception);
-    }
-        
-	[_coordinator songAdded];
 }
 
 

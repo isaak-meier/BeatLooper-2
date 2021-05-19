@@ -15,8 +15,6 @@
     NSManagedObjectContext *context = delegate.container.viewContext;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beat"];
-//    [request setResultType:NSDictionaryResultType];
-//    [request setPropertiesToFetch:@[@"title", @"uuid"]];
     
     NSError *error = nil;
     NSArray *songs = [context executeFetchRequest:request error:&error];
@@ -56,7 +54,49 @@
 }
 
 - (BOOL)saveSongFromURL:(NSURL *)songURL {
+    NSString *urlStr = songURL.absoluteString;
+    NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
+    
+    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
+    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:[urlStr lastPathComponent]];
+    NSURL *newFileURL = [NSURL fileURLWithPath:newFilePath];
+    
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    
+    BOOL exists = [fileManager fileExistsAtPath:newFileURL.path];
+
+    if (!exists) {
+        BOOL success = [fileManager copyItemAtURL:songURL toURL:newFileURL error:&error];
+        if (success) {
+            NSLog(@"The file was successfully saved to path %@", newFileURL);
+        } else {
+            NSLog(@"Error saving file: %@", error);
+        }
+    } else {
+        NSLog(@"File already exists at path: %@", newFileURL.path);
+    }
+    
+    [self saveSongWith:fileTitle url:newFileURL.path];
+   
     return YES;
+}
+
+- (void)saveSongWith:(NSString *)title url:(NSString *)url {
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = delegate.container.viewContext;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
+    NSManagedObject *managedObject = [[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
+    [managedObject setValue:title forKey:@"title"];
+    [managedObject setValue:url forKey:@"fileUrl"];
+
+    @try {
+        [context save:nil];
+    } @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
 }
 
 @end
