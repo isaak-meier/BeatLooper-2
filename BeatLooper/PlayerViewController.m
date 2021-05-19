@@ -40,17 +40,25 @@
 }
 
 - (void)loadPlayer {
-//     NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
 //    NSString *resourceURL = [[NSBundle mainBundle] pathForResource:@"temp" ofType:@"mp3"];
+    //    NSString *mannyURL = @"/Users/isaak/Library/Developer/CoreSimulator/Devices/60B08052-9106-472A-BBD6-FBB004BE872E/data/Containers/Data/Application/007CF272-517B-4DF5-999F-91A3B38B9511/Library/Ok.mp3";
 
-    NSString *resourceUrl = @"/Users/isaak/Library/Developer/CoreSimulator/Devices/60B08052-9106-472A-BBD6-FBB004BE872E/data/Containers/Data/Application/5F82B57F-A319-4258-8BCD-664B8BAD15A8/Library/Ok.mp3";
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceUrl];
+    NSURL *resourceUrl = [[self model] getURLForCachedSong:[self songID]];
 
-    NSError *error;
-    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error]];
-    if (error) {
-        NSLog(@"Error creating AVAudioPlayer: %@", error);
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    BOOL exists = [fileManager fileExistsAtPath:resourceUrl.path];
+
+    if (!exists) {
+        NSLog(@"File does not exist at path %@", resourceUrl.path);
+    } else {
+        NSError *error;
+        [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:resourceUrl error:&error]];
+        if (error) {
+            NSLog(@"Error creating AVAudioPlayer: %@", error);
+        }
     }
+ 
 }
 
 - (IBAction)playOrPauseSong:(id)sender {

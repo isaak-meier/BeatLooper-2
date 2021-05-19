@@ -33,9 +33,30 @@
     Beat *beatFromSongID = [context objectWithID:songID];
     
     NSString *songPath = [beatFromSongID fileUrl];
+    NSLog(@"Song Path: %@", songPath);
     NSURL *url = [NSURL fileURLWithPath:songPath];
 
     return url;
+}
+
+
+// Used in development to clear core data
+- (void)deleteAllEntities {
+    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = delegate.container.viewContext;
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Beat"];
+    NSBatchDeleteRequest *delete = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
+    
+    NSError *deleteError = nil;
+    [context executeRequest:delete error:&deleteError];
+    if (deleteError) {
+        NSLog(@"%@", deleteError);
+    }
+}
+
+- (BOOL)saveSongFromURL:(NSURL *)songURL {
+    return YES;
 }
 
 @end

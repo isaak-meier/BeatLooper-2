@@ -92,7 +92,7 @@
     Beat *selectedBeat = _songs[indexPath.row];
     NSManagedObjectID *beatID = selectedBeat.objectID;
     [[self coordinator] songTapped:beatID];
-    
+    [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 

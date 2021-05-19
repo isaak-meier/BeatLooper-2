@@ -87,18 +87,25 @@
     NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
 //    libraryRootPath = [libraryRootPath stringByAppendingPathComponent:@"Songs"];
     NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:[urlStr lastPathComponent]];
-    NSLog(@"Path i made: %@", newFilePath);
     NSURL *newFileURL = [NSURL fileURLWithPath:newFilePath];
     
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    BOOL success = [fileManager copyItemAtURL:openedFileURL toURL:newFileURL error:&error];
-    if (success) {
-        NSLog(@"The file was successfully saved to path %@", newFileURL);
+    
+    BOOL exists = [fileManager fileExistsAtPath:newFileURL.path];
+
+    if (!exists) {
+        BOOL success = [fileManager copyItemAtURL:openedFileURL toURL:newFileURL error:&error];
+        if (success) {
+            NSLog(@"The file was successfully saved to path %@", newFileURL);
+        } else {
+            NSLog(@"Error saving file: %@", error);
+        }
     } else {
-        NSLog(@"Error saving file: %@", error);
+        NSLog(@"File already exists at path: %@", newFileURL.path);
     }
+    
         
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
@@ -107,16 +114,14 @@
     NSManagedObject *managedObject = [[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
     [managedObject setValue:data forKey:@"data"];
     [managedObject setValue:fileTitle forKey:@"title"];
-    [managedObject setValue:newFilePath forKey:@"fileUrl"];
+    [managedObject setValue:newFileURL.path forKey:@"fileUrl"];
 
     @try {
         [context save:nil];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
     }
-    
-    NSLog(@"%@", managedObject);
-    
+        
 	[_coordinator songAdded];
 }
 
