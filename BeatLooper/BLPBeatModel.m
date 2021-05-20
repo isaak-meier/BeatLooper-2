@@ -56,28 +56,25 @@
 - (BOOL)saveSongFromURL:(NSURL *)songURL {
     NSString *urlStr = songURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    
+    NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
+    // create path
     NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
-    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:[urlStr lastPathComponent]];
+    // unique id to ensure songs with same name are saved uniquely
+    NSString *guid = [[NSUUID new] UUIDString];
+    NSString *fileTitleByAppendingUniqueId = [NSString stringWithFormat:@"%@_%@.%@", fileTitle, guid, fileExtension];
+    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:fileTitleByAppendingUniqueId];
     NSURL *newFileURL = [NSURL fileURLWithPath:newFilePath];
-    
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    
-    BOOL exists = [fileManager fileExistsAtPath:newFileURL.path];
-
-    if (!exists) {
-        BOOL success = [fileManager copyItemAtURL:songURL toURL:newFileURL error:&error];
-        if (success) {
-            NSLog(@"The file was successfully saved to path %@", newFileURL);
-        } else {
-            NSLog(@"Error saving file: %@", error);
-        }
+  
+    BOOL success = [fileManager copyItemAtURL:songURL toURL:newFileURL error:&error];
+    if (success) {
+        NSLog(@"The file was successfully saved to path %@", newFileURL);
     } else {
-        NSLog(@"File already exists at path: %@", newFileURL.path);
+        NSLog(@"Error saving file: %@", error);
     }
-    
+
     [self saveSongWith:fileTitle url:newFileURL.path];
    
     return YES;

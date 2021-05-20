@@ -31,7 +31,7 @@
     // Initialize homeViewController from storyboard
     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
     [self.navigationController pushViewController:homeViewController animated:NO];
-    [[[BLPBeatModel alloc] init] deleteAllEntities];
+//    [[[BLPBeatModel alloc] init] deleteAllEntities];
     [[self window] makeKeyAndVisible];
 }
 
