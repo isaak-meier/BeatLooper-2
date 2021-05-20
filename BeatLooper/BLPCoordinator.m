@@ -31,6 +31,7 @@
     // Initialize homeViewController from storyboard
     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
     [self.navigationController pushViewController:homeViewController animated:NO];
+//    [[[BLPBeatModel alloc] init] deleteAllEntities];
     [[self window] makeKeyAndVisible];
 }
 
@@ -42,7 +43,7 @@
 
 - (void)songTapped:(NSManagedObjectID *)songID {
     NSLog(@"%@ was tapped", songID);
-    PlayerViewController *playerViewController = [[PlayerViewController alloc] init];
+    PlayerViewController *playerViewController = [[PlayerViewController alloc] initWithSongID:songID];
     [[self navigationController] pushViewController:playerViewController animated:YES];
 }
 

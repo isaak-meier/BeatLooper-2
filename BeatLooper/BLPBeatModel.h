@@ -12,7 +12,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BLPBeatModel : NSObject
-- (NSArray*) getAllSongs;
+
+- (NSArray *)getAllSongs;
+- (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID;
+- (BOOL)saveSongFromURL:(NSURL *)songURL;
+- (void)deleteAllEntities;
 
 @end
 

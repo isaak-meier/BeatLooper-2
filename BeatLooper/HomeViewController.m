@@ -8,12 +8,10 @@
 #import "HomeViewController.h"
 
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
+
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
-
 @property AVAudioPlayer *player;
-
 @property (strong, nonatomic) NSArray *songs;
-
 @property (strong, nonatomic) NSArray *content;
 
 @end
@@ -39,8 +37,11 @@
     }
 }
 
+
 - (void)refreshSongs {
-    //
+    NSArray *brandNewSongs = [[self model] getAllSongs];
+    [self setSongs:brandNewSongs];
+    [[self songTableView] reloadData];
 }
 
 - (void)viewDidLoad {
@@ -50,7 +51,7 @@
     
     [self songTableView].dataSource = self;
     [self songTableView].delegate = self;
-    [_songTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
+    [[self songTableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
 
 }
 
@@ -62,7 +63,7 @@
 
 - (void)initAudioPlayer:(NSString*)resourceURL {
     NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
-    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil]];
 }
 
 
@@ -86,7 +87,7 @@
     Beat *selectedBeat = _songs[indexPath.row];
     NSManagedObjectID *beatID = selectedBeat.objectID;
     [[self coordinator] songTapped:beatID];
-    
+    [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 

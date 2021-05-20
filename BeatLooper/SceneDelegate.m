@@ -74,38 +74,11 @@
  Save into Core Data and refresh app. TODO refactor to model.
  */
 -(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
-    NSLog(@"%@", URLContexts);
     NSURL *openedFileURL = URLContexts.anyObject.URL;
-    NSString *urlStr = openedFileURL.absoluteString;
-    NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSLog(@"%@", fileTitle);
-    NSError *error;
-	NSData *data = [[NSData alloc] initWithContentsOfURL:openedFileURL options:0 error:&error];
-	if (!data) {
-		NSLog(@"Error: %@", error);
-	}
-	else {
-		NSLog(@"File saved");
-	}
-    NSLog(@"%@", data);
-    
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
-    NSManagedObject *managedObject = [[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
-    [managedObject setValue:data forKey:@"data"];
-    [managedObject setValue:fileTitle forKey:@"title"];
-    
-    @try {
-        [context save:nil];
-    } @catch (NSException *exception) {
-        NSLog(@"%@", exception);
+    BLPBeatModel *model = [[BLPBeatModel alloc] init];
+    if ([model saveSongFromURL:openedFileURL]) {
+        [_coordinator songAdded];
     }
-    
-    NSLog(@"%@", managedObject);
-    
-	[_coordinator songAdded];
 }
 
 
