@@ -37,6 +37,7 @@
     return url;
 }
 
+// TODO: for both delete methods, delete file stored at path before removing object from core data
 - (void)deleteSong:(NSManagedObject *)song {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
