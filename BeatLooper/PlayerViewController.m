@@ -43,6 +43,7 @@
     [[[self playButton] imageView] setContentMode:UIViewContentModeScaleAspectFit];
     [self loadPlayer];
     [self setupProgressBar];
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 - (void)loadPlayer {
@@ -51,20 +52,7 @@
     BOOL exists = [fileManager fileExistsAtPath:resourceUrl.path];
 
     if (!exists) {
-        NSLog(@"File does not exist at path %@", resourceUrl.path);
-        UIAlertController *alert = [UIAlertController
-                                         alertControllerWithTitle:@"Error"
-                                         message:@"Sorry, we lost this file. Shittisgone. Please delete and re-add."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* okButton = [UIAlertAction
-                                        actionWithTitle:@"Haha, Ok"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action) {
-                                            //Handle your yes please button action here
-                                            return;
-                                        }];
-        [alert addAction:okButton];
-        [self presentViewController:alert animated:YES completion:nil];
+        [self handleExistenceError];
     } else {
         NSError *error;
         [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:resourceUrl error:&error]];
@@ -73,6 +61,22 @@
         }
     }
  
+}
+
+- (void)handleExistenceError {
+    UIAlertController *alert = [UIAlertController
+                                     alertControllerWithTitle:@"Error"
+                                     message:@"Sorry, we lost this file. Shittisgone. Please delete and re-add."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"Haha, Ok"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+                                        return;
+                                    }];
+    [alert addAction:okButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)setupProgressBar {
@@ -145,6 +149,12 @@
     [self.playButton addSubview:animatedImage];
     [animatedImage startAnimating];
 
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if ([self isMovingFromParentViewController]) {
+        [[AVAudioSession sharedInstance] setActive:NO error:nil];
+    }
 }
 
 /*
