@@ -38,10 +38,12 @@
 }
 
 
-- (void)refreshSongs {
+- (void)refreshSongsAndReloadData:(BOOL)shouldReloadData {
     NSArray *brandNewSongs = [[self model] getAllSongs];
     [self setSongs:brandNewSongs];
-    [[self songTableView] reloadData];
+    if (shouldReloadData) {
+        [[self songTableView] reloadData];
+    }
 }
 
 - (void)viewDidLoad {
@@ -88,6 +90,16 @@
     NSManagedObjectID *beatID = selectedBeat.objectID;
     [[self coordinator] songTapped:beatID];
     [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Beat *selectedBeat = _songs[indexPath.row];
+        [self.model deleteSong:selectedBeat];
+        [self refreshSongsAndReloadData:NO];
+        NSArray *indexPaths = @[indexPath];
+        [self.songTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 

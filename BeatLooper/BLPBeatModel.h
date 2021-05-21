@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray *)getAllSongs;
 - (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID;
 - (BOOL)saveSongFromURL:(NSURL *)songURL;
+- (void)deleteSong:(NSManagedObject *)song;
 - (void)deleteAllEntities;
 
 @end

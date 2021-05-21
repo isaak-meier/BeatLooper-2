@@ -18,7 +18,7 @@
 @property (weak) BLPCoordinator *coordinator;
 
 - (id)initWithCoordinator:(BLPCoordinator *)coordinator;
-- (void)refreshSongs;
+- (void)refreshSongsAndReloadData:(BOOL)shouldReloadData;
 
 @end
 

@@ -38,7 +38,7 @@
 - (void)songAdded {
     [self.navigationController popToRootViewControllerAnimated:YES];
     HomeViewController *vc = (HomeViewController *)[_navigationController visibleViewController];
-    [vc refreshSongs];
+    [vc refreshSongsAndReloadData:YES];
 }
 
 - (void)songTapped:(NSManagedObjectID *)songID {

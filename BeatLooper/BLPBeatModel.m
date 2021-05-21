@@ -37,6 +37,18 @@
     return url;
 }
 
+- (void)deleteSong:(NSManagedObject *)song {
+    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = delegate.container.viewContext;
+    [context deleteObject:song];
+    
+    NSError *error;
+    [context save:&error];
+    if (error) {
+        NSLog(@"There somme error deleting: %@", error);
+    }
+}
+
 
 // Used in development to clear core data
 - (void)deleteAllEntities {
