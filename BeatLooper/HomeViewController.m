@@ -85,7 +85,6 @@
 
 // MARK: UITableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"selected %ld row", (long)indexPath.row);
     Beat *selectedBeat = _songs[indexPath.row];
     NSManagedObjectID *beatID = selectedBeat.objectID;
     [[self coordinator] songTapped:beatID];

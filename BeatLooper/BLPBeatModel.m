@@ -31,7 +31,6 @@
     Beat *beatFromSongID = [context objectWithID:songID];
     
     NSString *songPath = [beatFromSongID fileUrl];
-    NSLog(@"Song Path: %@", songPath);
     NSURL *url = [NSURL fileURLWithPath:songPath];
 
     return url;

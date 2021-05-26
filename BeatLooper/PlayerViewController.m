@@ -40,10 +40,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [[[self playButton] imageView] setContentMode:UIViewContentModeScaleAspectFit];
+
     [self loadPlayer];
     [self setupProgressBar];
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [self playOrPauseSong:nil];
 }
 
 - (void)loadPlayer {
@@ -82,7 +83,6 @@
 - (void)setupProgressBar {
     NSProgress *progress = [[NSProgress alloc] init];
     NSTimeInterval songLength = (NSInteger)([self.player duration] * 100);
-    NSLog(@"Song length: %f", songLength);
     [progress setTotalUnitCount:songLength];
     [self setProgress:progress];
     [self.songProgressBar setObservedProgress:progress];
@@ -92,12 +92,13 @@
     if ([self player].playing) {
         [[self player] stop];
         [self.timer invalidate];
-//        [self animateButtonToPlayIcon:YES];
+        [self animateButtonToPlayIcon:YES];
+
     } else {
         [[self player] play];
         NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(beginIncrementingProgress) userInfo:nil repeats:YES];
         [self setTimer:progressBarRefreshTimer];
-//        [self animateButtonToPlayIcon:NO];
+        [self animateButtonToPlayIcon:NO];
     }
 }
 
@@ -111,50 +112,24 @@
 
 // TODO: make this work
 - (void)animateButtonToPlayIcon:(BOOL)shouldAnimateToPlayIcon {
-    UIImageView *animatedImage = [[UIImageView alloc] init];
-    if (shouldAnimateToPlayIcon) {
-        [animatedImage setAnimationImages:
-         @[[UIImage imageNamed:@"icons8-play (1)"],
-         [UIImage imageNamed:@"icons8-play (2)"],
-         [UIImage imageNamed:@"icons8-play (3)"],
-         [UIImage imageNamed:@"icons8-play (4)"],
-         [UIImage imageNamed:@"icons8-play (5)"],
-         [UIImage imageNamed:@"icons8-play (6)"],
-         [UIImage imageNamed:@"icons8-play (7)"],
-         [UIImage imageNamed:@"icons8-play (8)"],
-         [UIImage imageNamed:@"icons8-play (9)"],
-         [UIImage imageNamed:@"icons8-play (10)"],
-         [UIImage imageNamed:@"icons8-play (11)"],
-         [UIImage imageNamed:@"icons8-play (12)"]
-         ]];
-    } else {
-        [animatedImage setAnimationImages:
-         @[[UIImage imageNamed:@"icons8-play (12)"],
-         [UIImage imageNamed:@"icons8-play (11)"],
-         [UIImage imageNamed:@"icons8-play (10)"],
-         [UIImage imageNamed:@"icons8-play (9)"],
-         [UIImage imageNamed:@"icons8-play (8)"],
-         [UIImage imageNamed:@"icons8-play (7)"],
-         [UIImage imageNamed:@"icons8-play (6)"],
-         [UIImage imageNamed:@"icons8-play (5)"],
-         [UIImage imageNamed:@"icons8-play (4)"],
-         [UIImage imageNamed:@"icons8-play (3)"],
-         [UIImage imageNamed:@"icons8-play (2)"],
-         [UIImage imageNamed:@"icons8-play (1)"]
-         ]];
+    [UIView transitionWithView:self.playButton
+                      duration:0.2
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+        if (shouldAnimateToPlayIcon) {
+            [self.playButton setImage:[UIImage imageNamed:@"icons8-play (1)"] forState:UIControlStateNormal];
+        } else {
+            [self.playButton setImage:[UIImage imageNamed:@"icons8-play (12)"] forState:UIControlStateNormal];
+        }
     }
-    [animatedImage setAnimationDuration:1.0f];
-    [animatedImage setAnimationRepeatCount:0];
-    [self.playButton setImage:nil forState:UIControlStateNormal];
-    [self.playButton addSubview:animatedImage];
-    [animatedImage startAnimating];
+                    completion:nil];
+
 
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if ([self isMovingFromParentViewController]) {
-        [[AVAudioSession sharedInstance] setActive:NO error:nil];
-    }
+    [self.player stop];
+    [[AVAudioSession sharedInstance] setActive:NO error:nil];
 }
 
 /*
