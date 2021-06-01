@@ -26,14 +26,17 @@
 }
 
 - (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID {
+    Beat *beatFromSongID = [self getSongForUniqueID:songID];
+    NSString *songPath = [beatFromSongID fileUrl];
+    NSURL *url = [NSURL fileURLWithPath:songPath];
+    return url;
+}
+
+- (Beat *)getSongForUniqueID:(NSManagedObjectID *)songID {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     Beat *beatFromSongID = [context objectWithID:songID];
-    
-    NSString *songPath = [beatFromSongID fileUrl];
-    NSURL *url = [NSURL fileURLWithPath:songPath];
-
-    return url;
+    return beatFromSongID;
 }
 
 // TODO: for both delete methods, delete file stored at path before removing object from core data
@@ -49,8 +52,7 @@
     }
 }
 
-
-// Used in development to clear core data
+// Used in development to clear core data. would be nice to have a button for this.
 - (void)deleteAllEntities {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;

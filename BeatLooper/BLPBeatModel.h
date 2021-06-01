@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "AppDelegate.h"
+#import "Beat+CoreDataClass.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)getAllSongs;
 - (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID;
+- (Beat *)getSongForUniqueID:(NSManagedObjectID *)songID;
 - (BOOL)saveSongFromURL:(NSURL *)songURL;
 - (void)deleteSong:(NSManagedObject *)song;
 - (void)deleteAllEntities;

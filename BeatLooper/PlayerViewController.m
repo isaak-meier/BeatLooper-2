@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressBar;
+@property (weak, nonatomic) IBOutlet UITextField *tempoTextField;
 @property BLPBeatModel *model;
 @property NSManagedObjectID *songID;
 @property AVAudioPlayer *player;
@@ -43,6 +44,8 @@
 
     [self loadPlayer];
     [self setupProgressBar];
+    Beat *song = [self.model getSongForUniqueID:self.songID];
+    [self setTitle:song.title];
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
     [self playOrPauseSong:nil];
 }
