@@ -55,12 +55,14 @@
     [self songTableView].delegate = self;
     [[self songTableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
 
+    [self refreshSongsAndReloadData:YES];
 }
 
 - (void)loadBundle {
     NSBundle *main = [NSBundle mainBundle];
     NSString *resourceURL = [main pathForResource:@"dunevibes" ofType:@"mp3"];
     [self initAudioPlayer:resourceURL];
+//    [self.model saveSongFromURL:[[NSURL alloc] initWithString:resourceURL]];
 }
 
 - (void)initAudioPlayer:(NSString*)resourceURL {

@@ -116,7 +116,7 @@
                             <constraint firstItem="cKd-hd-A3e" firstAttribute="centerX" secondItem="hzu-r0-A9g" secondAttribute="centerX" id="HD9-z6-9ns"/>
                             <constraint firstAttribute="trailing" secondItem="ZYv-Gc-1dc" secondAttribute="trailing" id="INd-ve-1aJ"/>
                             <constraint firstItem="IaP-TS-3Q2" firstAttribute="centerY" secondItem="ve3-ji-HFH" secondAttribute="centerY" id="aGk-Wc-Tmp"/>
-                            <constraint firstItem="cKd-hd-A3e" firstAttribute="leading" secondItem="QFD-7k-E2P" secondAttribute="trailing" constant="51" id="ak5-KV-jEO"/>
+                            <constraint firstItem="cKd-hd-A3e" firstAttribute="leading" relation="lessThanOrEqual" secondItem="QFD-7k-E2P" secondAttribute="trailing" constant="51" id="ak5-KV-jEO"/>
                             <constraint firstItem="IaP-TS-3Q2" firstAttribute="leading" secondItem="ve3-ji-HFH" secondAttribute="trailing" constant="8" symbolic="YES" id="cnm-wb-sR5"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="64" id="mcS-Is-1zm"/>
                             <constraint firstItem="ve3-ji-HFH" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="rXU-s2-yLD"/>

@@ -85,11 +85,11 @@
     BOOL success = [fileManager copyItemAtURL:songURL toURL:newFileURL error:&error];
     if (success) {
         NSLog(@"The file was successfully saved to path %@", newFileURL);
+        [self saveSongWith:fileTitle url:newFileURL.path];
     } else {
         NSLog(@"Error saving file: %@", error);
     }
 
-    [self saveSongWith:fileTitle url:newFileURL.path];
    
     return YES;
 }

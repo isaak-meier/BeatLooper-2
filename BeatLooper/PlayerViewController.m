@@ -112,29 +112,47 @@
 }
 
 - (IBAction)loopButtonTapped:(id)sender {
-    if ([self player].playing) {
-        [self.player stop];
+    [self.player stop];
+
+    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
+        if (self.loopOperationQueue) { // assert operation queue exists
+            [self.loopOperationQueue cancelAllOperations];
+        }
+        [self.loopButton setTitle:@"Loop" forState:UIControlStateNormal];
+        
+    } else {
+        [self.player setCurrentTime:0];
+        [self.player play];
+        
+        [self.loopButton setTitle:@"Looping" forState:UIControlStateNormal];
+        [self.loopButton sizeToFit];
+        [self addLoopingOperationToQueue];
     }
-    
-    [self.player setNumberOfLoops: -1];
-    NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:1];
-    NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
-    [self.player play];
-    
+
+}
+
+- (void)addLoopingOperationToQueue {
     NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+    __weak PlayerViewController *weakSelf = self;
+    
     [operationQueue addOperationWithBlock:^{
-        while (self.player.isPlaying) {
-            if (self.player.currentTime < timeToPlay) {
+        PlayerViewController *strongSelf = weakSelf;
+        AVAudioPlayer *player = strongSelf.player;
+        
+        NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:8];
+        NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
+        [player prepareToPlay]; // move if slow
+        while (player.isPlaying) {
+            if (player.currentTime < timeToPlay) {
                 continue;
             } else {
-                [self.player setCurrentTime:0];
-                [self.player play];
+                [player setCurrentTime:0];
+//                [player play];
             }
         }
     }];
     
     [self setLoopOperationQueue:operationQueue];
-
 }
 
 - (void)beginIncrementingProgress {
