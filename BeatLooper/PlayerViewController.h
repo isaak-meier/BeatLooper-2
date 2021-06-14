@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlayerViewController : UIViewController
+@interface PlayerViewController : UIViewController <UITextFieldDelegate>
 
 - (id)initWithSongID:(NSManagedObjectID *)songID;
 

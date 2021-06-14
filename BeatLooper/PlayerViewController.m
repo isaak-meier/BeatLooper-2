@@ -13,11 +13,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressBar;
 @property (weak, nonatomic) IBOutlet UITextField *tempoTextField;
+@property (weak, nonatomic) IBOutlet UIButton *loopButton;
+
 @property BLPBeatModel *model;
 @property NSManagedObjectID *songID;
 @property AVAudioPlayer *player;
+@property NSOperationQueue *loopOperationQueue;
 @property NSProgress *progress;
 @property NSTimer *timer;
+@property int tempo;
 
 - (void)loadPlayer;
 - (void)setupProgressBar;
@@ -44,9 +48,11 @@
 
     [self loadPlayer];
     [self setupProgressBar];
-    Beat *song = [self.model getSongForUniqueID:self.songID];
-    [self setTitle:song.title];
+    
+    [self setupVisibleText];
+    
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [self setTempo:100];
     [self playOrPauseSong:nil];
 }
 
@@ -105,6 +111,32 @@
     }
 }
 
+- (IBAction)loopButtonTapped:(id)sender {
+    if ([self player].playing) {
+        [self.player stop];
+    }
+    
+    [self.player setNumberOfLoops: -1];
+    NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:1];
+    NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
+    [self.player play];
+    
+    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+    [operationQueue addOperationWithBlock:^{
+        while (self.player.isPlaying) {
+            if (self.player.currentTime < timeToPlay) {
+                continue;
+            } else {
+                [self.player setCurrentTime:0];
+                [self.player play];
+            }
+        }
+    }];
+    
+    [self setLoopOperationQueue:operationQueue];
+
+}
+
 - (void)beginIncrementingProgress {
     if ([self.player isPlaying]) {
         NSTimeInterval currentTime = (NSInteger)([self.player currentTime] * 100);
@@ -112,8 +144,6 @@
     }
 }
 
-
-// TODO: make this work
 - (void)animateButtonToPlayIcon:(BOOL)shouldAnimateToPlayIcon {
     [UIView transitionWithView:self.playButton
                       duration:0.2
@@ -125,14 +155,37 @@
             [self.playButton setImage:[UIImage imageNamed:@"icons8-play (12)"] forState:UIControlStateNormal];
         }
     }
-                    completion:nil];
+    completion:nil];
 
+}
 
+- (void)setupVisibleText {
+    Beat *song = [self.model getSongForUniqueID:self.songID];
+    [self setTitle:song.title];
+    
+    [self.tempoTextField setDelegate:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.player stop];
     [[AVAudioSession sharedInstance] setActive:NO error:nil];
+}
+
+
+// Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
+- (double)secondsFromTempoWithBars:(double)duration {
+    return 1.0 / (double)self.tempo * 60.0 * 4.0 * duration;
+}
+
+// MARK: UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.tempoTextField) {
+        [textField resignFirstResponder];
+        NSString *tempoStr = [textField text];
+        [self setTempo:[tempoStr intValue]];
+        return NO;
+    }
+    return YES;
 }
 
 /*
