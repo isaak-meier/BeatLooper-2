@@ -139,15 +139,15 @@
         PlayerViewController *strongSelf = weakSelf;
         AVAudioPlayer *player = strongSelf.player;
         
-        NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:8];
+        NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:4];
         NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
-        [player prepareToPlay]; // move if slow
         while (player.isPlaying) {
             if (player.currentTime < timeToPlay) {
+                [player prepareToPlay]; // move if slow
                 continue;
             } else {
                 [player setCurrentTime:0];
-//                [player play];
+                [player play];
             }
         }
     }];
