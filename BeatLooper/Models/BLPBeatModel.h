@@ -9,6 +9,9 @@
 #import <CoreData/CoreData.h>
 #import "AppDelegate.h"
 #import "Beat+CoreDataClass.h"
+#import <AVFoundation/AVAsset.h>
+#import <AVFoundation/AVAssetExportSession.h>
+#import <CoreMedia/CMTimeRange.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)saveSongFromURL:(NSURL *)songURL;
 - (void)deleteSong:(NSManagedObject *)song;
 - (void)deleteAllEntities;
+
++ (NSURL *)exportClippedAudioFromBeat:(Beat *)beat withTempo:(int)tempo startingAtTimeInBars:(int)bars;
 
 @end
 

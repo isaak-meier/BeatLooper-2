@@ -50,10 +50,27 @@
     [self setupProgressBar];
     
     [self setupVisibleText];
+    [self configureAudioSession];
     
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
     [self setTempo:100];
     [self playOrPauseSong:nil];
+}
+
+- (void)configureAudioSession {
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    
+    NSError *error;
+    BOOL success = [session setCategory:AVAudioSessionCategoryPlayback error:&error];
+    double hwSampleRate = 44100.0;
+    success = [session setPreferredSampleRate:hwSampleRate error:&error];
+    
+    NSTimeInterval ioBufferDuration = 0.0029;
+    success = [session setPreferredIOBufferDuration:ioBufferDuration error:&error];
+    success = [session setActive:YES error:&error];
+    if(!success) {
+        NSLog(@"Error setting up audio session, log all the errors. %@", [error localizedDescription]);
+    }
+
 }
 
 - (void)loadPlayer {

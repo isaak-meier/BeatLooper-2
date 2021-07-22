@@ -110,4 +110,43 @@
     }
 }
 
+// Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
++ (double)secondsFromTempo:(int)tempo withBars:(double)duration {
+    return 1.0 / (double)tempo * 60.0 * 4.0 * duration;
+}
+
+
++ (NSURL *)exportClippedAudioFromBeat:(Beat *)beat withTempo:(int)tempo startingAtTimeInBars:(int)startTime forTimeInBars:(int)duration {
+    NSURL *fullSongURL = [NSURL fileURLWithPath:beat.fileUrl];
+    AVAsset *asset = [AVAsset assetWithURL:fullSongURL];
+    
+    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
+    CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
+    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
+    CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
+    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
+    
+    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
+    if (nil == exportSession) return nil;
+    
+    NSURL *exportedFileURL; // TODO: create directory for loops & urls for loops
+    [exportSession setOutputURL:exportedFileURL];
+    [exportSession setTimeRange:timeRangeOfExport];
+    [exportSession setOutputFileType:AVAssetExportPresetAppleM4A];
+    
+    [exportSession exportAsynchronouslyWithCompletionHandler:^{
+        if (exportSession.status == AVAssetExportSessionStatusCompleted) {
+            NSLog(@"Successfully exported audio to %@", exportedFileURL.absoluteString);
+        } else if (exportSession.status == AVAssetExportSessionStatusFailed) {
+            // TODO: handle this appropriately
+            NSLog(@"Filed to export audio to %@", exportedFileURL.absoluteString);
+        } else {
+            NSLog(@"Status: %@", exportSession.status);
+        }
+    }];
+    
+    // this might not finish before we return, handle this
+    return fullSongURL;
+}
+
 @end
