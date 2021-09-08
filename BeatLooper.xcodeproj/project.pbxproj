@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA93D91326A931C700B5F4F3 /* BLPAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */; };
 		EAA3FA4F264B06AB008FFF92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
 		EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB5ECA32644A89300C4D535 /* PlayerViewController.m */; };
 		EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDB26176072006C9E87 /* AppDelegate.m */; };
@@ -43,6 +44,8 @@
 
 /* Begin PBXFileReference section */
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EA93D91126A931A500B5F4F3 /* BLPAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPAudioEngine.h; sourceTree = "<group>"; };
+		EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPAudioEngine.m; sourceTree = "<group>"; };
 		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		EAB5ECA32644A89300C4D535 /* PlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		EAC4ECD726176072006C9E87 /* BeatLooper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatLooper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +108,38 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EA93D90E26A92AC700B5F4F3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
+				EAC4ECEC26176072006C9E87 /* main.m */,
+				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EA93D90F26A92B1A00B5F4F3 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				EAC4ECE026176072006C9E87 /* HomeViewController.h */,
+				EAC4ECE126176072006C9E87 /* HomeViewController.m */,
+				EAB5ECA22644A89300C4D535 /* PlayerViewController.h */,
+				EAB5ECA32644A89300C4D535 /* PlayerViewController.m */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		EA93D91026A92B5900B5F4F3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */,
+				EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */,
+				EA93D91126A931A500B5F4F3 /* BLPAudioEngine.h */,
+				EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		EAC4ECCE26176072006C9E87 = {
 			isa = PBXGroup;
 			children = (
@@ -133,21 +168,15 @@
 				EAC4ECDB26176072006C9E87 /* AppDelegate.m */,
 				EAC4ECDD26176072006C9E87 /* SceneDelegate.h */,
 				EAC4ECDE26176072006C9E87 /* SceneDelegate.m */,
-				EAC4ECE026176072006C9E87 /* HomeViewController.h */,
-				EAC4ECE126176072006C9E87 /* HomeViewController.m */,
-				EAC4ECE326176072006C9E87 /* Main.storyboard */,
-				EAB5ECA22644A89300C4D535 /* PlayerViewController.h */,
-				EAB5ECA32644A89300C4D535 /* PlayerViewController.m */,
-				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
-				EAC4ECE626176072006C9E87 /* Assets.xcassets */,
-				EAC4ECE826176072006C9E87 /* LaunchScreen.storyboard */,
-				EAC4ECEB26176072006C9E87 /* Info.plist */,
-				EAC4ECEC26176072006C9E87 /* main.m */,
-				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
 				EAC4ED45261978AE006C9E87 /* BLPCoordinator.h */,
 				EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */,
-				EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */,
-				EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */,
+				EA93D90F26A92B1A00B5F4F3 /* View Controllers */,
+				EA93D91026A92B5900B5F4F3 /* Models */,
+				EA93D90E26A92AC700B5F4F3 /* Supporting Files */,
+				EAC4ECE326176072006C9E87 /* Main.storyboard */,
+				EAC4ECEB26176072006C9E87 /* Info.plist */,
+				EAC4ECE626176072006C9E87 /* Assets.xcassets */,
+				EAC4ECE826176072006C9E87 /* LaunchScreen.storyboard */,
 			);
 			path = BeatLooper;
 			sourceTree = "<group>";
@@ -303,6 +332,7 @@
 				EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */,
 				EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */,
 				EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */,
+				EA93D91326A931C700B5F4F3 /* BLPAudioEngine.m in Sources */,
 				EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */,
 				EAC4ECED26176072006C9E87 /* main.m in Sources */,
 				EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */,

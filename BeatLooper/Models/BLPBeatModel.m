@@ -68,16 +68,9 @@
 }
 
 - (BOOL)saveSongFromURL:(NSURL *)songURL {
+    NSURL *newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songURL];
     NSString *urlStr = songURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
-    // create path
-    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
-    // unique id to ensure songs with same name are saved uniquely
-    NSString *guid = [[NSUUID new] UUIDString];
-    NSString *fileTitleByAppendingUniqueId = [NSString stringWithFormat:@"%@_%@.%@", fileTitle, guid, fileExtension];
-    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:fileTitleByAppendingUniqueId];
-    NSURL *newFileURL = [NSURL fileURLWithPath:newFilePath];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
@@ -129,7 +122,7 @@
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
     if (nil == exportSession) return nil;
     
-    NSURL *exportedFileURL; // TODO: create directory for loops & urls for loops
+    NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:fullSongURL];
     [exportSession setOutputURL:exportedFileURL];
     [exportSession setTimeRange:timeRangeOfExport];
     [exportSession setOutputFileType:AVAssetExportPresetAppleM4A];
@@ -143,10 +136,22 @@
         } else {
             NSLog(@"Status: %@", exportSession.status);
         }
+        // need be completion block
     }];
-    
-    // this might not finish before we return, handle this
-    return fullSongURL;
+    return exportedFileURL; // will prob be nil
+}
+
++ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL {
+    NSString *urlStr = currentURL.absoluteString;
+    NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
+    NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
+    // create path
+    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
+    // unique id to ensure songs with same name are saved uniquely
+    NSString *guid = [[NSUUID new] UUIDString];
+    NSString *fileTitleByAppendingUniqueId = [NSString stringWithFormat:@"%@_%@.%@", fileTitle, guid, fileExtension];
+    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:fileTitleByAppendingUniqueId];
+    return [NSURL fileURLWithPath:newFilePath];
 }
 
 @end
