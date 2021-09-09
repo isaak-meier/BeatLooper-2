@@ -81,17 +81,41 @@
                                     <action selector="playOrPauseSong:" destination="zY8-PV-nFk" eventType="touchUpInside" id="7Bc-GC-vjI"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tempo:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve3-ji-HFH">
-                                <rect key="frame" x="20" y="194" width="86" height="31.5"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IaP-TS-3Q2">
                                 <rect key="frame" x="114" y="193" width="50" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="Wqo-OW-9ke"/>
                                     <constraint firstAttribute="width" constant="50" id="cYc-X1-c7F"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crW-VG-TgA">
+                                <rect key="frame" x="20" y="249" width="104" height="32"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RAz-vU-1bM">
+                                <rect key="frame" x="132" y="248" width="50" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="61D-nh-MmR"/>
+                                    <constraint firstAttribute="width" constant="50" id="zA9-iF-voZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End Bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ALC-YD-wFa">
+                                <rect key="frame" x="20" y="291" width="91" height="32"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="4" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MkK-Iz-Az7">
+                                <rect key="frame" x="119" y="290" width="50" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="cMA-fn-kdN"/>
+                                    <constraint firstAttribute="width" constant="50" id="xew-mx-aDM"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
@@ -109,28 +133,44 @@
                                     <action selector="loopButtonTapped:" destination="zY8-PV-nFk" eventType="touchUpInside" id="MVb-4T-zhv"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tempo:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ve3-ji-HFH">
+                                <rect key="frame" x="20" y="194" width="86" height="31.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hzu-r0-A9g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ve3-ji-HFH" firstAttribute="top" secondItem="ZYv-Gc-1dc" secondAttribute="bottom" constant="146" id="0gd-KM-qtX"/>
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="leading" secondItem="7kw-7J-CH3" secondAttribute="leading" id="3E3-t8-9u9"/>
+                            <constraint firstItem="ALC-YD-wFa" firstAttribute="top" secondItem="crW-VG-TgA" secondAttribute="bottom" constant="10" id="E6W-YJ-GoP"/>
                             <constraint firstItem="cKd-hd-A3e" firstAttribute="centerX" secondItem="hzu-r0-A9g" secondAttribute="centerX" id="HD9-z6-9ns"/>
                             <constraint firstAttribute="trailing" secondItem="ZYv-Gc-1dc" secondAttribute="trailing" id="INd-ve-1aJ"/>
+                            <constraint firstItem="MkK-Iz-Az7" firstAttribute="leading" secondItem="ALC-YD-wFa" secondAttribute="trailing" constant="8" symbolic="YES" id="ZVx-Cq-3wG"/>
                             <constraint firstItem="IaP-TS-3Q2" firstAttribute="centerY" secondItem="ve3-ji-HFH" secondAttribute="centerY" id="aGk-Wc-Tmp"/>
                             <constraint firstItem="cKd-hd-A3e" firstAttribute="leading" relation="lessThanOrEqual" secondItem="QFD-7k-E2P" secondAttribute="trailing" constant="51" id="ak5-KV-jEO"/>
                             <constraint firstItem="IaP-TS-3Q2" firstAttribute="leading" secondItem="ve3-ji-HFH" secondAttribute="trailing" constant="8" symbolic="YES" id="cnm-wb-sR5"/>
+                            <constraint firstItem="crW-VG-TgA" firstAttribute="top" secondItem="ve3-ji-HFH" secondAttribute="bottom" constant="23.5" id="hIQ-sq-XCh"/>
+                            <constraint firstItem="RAz-vU-1bM" firstAttribute="leading" secondItem="crW-VG-TgA" secondAttribute="trailing" constant="8" symbolic="YES" id="l4v-wS-EDu"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="64" id="mcS-Is-1zm"/>
+                            <constraint firstItem="MkK-Iz-Az7" firstAttribute="centerY" secondItem="ALC-YD-wFa" secondAttribute="centerY" id="qhz-BP-Znm"/>
+                            <constraint firstItem="RAz-vU-1bM" firstAttribute="centerY" secondItem="crW-VG-TgA" secondAttribute="centerY" id="qtO-u5-M5D"/>
                             <constraint firstItem="ve3-ji-HFH" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="rXU-s2-yLD"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="centerY" secondItem="cKd-hd-A3e" secondAttribute="centerY" id="ru7-RW-ty1"/>
                             <constraint firstItem="hzu-r0-A9g" firstAttribute="bottom" secondItem="cKd-hd-A3e" secondAttribute="bottom" constant="33" id="w19-NU-ax2"/>
+                            <constraint firstItem="ALC-YD-wFa" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="xTv-1a-nua"/>
+                            <constraint firstItem="crW-VG-TgA" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="xZs-m7-vDg"/>
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="top" secondItem="hzu-r0-A9g" secondAttribute="top" id="y2O-wD-3Qe"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="endBarTextField" destination="MkK-Iz-Az7" id="Mcs-Wt-GBw"/>
                         <outlet property="loopButton" destination="QFD-7k-E2P" id="wkg-50-4rV"/>
                         <outlet property="playButton" destination="cKd-hd-A3e" id="1CT-RZ-Wxn"/>
                         <outlet property="songProgressBar" destination="ZYv-Gc-1dc" id="TIS-2J-mgU"/>
+                        <outlet property="startBarTextField" destination="RAz-vU-1bM" id="ZKF-cx-gAe"/>
                         <outlet property="tempoTextField" destination="IaP-TS-3Q2" id="BJo-a2-qff"/>
                     </connections>
                 </viewController>

@@ -7,9 +7,15 @@
 
 #ifndef BLPAudioEngine_h
 #define BLPAudioEngine_h
+#import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface BLPAudioEngine : NSObject
 
+- (id)initWithSongUrl:(NSURL *)songToLoop;
+
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* BLPAudioEngine_h */

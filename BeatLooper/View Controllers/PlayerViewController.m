@@ -7,15 +7,19 @@
 
 #import "PlayerViewController.h"
 #import "BLPBeatModel.h"
+#import "BLPAudioEngine.h"
 
 @interface PlayerViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressBar;
 @property (weak, nonatomic) IBOutlet UITextField *tempoTextField;
+@property (weak, nonatomic) IBOutlet UITextField *startBarTextField;
+@property (weak, nonatomic) IBOutlet UITextField *endBarTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loopButton;
 
 @property BLPBeatModel *model;
+@property BLPAudioEngine *audioEngine;
 @property NSManagedObjectID *songID;
 @property AVAudioPlayer *player;
 @property NSOperationQueue *loopOperationQueue;
@@ -46,14 +50,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    [self loadPlayer];
+//    [self loadPlayer];
     [self setupProgressBar];
     
     [self setupVisibleText];
-    [self configureAudioSession];
+//    [self configureAudioSession];
     
     [self setTempo:100];
-    [self playOrPauseSong:nil];
+//    [self playOrPauseSong:nil];
 }
 
 - (void)configureAudioSession {
@@ -103,7 +107,7 @@
                                         return;
                                     }];
     [alert addAction:okButton];
-    [self presentViewController:alert animated:YES completion:nil];
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (void)setupProgressBar {
@@ -131,20 +135,21 @@
 - (IBAction)loopButtonTapped:(id)sender {
     [self.player stop];
 
-    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
-        if (self.loopOperationQueue) { // assert operation queue exists
-            [self.loopOperationQueue cancelAllOperations];
-        }
-        [self.loopButton setTitle:@"Loop" forState:UIControlStateNormal];
-        
-    } else {
-        [self.player setCurrentTime:0];
-        [self.player play];
-        
-        [self.loopButton setTitle:@"Looping" forState:UIControlStateNormal];
-        [self.loopButton sizeToFit];
-        [self addLoopingOperationToQueue];
-    }
+    
+//    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
+//        if (self.loopOperationQueue) { // assert operation queue exists
+//            [self.loopOperationQueue cancelAllOperations];
+//        }
+//        [self.loopButton setTitle:@"Loop" forState:UIControlStateNormal];
+//
+//    } else {
+//        [self.player setCurrentTime:0];
+//        [self.player play];
+//
+//        [self.loopButton setTitle:@"Looping" forState:UIControlStateNormal];
+//        [self.loopButton sizeToFit];
+//        [self addLoopingOperationToQueue];
+//    }
 
 }
 
