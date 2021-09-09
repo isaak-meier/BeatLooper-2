@@ -17,7 +17,7 @@
 
 
 // MARK: Initializer
-- (instancetype) initWithWindow:(UIWindow *)window {
+- (instancetype)initWithWindow:(UIWindow *)window {
     if (self = [super init]) {
         _window = window;
         _navigationController = [[UINavigationController alloc] init];

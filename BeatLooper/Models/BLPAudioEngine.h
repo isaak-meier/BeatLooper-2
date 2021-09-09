@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)initWithSongUrl:(NSURL *)songToLoop;
 
+- (void)playLoop;
+
 @end
 
 NS_ASSUME_NONNULL_END

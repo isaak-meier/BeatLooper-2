@@ -40,9 +40,10 @@
     success = [session setPreferredIOBufferDuration:ioBufferDuration error:&error];
     success = [session setActive:YES error:&error];
     if(!success) {
-        NSLog(@"Error setting up audio session, log all the errors. %@", [error localizedDescription]);
+        NSLog(@"Error setting up audio session with error: %@", [error localizedDescription]);
     }
     //TODO: Handle interruptions and setActive when playing
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 }
 
 - (void)setupPlayerNodeWithUrl:(NSURL *)songUrl {
@@ -59,6 +60,9 @@
 - (void)setupEngine {
     engine = [[AVAudioEngine alloc] init];
     [engine attachNode:playerNode];
+    AVAudioMixerNode *mixerNode = [engine mainMixerNode];
+    [engine connect:playerNode to:mixerNode fromBus:0 toBus:0 format:playerLoopBuffer.format];
+
 }
 
 - (void)playLoop {
@@ -70,8 +74,9 @@
         NSAssert(success, @"couldn't start engine, %@", [error localizedDescription]);
         NSLog(@"Started Engine");
     }
+    [engine prepare];
     [playerNode scheduleBuffer:playerLoopBuffer atTime:nil options:AVAudioPlayerNodeBufferLoops completionHandler:nil];
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    [playerNode setVolume:1.0f];
     [playerNode play];
 
 }

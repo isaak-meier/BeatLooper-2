@@ -68,7 +68,7 @@
 }
 
 - (BOOL)saveSongFromURL:(NSURL *)songURL {
-    NSURL *newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songURL];
+    NSURL *newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songURL withCafExtension:NO];
     NSString *urlStr = songURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
     
@@ -109,42 +109,54 @@
 }
 
 
-+ (NSURL *)exportClippedAudioFromBeat:(Beat *)beat withTempo:(int)tempo startingAtTimeInBars:(int)startTime forTimeInBars:(int)duration {
-    NSURL *fullSongURL = [NSURL fileURLWithPath:beat.fileUrl];
-    AVAsset *asset = [AVAsset assetWithURL:fullSongURL];
++ (void)exportClippedAudioFromSongURL:(NSURL *)songUrl withTempo:(int)tempo startingAtTimeInBars:(int)startTime forTimeInBars:(int)duration withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion {
+    AVAsset *asset = [AVAsset assetWithURL:songUrl];
+//    NSLog(@"asset: %@", asset);
+//    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
+//    CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
+//    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
+//    CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
+//    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
     
-    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
-    CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
-    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
-    CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
-    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
-    
-    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
-    if (nil == exportSession) return nil;
-    
-    NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:fullSongURL];
+//    if (nil == exportSession) {
+//        NSLog(@"Export session nil");
+//    };
+//    [exportSession determineCompatibleFileTypesWithCompletionHandler:^(NSArray<AVFileType> * _Nonnull compatibleFileTypes) {
+//        NSLog(@"Compatible [file types: %@", compatibleFileTypes);
+//    }];
+    //    NSLog(@"compatible presets: %@",[AVAssetExportSession exportPresetsCompatibleWithAsset:asset]);
+    NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songUrl withCafExtension:YES];
+    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetPassthrough];
+    [exportSession setOutputFileType:AVFileTypeCoreAudioFormat];
     [exportSession setOutputURL:exportedFileURL];
-    [exportSession setTimeRange:timeRangeOfExport];
-    [exportSession setOutputFileType:AVAssetExportPresetAppleM4A];
+//    [exportSession setTimeRange:timeRangeOfExport];
+    [exportSession setMetadata:asset.metadata];
+    
     
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         if (exportSession.status == AVAssetExportSessionStatusCompleted) {
             NSLog(@"Successfully exported audio to %@", exportedFileURL.absoluteString);
+            exportedFileCompletion(YES, exportedFileURL);
         } else if (exportSession.status == AVAssetExportSessionStatusFailed) {
-            // TODO: handle this appropriately
-            NSLog(@"Filed to export audio to %@", exportedFileURL.absoluteString);
+            NSLog(@"Failed to export audio to %@, error: %@", exportedFileURL.absoluteString,         exportSession.error);
+            exportedFileCompletion(NO, nil);
         } else {
             NSLog(@"Status: %@", exportSession.status);
+            exportedFileCompletion(NO, nil);
+
         }
-        // need be completion block
     }];
-    return exportedFileURL; // will prob be nil
 }
 
-+ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL {
++ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL withCafExtension:(BOOL)shouldUseCafExtension {
     NSString *urlStr = currentURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
+    NSString *fileExtension;
+    if (shouldUseCafExtension) {
+        fileExtension = @"caf";
+    } else {
+        fileExtension = [[urlStr lastPathComponent] pathExtension];
+    }
     // create path
     NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
     // unique id to ensure songs with same name are saved uniquely

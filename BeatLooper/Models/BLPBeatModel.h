@@ -24,7 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteSong:(NSManagedObject *)song;
 - (void)deleteAllEntities;
 
-+ (NSURL *)exportClippedAudioFromBeat:(Beat *)beat withTempo:(int)tempo startingAtTimeInBars:(int)bars;
++ (void)exportClippedAudioFromSongURL:(NSURL *)songUrl
+                               withTempo:(int)tempo
+                    startingAtTimeInBars:(int)bars
+                           forTimeInBars:(int)duration
+                          withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion;
+;
 
 @end
 

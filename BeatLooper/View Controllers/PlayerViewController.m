@@ -134,7 +134,21 @@
 
 - (IBAction)loopButtonTapped:(id)sender {
     [self.player stop];
+    NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
+    void (^completionHandler)(BOOL, NSURL *) = ^void(BOOL success, NSURL *loopFileUrl) {
+        if (success) {
+            BLPAudioEngine *engine = [[BLPAudioEngine alloc] initWithSongUrl:loopFileUrl];
+            [engine playLoop];
+//            [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:loopFileUrl error:nil]];
+//            [self.player play];
 
+        } else {
+            NSLog(@"Export failed.");
+        }
+    };
+    
+    [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:0 forTimeInBars:4 withCompletion:completionHandler];
+    
     
 //    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
 //        if (self.loopOperationQueue) { // assert operation queue exists
