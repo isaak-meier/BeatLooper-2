@@ -56,7 +56,7 @@
     [self setupVisibleText];
 //    [self configureAudioSession];
     
-    [self setTempo:100];
+    [self setTempo:148];
 //    [self playOrPauseSong:nil];
 }
 
@@ -135,18 +135,16 @@
 - (IBAction)loopButtonTapped:(id)sender {
     [self.player stop];
     NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
+    __block BLPAudioEngine *engine;
     void (^completionHandler)(BOOL, NSURL *) = ^void(BOOL success, NSURL *loopFileUrl) {
         if (success) {
-            BLPAudioEngine *engine = [[BLPAudioEngine alloc] initWithSongUrl:loopFileUrl];
+            engine = [[BLPAudioEngine alloc] initWithSongUrl:songUrl];
             [engine playLoop];
-//            [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:loopFileUrl error:nil]];
-//            [self.player play];
-
+            self.audioEngine = engine;
         } else {
             NSLog(@"Export failed.");
         }
     };
-    
     [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:0 forTimeInBars:4 withCompletion:completionHandler];
     
     
@@ -220,10 +218,10 @@
     [self.tempoTextField setDelegate:self];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [self.player stop];
-    [[AVAudioSession sharedInstance] setActive:NO error:nil];
-}
+//- (void)viewWillDisappear:(BOOL)animated {
+//    [self.player stop];
+//    [[AVAudioSession sharedInstance] setActive:NO error:nil];
+//}
 
 
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.

@@ -111,25 +111,18 @@
 
 + (void)exportClippedAudioFromSongURL:(NSURL *)songUrl withTempo:(int)tempo startingAtTimeInBars:(int)startTime forTimeInBars:(int)duration withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion {
     AVAsset *asset = [AVAsset assetWithURL:songUrl];
-//    NSLog(@"asset: %@", asset);
-//    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
-//    CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
-//    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
-//    CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
-//    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
-    
-//    if (nil == exportSession) {
-//        NSLog(@"Export session nil");
-//    };
-//    [exportSession determineCompatibleFileTypesWithCompletionHandler:^(NSArray<AVFileType> * _Nonnull compatibleFileTypes) {
-//        NSLog(@"Compatible [file types: %@", compatibleFileTypes);
-//    }];
-    //    NSLog(@"compatible presets: %@",[AVAssetExportSession exportPresetsCompatibleWithAsset:asset]);
+    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
+    CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
+    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
+    CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
+    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
+//    NSLog(@"Time range: %@ full time %@", timeRangeOfExport.durationOfCut, );
+
     NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songUrl withCafExtension:YES];
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetPassthrough];
     [exportSession setOutputFileType:AVFileTypeCoreAudioFormat];
     [exportSession setOutputURL:exportedFileURL];
-//    [exportSession setTimeRange:timeRangeOfExport];
+    [exportSession setTimeRange:timeRangeOfExport];
     [exportSession setMetadata:asset.metadata];
     
     

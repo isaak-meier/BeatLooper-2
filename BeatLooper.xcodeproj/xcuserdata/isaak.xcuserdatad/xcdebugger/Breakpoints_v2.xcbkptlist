@@ -55,22 +55,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B3978B7D-86F3-4EC2-AF94-565FE1D5F4C4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BeatLooper/Models/BLPAudioEngine.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "-playLoop"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "3A610A93-2B2E-4F2C-B6C7-F0E8E2A5DE90"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -78,8 +62,8 @@
             filePath = "BeatLooper/Models/BLPAudioEngine.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "-setupPlayerNodeWithUrl:"
             landmarkType = "7">
          </BreakpointContent>
