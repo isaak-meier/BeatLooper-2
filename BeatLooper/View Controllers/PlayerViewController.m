@@ -145,7 +145,7 @@
             NSLog(@"Export failed.");
         }
     };
-    [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:0 forTimeInBars:4 withCompletion:completionHandler];
+    [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:0 endingAtTimeInBars:4 withCompletion:completionHandler];
     
     
 //    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {

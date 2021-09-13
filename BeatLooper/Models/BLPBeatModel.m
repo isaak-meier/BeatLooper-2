@@ -108,33 +108,43 @@
     return 1.0 / (double)tempo * 60.0 * 4.0 * duration;
 }
 
-
-+ (void)exportClippedAudioFromSongURL:(NSURL *)songUrl withTempo:(int)tempo startingAtTimeInBars:(int)startTime forTimeInBars:(int)duration withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion {
-    AVAsset *asset = [AVAsset assetWithURL:songUrl];
-    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
+// time range for loop export cut
++ (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo {
+    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startBar];
     CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
-    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
+    int durationBars = endBar - startBar; // we should ensure endBar is always greater or handle it
+    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:durationBars];
     CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
-    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
-//    NSLog(@"Time range: %@ full time %@", timeRangeOfExport.durationOfCut, );
+    if (CMTIME_IS_INVALID(cmStartTime) || CMTIME_IS_INVALID(cmDuration)) {
+        NSLog(@"Start time or duration is invalid");
+        NSLog(@"Time range: %f full time %f", CMTimeGetSeconds(cmStartTime), CMTimeGetSeconds(cmDuration));
+    }
+    
+    return CMTimeRangeMake(cmStartTime, cmDuration);
+}
 
+
++ (void)exportClippedAudioFromSongURL:(NSURL *)songUrl withTempo:(int)tempo startingAtTimeInBars:(int)startBar endingAtTimeInBars:(int)endBar withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion {
+    
+    AVAsset *asset = [AVAsset assetWithURL:songUrl];
+    CMTimeRange timeRangeOfExport = [self timeRangeFromBars:startBar to:endBar withTempo:tempo];
     NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songUrl withCafExtension:YES];
+    
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetPassthrough];
     [exportSession setOutputFileType:AVFileTypeCoreAudioFormat];
     [exportSession setOutputURL:exportedFileURL];
     [exportSession setTimeRange:timeRangeOfExport];
     [exportSession setMetadata:asset.metadata];
     
-    
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         if (exportSession.status == AVAssetExportSessionStatusCompleted) {
             NSLog(@"Successfully exported audio to %@", exportedFileURL.absoluteString);
             exportedFileCompletion(YES, exportedFileURL);
         } else if (exportSession.status == AVAssetExportSessionStatusFailed) {
-            NSLog(@"Failed to export audio to %@, error: %@", exportedFileURL.absoluteString,         exportSession.error);
+            NSLog(@"Failed to export audio to %@, error: %@", exportedFileURL.absoluteString, exportSession.error);
             exportedFileCompletion(NO, nil);
         } else {
-            NSLog(@"Status: %@", exportSession.status);
+            NSLog(@"Status: %ld", (long)exportSession.status);
             exportedFileCompletion(NO, nil);
 
         }

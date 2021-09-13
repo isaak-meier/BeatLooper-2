@@ -26,10 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)exportClippedAudioFromSongURL:(NSURL *)songUrl
                                withTempo:(int)tempo
-                    startingAtTimeInBars:(int)bars
-                           forTimeInBars:(int)duration
+                    startingAtTimeInBars:(int)startBar
+                           endingAtTimeInBars:(int)endBar
                           withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion;
-;
+
++ (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo;
 
 @end
 
