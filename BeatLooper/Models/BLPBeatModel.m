@@ -110,9 +110,15 @@
 
 // time range for loop export cut
 + (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo {
+    if (startBar < 0) { // can't have negative time range
+        startBar = 0;
+    }
     NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startBar];
     CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
-    int durationBars = endBar - startBar; // we should ensure endBar is always greater or handle it
+    int durationBars = endBar - startBar;
+    if (durationBars < 0) {
+        durationBars = 0;
+    }
     NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:durationBars];
     CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
     if (CMTIME_IS_INVALID(cmStartTime) || CMTIME_IS_INVALID(cmDuration)) {
