@@ -104,7 +104,7 @@
 }
 
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
-+ (double)secondsFromTempo:(int)tempo withBars:(double)duration {
++ (double)secondsFromTempo:(int)tempo withBars:(int)duration {
     return 1.0 / (double)tempo * 60.0 * 4.0 * duration;
 }
 
@@ -139,26 +139,47 @@
         AVURLAssetPreferPreciseDurationAndTimingKey : @YES
     }];
     CMTimeRange timeRangeOfExport = [self timeRangeFromBars:startBar to:endBar withTempo:tempo];
-    
     NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songUrl withCafExtension:YES];
+    
+    AVMutableComposition *composition = [[AVMutableComposition alloc] init];
+    
     
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset2 presetName:AVAssetExportPresetPassthrough];
     [exportSession setOutputFileType:AVFileTypeCoreAudioFormat];
     [exportSession setOutputURL:exportedFileURL];
     [exportSession setTimeRange:timeRangeOfExport];
     [exportSession setMetadata:asset.metadata];
-    
+
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:exportedFileURL.absoluteString];
     if (exists) {
         NSLog(@"File already exists at path");
     }
-    
+    NSLog(@"Time range before export: start: %f with duration: %f", CMTimeGetSeconds(exportSession.timeRange.start), CMTimeGetSeconds(exportSession.timeRange.duration));
+
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         if (exportSession.status == AVAssetExportSessionStatusCompleted) {
             NSLog(@"Successfully exported audio to %@", exportedFileURL.absoluteString);
             CMTimeRange timeRange = exportSession.timeRange;
             NSLog(@"Time range: start: %f with duration: %f", CMTimeGetSeconds(timeRange.start), CMTimeGetSeconds(timeRange.duration));
-            exportedFileCompletion(YES, exportedFileURL);
+            
+            // Export again, you're not precise enough bitch
+            AVURLAsset *asset3 = [[AVURLAsset alloc] initWithURL:exportedFileURL options:@{
+                AVURLAssetPreferPreciseDurationAndTimingKey : @YES
+            }];
+            AVAssetExportSession *exportSession1 = [AVAssetExportSession exportSessionWithAsset:asset3 presetName:AVAssetExportPresetPassthrough];
+            [exportSession1 setOutputFileType:AVFileTypeCoreAudioFormat];
+            NSURL *exportedFileURL1 = [BLPBeatModel uniqueURLFromExistingSongURL:exportedFileURL withCafExtension:YES];
+
+            [exportSession1 setOutputURL:exportedFileURL1];
+            NSLog(@"Time range before second export: start: %f with duration: %f", CMTimeGetSeconds(exportSession.timeRange.start), CMTimeGetSeconds(exportSession.timeRange.duration));
+            [exportSession1 setTimeRange:exportSession.timeRange];
+            [exportSession1 setMetadata:asset.metadata];
+            [exportSession1 exportAsynchronouslyWithCompletionHandler:^{
+                if (exportSession1.status == AVAssetExportSessionStatusCompleted) {
+                    NSLog(@"Successfully exported audio a second time to %@", exportedFileURL.absoluteString);
+                    exportedFileCompletion(YES, exportedFileURL);
+                }
+            }];
         } else if (exportSession.status == AVAssetExportSessionStatusFailed) {
             NSLog(@"Failed to export audio to %@, error: %@", exportedFileURL.absoluteString, exportSession.error);
             exportedFileCompletion(NO, nil);

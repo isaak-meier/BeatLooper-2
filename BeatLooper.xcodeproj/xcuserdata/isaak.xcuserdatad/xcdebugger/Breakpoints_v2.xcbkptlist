@@ -94,8 +94,8 @@
             filePath = "BeatLooper/Models/BLPBeatModel.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "+exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:"
             landmarkType = "7">
             <Locations>
@@ -128,6 +128,54 @@
                   startingLineNumber = "152"
                   endingLineNumber = "152"
                   offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9B7FDCBD-7F0A-46B3-8E3B-A26B2874139F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/Models/BLPBeatModel.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "+exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9B7FDCBD-7F0A-46B3-8E3B-A26B2874139F - 297fc9f18e5f8f05"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[BLPBeatModel exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:]"
+                  moduleName = "BeatLooper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPBeatModel.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "344">
+               </Location>
+               <Location
+                  uuid = "9B7FDCBD-7F0A-46B3-8E3B-A26B2874139F - a46f9a4338fbedfd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[BLPBeatModel exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:]"
+                  moduleName = "BeatLooperTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPBeatModel.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "344">
                </Location>
             </Locations>
          </BreakpointContent>

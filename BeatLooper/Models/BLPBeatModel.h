@@ -11,6 +11,7 @@
 #import "Beat+CoreDataClass.h"
 #import <AVFoundation/AVAsset.h>
 #import <AVFoundation/AVAssetExportSession.h>
+#import <AVFoundation/AVComposition.h>
 #import <CoreMedia/CMTimeRange.h>
 
 NS_ASSUME_NONNULL_BEGIN

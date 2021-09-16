@@ -228,7 +228,7 @@
 
 
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
-- (double)secondsFromTempoWithBars:(double)duration {
+- (double)secondsFromTempoWithBars:(int)duration {
     return 1.0 / (double)self.tempo * 60.0 * 4.0 * duration;
 }
 
