@@ -1,5 +1,5 @@
 //
-//  BLPModelBeatLooperTests.m
+//  BLPModelTimeRangeTests.m
 //  BeatLooperTests
 //
 //  Created by Isaak Meier on 9/11/21.
@@ -9,15 +9,14 @@
 #import "BLPBeatModel.h"
 #import <Foundation/Foundation.h>
 
-@interface BLPModelBeatLooperTests : XCTestCase
+@interface BLPModelTimeRangeTests : XCTestCase
 @end
 
-@interface BLPModelBeatLooperTests ()
+@interface BLPModelTimeRangeTests ()
 @property BLPBeatModel *model;
-
 @end
 
-@implementation BLPModelBeatLooperTests
+@implementation BLPModelTimeRangeTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -65,6 +64,25 @@
     XCTAssertEqual(durationComparison, 0);
 }
 
+- (void)testMakeTimeRangeFromDifferentBars {
+    int startBar = 8;
+    int endBar = 12;
+    int tempo = 140;
+    
+    CMTimeRange fourBarsInMiddle = [BLPBeatModel timeRangeFromBars:startBar to:endBar withTempo:tempo];
+    
+    CMTimeRange expectedRange = CMTimeRangeMake(CMTimeMake(0, 10000000), CMTimeMake(0, 10000000));
+    
+    NSLog(@"Time duration: %f expected duration %f", CMTimeGetSeconds(fourBarsInMiddle.duration), CMTimeGetSeconds(expectedRange.duration));
+    NSLog(@"Time start: %f expected start: %f", CMTimeGetSeconds(fourBarsInMiddle.start), CMTimeGetSeconds(expectedRange.start));
+    
+    int startComparison = CMTimeCompare(fourBarsInMiddle.start, expectedRange.start);
+    int durationComparison = CMTimeCompare(fourBarsInMiddle.duration, expectedRange.duration);
+
+    XCTAssertEqual(startComparison, 0);
+    XCTAssertEqual(durationComparison, 0);
+}
+
 - (void)testMakeTimeRangeFromBarsNegative {
     // negative case
     int startBar = 0;
@@ -72,6 +90,7 @@
     int tempo = 100;
     
     CMTimeRange zeroBarsAt100 = [BLPBeatModel timeRangeFromBars:startBar to:endBar withTempo:tempo];
+    // we expect potential negative time ranges to be zero
     CMTimeRange expectedRange = CMTimeRangeMake(CMTimeMake(0, 10000000), CMTimeMake(0, 10000000));
     
     int startComparison = CMTimeCompare(zeroBarsAt100.start, expectedRange.start);
@@ -90,6 +109,8 @@
     
     XCTAssertEqual(startComparison, 0);
     XCTAssertEqual(durationComparison, 0);
+    
+    //TODO: test negative tempo
 }
 
 @end

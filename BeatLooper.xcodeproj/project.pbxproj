@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		EA93D91326A931C700B5F4F3 /* BLPAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */; };
-		EAA1051C26ED8A4B0052CF24 /* BLPModelBeatLooperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelBeatLooperTests.m */; };
+		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
 		EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
+		EAA1052126F065620052CF24 /* BLPModelFileExportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */; };
 		EAA3FA4F264B06AB008FFF92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
 		EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB5ECA32644A89300C4D535 /* PlayerViewController.m */; };
 		EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDB26176072006C9E87 /* AppDelegate.m */; };
@@ -49,7 +50,8 @@
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EA93D91126A931A500B5F4F3 /* BLPAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPAudioEngine.h; sourceTree = "<group>"; };
 		EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPAudioEngine.m; sourceTree = "<group>"; };
-		EAA1051B26ED8A4B0052CF24 /* BLPModelBeatLooperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelBeatLooperTests.m; sourceTree = "<group>"; };
+		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
+		EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelFileExportTests.m; sourceTree = "<group>"; };
 		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		EAB5ECA32644A89300C4D535 /* PlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		EAC4ECD726176072006C9E87 /* BeatLooper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatLooper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +146,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		EAA1051F26F064A50052CF24 /* ModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */,
+				EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */,
+			);
+			path = ModelTests;
+			sourceTree = "<group>";
+		};
 		EAC4ECCE26176072006C9E87 = {
 			isa = PBXGroup;
 			children = (
@@ -189,7 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				EAC4ECF626176072006C9E87 /* BeatLooperTests.m */,
-				EAA1051B26ED8A4B0052CF24 /* BLPModelBeatLooperTests.m */,
+				EAA1051F26F064A50052CF24 /* ModelTests */,
 				EAC4ECF826176072006C9E87 /* Info.plist */,
 			);
 			path = BeatLooperTests;
@@ -350,9 +361,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAA1052126F065620052CF24 /* BLPModelFileExportTests.m in Sources */,
 				EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */,
 				EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */,
-				EAA1051C26ED8A4B0052CF24 /* BLPModelBeatLooperTests.m in Sources */,
+				EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */,
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,6 +567,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooperTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -574,6 +587,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooperTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -592,6 +606,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooperUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -609,6 +624,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooperUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

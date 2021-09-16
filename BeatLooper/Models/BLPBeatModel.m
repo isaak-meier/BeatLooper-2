@@ -133,18 +133,31 @@
 + (void)exportClippedAudioFromSongURL:(NSURL *)songUrl withTempo:(int)tempo startingAtTimeInBars:(int)startBar endingAtTimeInBars:(int)endBar withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion {
     
     AVAsset *asset = [AVAsset assetWithURL:songUrl];
+//    NSMutableDictionary *dic = [NSMutableDictionary new];
+//    dic[AVURLAssetPreferPreciseDurationAndTimingKey] = YES;
+    AVURLAsset *asset2 = [[AVURLAsset alloc] initWithURL:songUrl options:@{
+        AVURLAssetPreferPreciseDurationAndTimingKey : @YES
+    }];
     CMTimeRange timeRangeOfExport = [self timeRangeFromBars:startBar to:endBar withTempo:tempo];
+    
     NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songUrl withCafExtension:YES];
     
-    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetPassthrough];
+    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset2 presetName:AVAssetExportPresetPassthrough];
     [exportSession setOutputFileType:AVFileTypeCoreAudioFormat];
     [exportSession setOutputURL:exportedFileURL];
     [exportSession setTimeRange:timeRangeOfExport];
     [exportSession setMetadata:asset.metadata];
     
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:exportedFileURL.absoluteString];
+    if (exists) {
+        NSLog(@"File already exists at path");
+    }
+    
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         if (exportSession.status == AVAssetExportSessionStatusCompleted) {
             NSLog(@"Successfully exported audio to %@", exportedFileURL.absoluteString);
+            CMTimeRange timeRange = exportSession.timeRange;
+            NSLog(@"Time range: start: %f with duration: %f", CMTimeGetSeconds(timeRange.start), CMTimeGetSeconds(timeRange.duration));
             exportedFileCompletion(YES, exportedFileURL);
         } else if (exportSession.status == AVAssetExportSessionStatusFailed) {
             NSLog(@"Failed to export audio to %@, error: %@", exportedFileURL.absoluteString, exportSession.error);

@@ -56,7 +56,7 @@
     [self setupVisibleText];
 //    [self configureAudioSession];
     
-    [self setTempo:148];
+    [self setTempo:100];
 //    [self playOrPauseSong:nil];
 }
 
@@ -138,14 +138,17 @@
     __block BLPAudioEngine *engine;
     void (^completionHandler)(BOOL, NSURL *) = ^void(BOOL success, NSURL *loopFileUrl) {
         if (success) {
-            engine = [[BLPAudioEngine alloc] initWithSongUrl:songUrl];
+            engine = [[BLPAudioEngine alloc] initWithSongUrl:loopFileUrl];
             [engine playLoop];
             self.audioEngine = engine;
         } else {
             NSLog(@"Export failed.");
         }
     };
-    [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:0 endingAtTimeInBars:4 withCompletion:completionHandler];
+    int startBar = 8;
+    int endBar = 12;
+    self.tempo = 140;
+    [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:startBar endingAtTimeInBars:endBar withCompletion:completionHandler];
     
     
 //    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
