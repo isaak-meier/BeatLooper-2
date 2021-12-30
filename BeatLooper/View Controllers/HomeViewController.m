@@ -10,7 +10,7 @@
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
-@property AVAudioPlayer *player;
+// @property AVAudioPlayer *player;
 @property (strong, nonatomic) NSArray *songs;
 @property (strong, nonatomic) NSArray *content;
 
@@ -29,13 +29,13 @@
     return self;
 }
 
-- (IBAction)addSong:(id)sender {
-    if ([self player].playing) {
-        [[self player] stop];
-    } else {
-        [[self player] play];
-    }
-}
+//- (IBAction)addSong:(id)sender {
+//    if ([self player].playing) {
+//        [[self player] stop];
+//    } else {
+//        [[self player] play];
+//    }
+//}
 
 
 - (void)refreshSongsAndReloadData:(BOOL)shouldReloadData {
@@ -49,8 +49,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self loadBundle];
     
+    // DEBUG ONLY: Clear out songs, and then add our test song
+    [self.model deleteAllEntities];
+    [self addTestSong];
+
     [self songTableView].dataSource = self;
     [self songTableView].delegate = self;
     [[self songTableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
@@ -58,16 +61,18 @@
     [self refreshSongsAndReloadData:YES];
 }
 
-- (void)loadBundle {
+- (void)addTestSong {
     NSBundle *main = [NSBundle mainBundle];
-    NSString *resourceURL = [main pathForResource:@"dunevibes" ofType:@"mp3"];
-    [self initAudioPlayer:resourceURL];
-//    [self.model saveSongFromURL:[[NSURL alloc] initWithString:resourceURL]];
+    NSString *resourceURL1 = [main pathForResource:@"forgetMe" ofType:@"mp3"];
+    NSString *resourceURL2 = [main pathForResource:@"swish" ofType:@"wav"];
+    [self.model saveSongWith:@"forgetMe" url:resourceURL1];
+    [self.model saveSongWith:@"swish" url:resourceURL2];
+
 }
 
 - (void)initAudioPlayer:(NSString*)resourceURL {
     NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
-    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil]];
+//    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil]];
 }
 
 

@@ -8,6 +8,8 @@
 #import "PlayerViewController.h"
 #import "BLPBeatModel.h"
 #import "BLPAudioEngine.h"
+@import AVFAudio.AVAudioSession;
+@import AVFoundation;
 
 @interface PlayerViewController ()
 
@@ -21,15 +23,17 @@
 @property BLPBeatModel *model;
 @property BLPAudioEngine *audioEngine;
 @property NSManagedObjectID *songID;
-@property AVAudioPlayer *player;
+@property AVQueuePlayer *player;
+@property AVPlayerItem *playerItem;
+@property AVPlayerLooper *beatLooper;
 @property NSOperationQueue *loopOperationQueue;
 @property NSProgress *progress;
 @property NSTimer *timer;
 @property int tempo;
 
 - (void)loadPlayer;
-- (void)setupProgressBar;
-- (void)beginIncrementingProgress;
+//- (void)setupProgressBar;
+//- (void)beginIncrementingProgress;
 
 @end
 
@@ -50,13 +54,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-//    [self loadPlayer];
-    [self setupProgressBar];
+    [self loadPlayer];
+//    [self setupProgressBar];
     
     [self setupVisibleText];
 //    [self configureAudioSession];
     
-    [self setTempo:100];
+    [self setTempo:150];
 //    [self playOrPauseSong:nil];
 }
 
@@ -78,15 +82,18 @@
 }
 
 - (void)loadPlayer {
-    NSURL *resourceUrl = [[self model] getURLForCachedSong:[self songID]];
+    NSURL *songURL = [[self model] getURLForCachedSong:[self songID]];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL exists = [fileManager fileExistsAtPath:resourceUrl.path];
+    BOOL exists = [fileManager fileExistsAtPath:songURL.path];
 
     if (!exists) {
         [self handleExistenceError];
     } else {
         NSError *error;
-        [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:resourceUrl error:&error]];
+        AVAsset *songAsset = [AVAsset assetWithURL:songURL];
+        NSLog(@"Provies precise timing?-> %d", songAsset.providesPreciseDurationAndTiming);
+        self.playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+        self.player = [AVQueuePlayer playerWithPlayerItem:self.playerItem];
         if (error) {
             NSLog(@"Error creating AVAudioPlayer: %@", error);
         }
@@ -110,30 +117,31 @@
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
-- (void)setupProgressBar {
-    NSProgress *progress = [[NSProgress alloc] init];
-    NSTimeInterval songLength = (NSInteger)([self.player duration] * 100);
-    [progress setTotalUnitCount:songLength];
-    [self setProgress:progress];
-    [self.songProgressBar setObservedProgress:progress];
-}
+//- (void)setupProgressBar {
+//    NSProgress *progress = [[NSProgress alloc] init];
+//    NSTimeInterval songLength = (NSInteger)([self.player duration] * 100);
+//    [progress setTotalUnitCount:songLength];
+//    [self setProgress:progress];
+//    [self.songProgressBar setObservedProgress:progress];
+//}
 
 - (IBAction)playOrPauseSong:(id)sender {
-    if ([self player].playing) {
-        [[self player] stop];
-        [self.timer invalidate];
-        [self animateButtonToPlayIcon:YES];
-
-    } else {
-        [[self player] play];
-        NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(beginIncrementingProgress) userInfo:nil repeats:YES];
-        [self setTimer:progressBarRefreshTimer];
-        [self animateButtonToPlayIcon:NO];
-    }
+    [self.player play];
+//    if (self.player.status)
+//    if ([self player].playing) {
+//        [[self player] stop];
+//        [self.timer invalidate];
+//        [self animateButtonToPlayIcon:YES];
+//
+//    } else {
+//        [[self player] play];
+//        NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(beginIncrementingProgress) userInfo:nil repeats:YES];
+//        [self setTimer:progressBarRefreshTimer];
+//        [self animateButtonToPlayIcon:NO];
+//    }
 }
 
-- (IBAction)loopButtonTapped:(id)sender {
-    [self.player stop];
+- (void)initAudioEngine {
     NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
     __block BLPAudioEngine *engine;
     void (^completionHandler)(BOOL, NSURL *) = ^void(BOOL success, NSURL *loopFileUrl) {
@@ -149,7 +157,14 @@
     int endBar = 12;
     self.tempo = 140;
     [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:startBar endingAtTimeInBars:endBar withCompletion:completionHandler];
+}
+
+- (IBAction)loopButtonTapped:(id)sender {
     
+    CMTimeRange timeRangeOfLoop = [BLPBeatModel timeRangeFromBars:8 to:12 withTempo:143];
+    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.playerItem timeRange:timeRangeOfLoop];
+    self.beatLooper = beatLooper;
+    [self.player play];
     
 //    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
 //        if (self.loopOperationQueue) { // assert operation queue exists
@@ -168,36 +183,36 @@
 
 }
 
-- (void)addLoopingOperationToQueue {
-    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-    __weak PlayerViewController *weakSelf = self;
-    
-    [operationQueue addOperationWithBlock:^{
-        PlayerViewController *strongSelf = weakSelf;
-        AVAudioPlayer *player = strongSelf.player;
-        
-        NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:4];
-        NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
-        while (player.isPlaying) {
-            if (player.currentTime < timeToPlay) {
-                [player prepareToPlay]; // move if slow
-                continue;
-            } else {
-                [player setCurrentTime:0];
-                [player play];
-            }
-        }
-    }];
-    
-    [self setLoopOperationQueue:operationQueue];
-}
+//- (void)addLoopingOperationToQueue {
+//    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+//    __weak PlayerViewController *weakSelf = self;
+//
+//    [operationQueue addOperationWithBlock:^{
+//        PlayerViewController *strongSelf = weakSelf;
+//        AVAudioPlayer *player = strongSelf.player;
+//
+//        NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:4];
+//        NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
+//        while (player.isPlaying) {
+//            if (player.currentTime < timeToPlay) {
+//                [player prepareToPlay]; // move if slow
+//                continue;
+//            } else {
+//                [player setCurrentTime:0];
+//                [player play];
+//            }
+//        }
+//    }];
+//
+//    [self setLoopOperationQueue:operationQueue];
+//}
 
-- (void)beginIncrementingProgress {
-    if ([self.player isPlaying]) {
-        NSTimeInterval currentTime = (NSInteger)([self.player currentTime] * 100);
-        [self.progress setCompletedUnitCount:currentTime];
-    }
-}
+//- (void)beginIncrementingProgress {
+//    if ([self.player isPlaying]) {
+//        NSTimeInterval currentTime = (NSInteger)([self.player currentTime] * 100);
+//        [self.progress setCompletedUnitCount:currentTime];
+//    }
+//}
 
 - (void)animateButtonToPlayIcon:(BOOL)shouldAnimateToPlayIcon {
     [UIView transitionWithView:self.playButton

@@ -7,7 +7,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <AVFoundation/AVAudioPlayer.h>
+#import <AVFoundation/AVPlayer.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 

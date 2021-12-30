@@ -133,15 +133,13 @@
 + (void)exportClippedAudioFromSongURL:(NSURL *)songUrl withTempo:(int)tempo startingAtTimeInBars:(int)startBar endingAtTimeInBars:(int)endBar withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion {
     
     AVAsset *asset = [AVAsset assetWithURL:songUrl];
-//    NSMutableDictionary *dic = [NSMutableDictionary new];
-//    dic[AVURLAssetPreferPreciseDurationAndTimingKey] = YES;
+
     AVURLAsset *asset2 = [[AVURLAsset alloc] initWithURL:songUrl options:@{
         AVURLAssetPreferPreciseDurationAndTimingKey : @YES
     }];
     CMTimeRange timeRangeOfExport = [self timeRangeFromBars:startBar to:endBar withTempo:tempo];
     NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songUrl withCafExtension:YES];
     
-    AVMutableComposition *composition = [[AVMutableComposition alloc] init];
     
     
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset2 presetName:AVAssetExportPresetPassthrough];

@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "BLPBeatModel.h"
 #import "BLPCoordinator.h"
-#import <AVFoundation/AVAudioPlayer.h>
+@import AVFoundation.AVPlayerLooper;
 #import "Beat+CoreDataClass.h"
 @class BLPCoordinator;
 
