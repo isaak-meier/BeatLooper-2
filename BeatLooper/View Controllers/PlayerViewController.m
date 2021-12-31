@@ -15,10 +15,13 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressBar;
+
 @property (weak, nonatomic) IBOutlet UITextField *tempoTextField;
 @property (weak, nonatomic) IBOutlet UITextField *startBarTextField;
 @property (weak, nonatomic) IBOutlet UITextField *endBarTextField;
+
 @property (weak, nonatomic) IBOutlet UIButton *loopButton;
+@property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
 
 @property BLPBeatModel *model;
 @property BLPAudioEngine *audioEngine;
@@ -34,7 +37,7 @@
 
 - (void)loadPlayer;
 - (void)setupProgressBar;
-- (void)beginIncrementingProgress;
+- (void)incrementProgress;
 
 @end
 
@@ -124,24 +127,15 @@
         [self.player play];
         [self animateButtonToPlayIcon:NO];
         self.isPlaying = YES;
-        [self setupProgressBar];
-
+        if (!self.progress) {
+            // need to set up progress bar after play, but only once
+            [self setupProgressBar];
+        }
     } else {
         [self.player pause];
         [self animateButtonToPlayIcon:YES];
         self.isPlaying = NO;
     }
-    
-//    if (self.player.status)
-//    if ([self player].playing) {
-//        [[self player] stop];
-//        [self.timer invalidate];
-//
-//    } else {
-//        [[self player] play];
-
-//        [self animateButtonToPlayIcon:NO];
-//    }
 }
 
 - (void)initAudioEngine {
@@ -186,7 +180,6 @@
 
 }
 
-
 - (void)setupProgressBar {
     NSProgress *progress = [[NSProgress alloc] init];
     CMTime songDuration = [self.player.currentItem duration];
@@ -225,9 +218,7 @@
 
 - (void)setupVisibleText {
     Beat *song = [self.model getSongForUniqueID:self.songID];
-    [self setTitle:song.title];
-    
-    [self.tempoTextField setDelegate:self];
+    [self.songTitleLabel setText:song.title];    
 }
 
 //- (void)viewWillDisappear:(BOOL)animated {

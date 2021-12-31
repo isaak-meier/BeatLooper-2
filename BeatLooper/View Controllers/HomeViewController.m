@@ -80,19 +80,19 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [_songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
-    Beat *beat = _songs[indexPath.row];
+    Beat *beat = self.songs[indexPath.row];
     cell.textLabel.text = beat.title;
     return cell;
     
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_songs count];
+    return [self.songs count];
 }
 
 // MARK: UITableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Beat *selectedBeat = _songs[indexPath.row];
+    Beat *selectedBeat = self.songs[indexPath.row];
     NSManagedObjectID *beatID = selectedBeat.objectID;
     [[self coordinator] songTapped:beatID];
     [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -100,7 +100,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Beat *selectedBeat = _songs[indexPath.row];
+        Beat *selectedBeat = self.songs[indexPath.row];
         [self.model deleteSong:selectedBeat];
         [self refreshSongsAndReloadData:NO];
         NSArray *indexPaths = @[indexPath];
