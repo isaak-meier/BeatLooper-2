@@ -15,11 +15,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressBar;
-
-@property (weak, nonatomic) IBOutlet UITextField *tempoTextField;
-@property (weak, nonatomic) IBOutlet UITextField *startBarTextField;
-@property (weak, nonatomic) IBOutlet UITextField *endBarTextField;
-
 @property (weak, nonatomic) IBOutlet UIButton *loopButton;
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
 
@@ -43,13 +38,13 @@
 
 @implementation PlayerViewController
 
-- (id)initWithSongID:(id)songID {
+- (id)initWithSongID:(id)songID coordinator:coordinator {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"PlayerViewController"])) {
         // assign properties
         _model = [[BLPBeatModel alloc] init];
         _songID = songID;
-
+        _coordinator = coordinator;
     }
     return self;
 }
@@ -158,10 +153,11 @@
 
 - (IBAction)loopButtonTapped:(id)sender {
     
-    CMTimeRange timeRangeOfLoop = [BLPBeatModel timeRangeFromBars:8 to:12 withTempo:143];
-    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.playerItem timeRange:timeRangeOfLoop];
-    self.beatLooper = beatLooper;
-    [self.player play];
+    [self.coordinator openLooperViewForSong:self.songID];
+//    CMTimeRange timeRangeOfLoop = [BLPBeatModel timeRangeFromBars:8 to:12 withTempo:143];
+//    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.playerItem timeRange:timeRangeOfLoop];
+//    self.beatLooper = beatLooper;
+//    [self.player play];
     
 //    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
 //        if (self.loopOperationQueue) { // assert operation queue exists
@@ -230,17 +226,6 @@
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
 - (double)secondsFromTempoWithBars:(int)duration {
     return 1.0 / (double)self.tempo * 60.0 * 4.0 * duration;
-}
-
-// MARK: UITextFieldDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.tempoTextField) {
-        [textField resignFirstResponder];
-        NSString *tempoStr = [textField text];
-        [self setTempo:[tempoStr intValue]];
-        return NO;
-    }
-    return YES;
 }
 
 /*

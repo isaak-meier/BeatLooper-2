@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
 #import "PlayerViewController.h"
+#import "LooperViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)start; // kickoff application
 - (void)songAdded;
 - (void)songTapped:(NSManagedObjectID *)songID;
+- (void)openLooperViewForSong:(NSManagedObjectID *)songID;
 
 @end
 

@@ -29,6 +29,7 @@
 		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
 		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAFE250E277E59040054E069 /* swish.wav in Resources */ = {isa = PBXBuildFile; fileRef = EAFE250D277E59040054E069 /* swish.wav */; };
+		EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE250F277EA7A20054E069 /* LooperViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,8 @@
 		EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPBeatModel.h; sourceTree = "<group>"; };
 		EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPBeatModel.m; sourceTree = "<group>"; };
 		EAFE250D277E59040054E069 /* swish.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = swish.wav; path = ../../../../../Downloads/swish.wav; sourceTree = "<group>"; };
+		EAFE250F277EA7A20054E069 /* LooperViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LooperViewController.m; sourceTree = "<group>"; };
+		EAFE2511277EA7B30054E069 /* LooperViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LooperViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				EAC4ECE126176072006C9E87 /* HomeViewController.m */,
 				EAB5ECA22644A89300C4D535 /* PlayerViewController.h */,
 				EAB5ECA32644A89300C4D535 /* PlayerViewController.m */,
+				EAFE2511277EA7B30054E069 /* LooperViewController.h */,
+				EAFE250F277EA7A20054E069 /* LooperViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -360,6 +365,7 @@
 				EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */,
 				EAC4ECED26176072006C9E87 /* main.m in Sources */,
 				EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */,
+				EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */,
 				EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */,
 				EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */,
 			);

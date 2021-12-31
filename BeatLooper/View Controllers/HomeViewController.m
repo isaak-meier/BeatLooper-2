@@ -10,7 +10,6 @@
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
-// @property AVAudioPlayer *player;
 @property (strong, nonatomic) NSArray *songs;
 @property (strong, nonatomic) NSArray *content;
 
@@ -28,15 +27,6 @@
     }
     return self;
 }
-
-//- (IBAction)addSong:(id)sender {
-//    if ([self player].playing) {
-//        [[self player] stop];
-//    } else {
-//        [[self player] play];
-//    }
-//}
-
 
 - (void)refreshSongsAndReloadData:(BOOL)shouldReloadData {
     NSArray *brandNewSongs = [[self model] getAllSongs];
@@ -69,12 +59,6 @@
     [self.model saveSongWith:@"swish" url:resourceURL2];
 
 }
-
-- (void)initAudioPlayer:(NSString*)resourceURL {
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:resourceURL];
-//    [self setPlayer:[[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil]];
-}
-
 
 // MARK: UITableView Datasource
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {

@@ -10,6 +10,7 @@
 @interface BLPCoordinator ()
 @property UIWindow *window;
 @property UINavigationController *navigationController;
+@property PlayerViewController *playerController;
 
 @end
 
@@ -31,7 +32,6 @@
     // Initialize homeViewController from storyboard
     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
     [self.navigationController pushViewController:homeViewController animated:NO];
-//    [[[BLPBeatModel alloc] init] deleteAllEntities];
     [[self window] makeKeyAndVisible];
 }
 
@@ -42,8 +42,18 @@
 }
 
 - (void)songTapped:(NSManagedObjectID *)songID {
-    PlayerViewController *playerViewController = [[PlayerViewController alloc] initWithSongID:songID];
-    [[self navigationController] pushViewController:playerViewController animated:YES];
+    if (!self.playerController) {
+        PlayerViewController *playerViewController = [[PlayerViewController alloc] initWithSongID:songID coordinator:self];
+        self.playerController = playerViewController;
+    }
+    // TODO change song if different song & controller alraedy exists
+    [[self navigationController] pushViewController:self.playerController animated:YES];
+}
+
+- (void)openLooperViewForSong:(NSManagedObjectID *)songID {
+    LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID];
+    looperController.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self.navigationController presentViewController:looperController animated:YES completion:nil];
 }
 
 @end

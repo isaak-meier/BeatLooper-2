@@ -8,13 +8,15 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <AVFoundation/AVPlayer.h>
-
+#import "BLPCoordinator.h"
+@class BLPCoordinator;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayerViewController : UIViewController <UITextFieldDelegate>
 
-- (id)initWithSongID:(NSManagedObjectID *)songID;
+@property (weak) BLPCoordinator *coordinator;
+- (id)initWithSongID:(NSManagedObjectID *)songID coordinator:(BLPCoordinator *)coordinator;
 
 @end
 
