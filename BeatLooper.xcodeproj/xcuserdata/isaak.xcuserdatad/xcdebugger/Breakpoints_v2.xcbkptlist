@@ -152,14 +152,14 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "DEDFE4D8-6B6C-4964-8978-4AF54F5FAAD8"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
             landmarkName = "-incrementProgress"
             landmarkType = "7">
          </BreakpointContent>
@@ -167,16 +167,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "03BFDAFB-F662-41CA-896C-22E6B59A12BA"
+            uuid = "70EA994D-FA1B-40F9-A64A-AEF31C36EEAD"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BeatLooper/View Controllers/PlayerViewController.m"
+            filePath = "BeatLooper/BLPCoordinator.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
-            landmarkName = "-setupProgressBar"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-dismissLooperViewAndBeginLoopingTimeRange:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B631AA4F-FE9C-499F-9628-9F043447AF89"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/View Controllers/LooperViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "-handleTimeRangeError"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

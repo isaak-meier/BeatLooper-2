@@ -22,13 +22,14 @@
 @property BLPAudioEngine *audioEngine;
 @property NSManagedObjectID *songID;
 @property AVQueuePlayer *player;
-@property AVPlayerItem *playerItem;
+@property AVPlayerItem *currentPlayerItem;
 @property AVPlayerLooper *beatLooper;
 @property NSOperationQueue *loopOperationQueue;
 @property NSProgress *progress;
 @property NSTimer *timer;
 @property int tempo;
 @property BOOL isPlaying;
+@property BOOL isLooping;
 
 - (void)loadPlayer;
 - (void)setupProgressBar;
@@ -91,8 +92,8 @@
         NSError *error;
         AVAsset *songAsset = [AVAsset assetWithURL:songURL];
         NSLog(@"Provies precise timing?-> %d", songAsset.providesPreciseDurationAndTiming);
-        self.playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
-        self.player = [AVQueuePlayer playerWithPlayerItem:self.playerItem];
+        self.currentPlayerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+        self.player = [AVQueuePlayer playerWithPlayerItem:self.currentPlayerItem];
         if (error) {
             NSLog(@"Error creating AVAudioPlayer: %@", error);
         }
@@ -152,28 +153,34 @@
 }
 
 - (IBAction)loopButtonTapped:(id)sender {
-    
     [self.coordinator openLooperViewForSong:self.songID];
-//    CMTimeRange timeRangeOfLoop = [BLPBeatModel timeRangeFromBars:8 to:12 withTempo:143];
-//    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.playerItem timeRange:timeRangeOfLoop];
-//    self.beatLooper = beatLooper;
-//    [self.player play];
-    
-//    if ([self.loopButton.currentTitle isEqual: @"Looping"]) {
-//        if (self.loopOperationQueue) { // assert operation queue exists
-//            [self.loopOperationQueue cancelAllOperations];
-//        }
-//        [self.loopButton setTitle:@"Loop" forState:UIControlStateNormal];
-//
-//    } else {
-//        [self.player setCurrentTime:0];
-//        [self.player play];
-//
-//        [self.loopButton setTitle:@"Looping" forState:UIControlStateNormal];
-//        [self.loopButton sizeToFit];
-//        [self addLoopingOperationToQueue];
-//    }
+}
 
+- (void)startLoopWithTimeRange:(CMTimeRange)timeRange {
+    if (self.beatLooper) {
+        self.beatLooper = nil;
+    }
+    if (self.isPlaying) {
+        [self.player pause];
+    }
+    
+    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.currentPlayerItem timeRange:timeRange];
+    self.beatLooper = beatLooper;
+    if (!self.isPlaying) {
+        [self playOrPauseSong:nil];
+    } else {
+        [self playOrPauseSong:nil];
+        [self playOrPauseSong:nil];
+    }
+}
+
+- (void)stopLooping {
+    if (self.beatLooper) {
+        self.beatLooper = nil;
+    }
+    if (self.isPlaying) {
+        [self playOrPauseSong:nil];
+    }
 }
 
 - (void)setupProgressBar {
@@ -185,7 +192,7 @@
     [self.songProgressBar setObservedProgress:progress];
     
     // set refresh timer so progress is updated
-    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(incrementProgress) userInfo:nil repeats:YES];
+    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(incrementProgress) userInfo:nil repeats:YES];
     self.timer = progressBarRefreshTimer;
 }
 
@@ -199,7 +206,7 @@
 
 - (void)animateButtonToPlayIcon:(BOOL)shouldAnimateToPlayIcon {
     [UIView transitionWithView:self.playButton
-                      duration:0.2
+                      duration:0.1
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
         if (shouldAnimateToPlayIcon) {
@@ -216,11 +223,6 @@
     Beat *song = [self.model getSongForUniqueID:self.songID];
     [self.songTitleLabel setText:song.title];    
 }
-
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [self.player stop];
-//    [[AVAudioSession sharedInstance] setActive:NO error:nil];
-//}
 
 
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.

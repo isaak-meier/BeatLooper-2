@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)songAdded;
 - (void)songTapped:(NSManagedObjectID *)songID;
 - (void)openLooperViewForSong:(NSManagedObjectID *)songID;
+- (void)dismissLooperViewAndBeginLoopingTimeRange:(CMTimeRange)timeRange;
+- (void)dismissLooperViewAndStopLoop;
 
 @end
 

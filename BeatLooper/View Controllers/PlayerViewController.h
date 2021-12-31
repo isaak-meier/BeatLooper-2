@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak) BLPCoordinator *coordinator;
 - (id)initWithSongID:(NSManagedObjectID *)songID coordinator:(BLPCoordinator *)coordinator;
+- (void)startLoopWithTimeRange:(CMTimeRange)timeRange;
+- (void)stopLooping;
 
 @end
 

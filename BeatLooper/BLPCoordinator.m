@@ -11,7 +11,7 @@
 @property UIWindow *window;
 @property UINavigationController *navigationController;
 @property PlayerViewController *playerController;
-
+@property LooperViewController *looperController;
 @end
 
 @implementation BLPCoordinator
@@ -46,14 +46,28 @@
         PlayerViewController *playerViewController = [[PlayerViewController alloc] initWithSongID:songID coordinator:self];
         self.playerController = playerViewController;
     }
-    // TODO change song if different song & controller alraedy exists
+    // TODO change song if different song & controller already exists
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }
 
 - (void)openLooperViewForSong:(NSManagedObjectID *)songID {
-    LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID];
-    looperController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.navigationController presentViewController:looperController animated:YES completion:nil];
+    if (!self.looperController) {
+        LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID];
+        looperController.modalPresentationStyle = UIModalPresentationPageSheet;
+        looperController.coordinator = self;
+        self.looperController = looperController; // retain a reference so the user can stop the loop
+    }
+    [self.navigationController presentViewController:self.looperController animated:YES completion:nil];
+}
+
+- (void)dismissLooperViewAndBeginLoopingTimeRange:(CMTimeRange)timeRange {
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.playerController startLoopWithTimeRange:timeRange];
+}
+
+- (void)dismissLooperViewAndStopLoop {
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.playerController stopLooping];
 }
 
 @end
