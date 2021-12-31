@@ -30,10 +30,11 @@
 @property NSProgress *progress;
 @property NSTimer *timer;
 @property int tempo;
+@property BOOL isPlaying;
 
 - (void)loadPlayer;
-//- (void)setupProgressBar;
-//- (void)beginIncrementingProgress;
+- (void)setupProgressBar;
+- (void)beginIncrementingProgress;
 
 @end
 
@@ -55,13 +56,13 @@
     // Do any additional setup after loading the view.
 
     [self loadPlayer];
-//    [self setupProgressBar];
     
     [self setupVisibleText];
 //    [self configureAudioSession];
     
     [self setTempo:150];
 //    [self playOrPauseSong:nil];
+
 }
 
 - (void)configureAudioSession {
@@ -117,26 +118,28 @@
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
-//- (void)setupProgressBar {
-//    NSProgress *progress = [[NSProgress alloc] init];
-//    NSTimeInterval songLength = (NSInteger)([self.player duration] * 100);
-//    [progress setTotalUnitCount:songLength];
-//    [self setProgress:progress];
-//    [self.songProgressBar setObservedProgress:progress];
-//}
 
 - (IBAction)playOrPauseSong:(id)sender {
-    [self.player play];
+    if (!self.isPlaying) {
+        [self.player play];
+        [self animateButtonToPlayIcon:NO];
+        self.isPlaying = YES;
+        [self setupProgressBar];
+
+    } else {
+        [self.player pause];
+        [self animateButtonToPlayIcon:YES];
+        self.isPlaying = NO;
+    }
+    
 //    if (self.player.status)
 //    if ([self player].playing) {
 //        [[self player] stop];
 //        [self.timer invalidate];
-//        [self animateButtonToPlayIcon:YES];
 //
 //    } else {
 //        [[self player] play];
-//        NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(beginIncrementingProgress) userInfo:nil repeats:YES];
-//        [self setTimer:progressBarRefreshTimer];
+
 //        [self animateButtonToPlayIcon:NO];
 //    }
 }
@@ -183,36 +186,27 @@
 
 }
 
-//- (void)addLoopingOperationToQueue {
-//    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-//    __weak PlayerViewController *weakSelf = self;
-//
-//    [operationQueue addOperationWithBlock:^{
-//        PlayerViewController *strongSelf = weakSelf;
-//        AVAudioPlayer *player = strongSelf.player;
-//
-//        NSTimeInterval timeToPlay = [self secondsFromTempoWithBars:4];
-//        NSLog(@"Duration: %f, time of 1 bar in theory: %f", [self.player duration], timeToPlay);
-//        while (player.isPlaying) {
-//            if (player.currentTime < timeToPlay) {
-//                [player prepareToPlay]; // move if slow
-//                continue;
-//            } else {
-//                [player setCurrentTime:0];
-//                [player play];
-//            }
-//        }
-//    }];
-//
-//    [self setLoopOperationQueue:operationQueue];
-//}
 
-//- (void)beginIncrementingProgress {
-//    if ([self.player isPlaying]) {
-//        NSTimeInterval currentTime = (NSInteger)([self.player currentTime] * 100);
-//        [self.progress setCompletedUnitCount:currentTime];
-//    }
-//}
+- (void)setupProgressBar {
+    NSProgress *progress = [[NSProgress alloc] init];
+    CMTime songDuration = [self.player.currentItem duration];
+    int durationInSeconds = (int)(songDuration.value / songDuration.timescale);
+    [progress setTotalUnitCount:durationInSeconds];
+    self.progress = progress;
+    [self.songProgressBar setObservedProgress:progress];
+    
+    // set refresh timer so progress is updated
+    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(incrementProgress) userInfo:nil repeats:YES];
+    self.timer = progressBarRefreshTimer;
+}
+
+- (void)incrementProgress {
+    if (self.isPlaying) {
+        CMTime currentTime = [self.player.currentItem currentTime];
+        int timeInSeconds = (int)(currentTime.value / currentTime.timescale);
+        [self.progress setCompletedUnitCount:timeInSeconds];
+    }
+}
 
 - (void)animateButtonToPlayIcon:(BOOL)shouldAnimateToPlayIcon {
     [UIView transitionWithView:self.playButton
@@ -220,9 +214,9 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:^{
         if (shouldAnimateToPlayIcon) {
-            [self.playButton setImage:[UIImage imageNamed:@"icons8-play (1)"] forState:UIControlStateNormal];
+            [self.playButton setImage:[UIImage imageNamed:@"icons8-play-button-100"] forState:UIControlStateNormal];
         } else {
-            [self.playButton setImage:[UIImage imageNamed:@"icons8-play (12)"] forState:UIControlStateNormal];
+            [self.playButton setImage:[UIImage imageNamed:@"icons8-pause-button-100"] forState:UIControlStateNormal];
         }
     }
     completion:nil];

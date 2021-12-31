@@ -146,38 +146,38 @@
             endingLineNumber = "139"
             landmarkName = "+exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "9B7FDCBD-7F0A-46B3-8E3B-A26B2874139F - 297fc9f18e5f8f05"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "+[BLPBeatModel exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:]"
-                  moduleName = "BeatLooper"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPBeatModel.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "142"
-                  endingLineNumber = "142"
-                  offsetFromSymbolStart = "344">
-               </Location>
-               <Location
-                  uuid = "9B7FDCBD-7F0A-46B3-8E3B-A26B2874139F - a46f9a4338fbedfd"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "+[BLPBeatModel exportClippedAudioFromSongURL:withTempo:startingAtTimeInBars:endingAtTimeInBars:withCompletion:]"
-                  moduleName = "BeatLooperTests"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPBeatModel.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "142"
-                  endingLineNumber = "142"
-                  offsetFromSymbolStart = "344">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DEDFE4D8-6B6C-4964-8978-4AF54F5FAAD8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/View Controllers/PlayerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "-incrementProgress"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "03BFDAFB-F662-41CA-896C-22E6B59A12BA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/View Controllers/PlayerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "-setupProgressBar"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
