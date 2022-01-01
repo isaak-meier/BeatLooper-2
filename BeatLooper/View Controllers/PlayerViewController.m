@@ -7,7 +7,6 @@
 
 #import "PlayerViewController.h"
 #import "BLPBeatModel.h"
-#import "BLPAudioEngine.h"
 @import AVFAudio.AVAudioSession;
 @import AVFoundation;
 
@@ -17,17 +16,16 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *songProgressBar;
 @property (weak, nonatomic) IBOutlet UIButton *loopButton;
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *playerStatusLabel;
+@property (weak, nonatomic) IBOutlet UITableView *queueTableView;
 
 @property BLPBeatModel *model;
-@property BLPAudioEngine *audioEngine;
-@property NSManagedObjectID *songID;
 @property AVQueuePlayer *player;
 @property AVPlayerItem *currentPlayerItem;
 @property AVPlayerLooper *beatLooper;
 @property NSOperationQueue *loopOperationQueue;
 @property NSProgress *progress;
 @property NSTimer *timer;
-@property int tempo;
 @property BOOL isPlaying;
 @property BOOL isLooping;
 
@@ -54,14 +52,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
+    self.queueTableView.delegate = self;
+    self.queueTableView.dataSource = self;
+    [self.queueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongQueueCell"];
+    [self.queueTableView setEditing:YES];
+    
     [self loadPlayer];
     
-    [self setupVisibleText];
 //    [self configureAudioSession];
     
-    [self setTempo:150];
 //    [self playOrPauseSong:nil];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self setupVisibleText];
 }
 
 - (void)configureAudioSession {
@@ -111,10 +116,11 @@
                                     style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * action) {
                                         //Handle your yes please button action here
+                                        [[self navigationController] popViewControllerAnimated:YES];
                                         return;
                                     }];
     [alert addAction:okButton];
-    [[self navigationController] popViewControllerAnimated:YES];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 
@@ -134,24 +140,6 @@
     }
 }
 
-- (void)initAudioEngine {
-    NSURL *songUrl = [[self model] getURLForCachedSong:[self songID]];
-    __block BLPAudioEngine *engine;
-    void (^completionHandler)(BOOL, NSURL *) = ^void(BOOL success, NSURL *loopFileUrl) {
-        if (success) {
-            engine = [[BLPAudioEngine alloc] initWithSongUrl:loopFileUrl];
-            [engine playLoop];
-            self.audioEngine = engine;
-        } else {
-            NSLog(@"Export failed.");
-        }
-    };
-    int startBar = 8;
-    int endBar = 12;
-    self.tempo = 140;
-    [BLPBeatModel exportClippedAudioFromSongURL:songUrl withTempo:self.tempo startingAtTimeInBars:startBar endingAtTimeInBars:endBar withCompletion:completionHandler];
-}
-
 - (IBAction)loopButtonTapped:(id)sender {
     [self.coordinator openLooperViewForSong:self.songID];
 }
@@ -160,8 +148,13 @@
     if (self.beatLooper) {
         self.beatLooper = nil;
     }
+    
     if (self.isPlaying) {
         [self.player pause];
+    }
+    
+    if (!self.player) {
+        [self loadPlayer];
     }
     
     AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.currentPlayerItem timeRange:timeRange];
@@ -177,6 +170,7 @@
 - (void)stopLooping {
     if (self.beatLooper) {
         self.beatLooper = nil;
+        self.isLooping = NO;
     }
     if (self.isPlaying) {
         [self playOrPauseSong:nil];
@@ -221,13 +215,14 @@
 
 - (void)setupVisibleText {
     Beat *song = [self.model getSongForUniqueID:self.songID];
-    [self.songTitleLabel setText:song.title];    
-}
-
-
-// Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
-- (double)secondsFromTempoWithBars:(int)duration {
-    return 1.0 / (double)self.tempo * 60.0 * 4.0 * duration;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.songTitleLabel setText:song.title];
+        if (self.isLooping) {
+            [self.playerStatusLabel setText:@"Now Looping"];
+        } else {
+            [self.playerStatusLabel setText:@"Now Playing"];
+        }
+    });
 }
 
 /*
@@ -239,5 +234,28 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
+    cell.textLabel.text = @"Sample";
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    // do nothing for now
+}
+
 
 @end

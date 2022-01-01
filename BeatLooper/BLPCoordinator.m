@@ -12,6 +12,8 @@
 @property UINavigationController *navigationController;
 @property PlayerViewController *playerController;
 @property LooperViewController *looperController;
+
+// override songID setter so if we change songs we reload the player
 @end
 
 @implementation BLPCoordinator
@@ -43,8 +45,15 @@
 
 - (void)songTapped:(NSManagedObjectID *)songID {
     if (!self.playerController) {
-        PlayerViewController *playerViewController = [[PlayerViewController alloc] initWithSongID:songID coordinator:self];
+        PlayerViewController *playerViewController = [[PlayerViewController alloc]
+                                                      initWithSongID:songID coordinator:self];
         self.playerController = playerViewController;
+    } else {
+        if (self.playerController.songID != songID) {
+            NSLog(@"Switching songs.");
+            self.playerController.songID = songID;
+            self.looperController = nil;
+        }
     }
     // TODO change song if different song & controller already exists
     [[self navigationController] pushViewController:self.playerController animated:YES];

@@ -89,8 +89,8 @@
                                 <rect key="frame" x="40" y="779" width="50" height="50"/>
                                 <state key="normal" image="icons8-skip-to-start-100"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYl-FJ-L5g">
-                                <rect key="frame" x="20" y="64" width="94" height="39"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Queue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYl-FJ-L5g">
+                                <rect key="frame" x="20" y="64" width="99" height="39"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="39" id="Jog-jq-egz"/>
                                 </constraints>
@@ -127,6 +127,10 @@
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="KMN-fU-0Uu" userLabel="Song Queue Table View">
+                                <rect key="frame" x="20" y="103" width="394" height="545"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hzu-r0-A9g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -142,13 +146,17 @@
                             <constraint firstItem="cKd-hd-A3e" firstAttribute="top" secondItem="ZYv-Gc-1dc" secondAttribute="bottom" constant="30" id="CPj-78-RIv"/>
                             <constraint firstItem="hzu-r0-A9g" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="EYl-FJ-L5g" secondAttribute="trailing" constant="300" id="Gbp-t0-Btm"/>
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="Hzq-pa-Amr"/>
+                            <constraint firstItem="Hd7-c9-E85" firstAttribute="top" secondItem="KMN-fU-0Uu" secondAttribute="bottom" constant="60" id="LBH-YE-njN"/>
                             <constraint firstItem="Hd7-c9-E85" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="PVk-pI-ODm"/>
+                            <constraint firstItem="KMN-fU-0Uu" firstAttribute="top" secondItem="EYl-FJ-L5g" secondAttribute="bottom" id="Qbc-PC-fie"/>
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="top" secondItem="Hd7-c9-E85" secondAttribute="bottom" constant="20" id="Qrf-cm-dmF"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="centerX" secondItem="Iv4-QO-Ujj" secondAttribute="centerX" id="W6G-XZ-RhE"/>
                             <constraint firstItem="m1F-mF-gMa" firstAttribute="leading" secondItem="7kw-7J-CH3" secondAttribute="leading" constant="20" id="ZsF-LW-v1C"/>
                             <constraint firstItem="EYl-FJ-L5g" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="biZ-Yq-FOL"/>
+                            <constraint firstItem="KMN-fU-0Uu" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="c8G-SU-tJP"/>
                             <constraint firstItem="hzu-r0-A9g" firstAttribute="trailing" secondItem="Iv4-QO-Ujj" secondAttribute="trailing" id="cd9-v9-3QX"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="centerY" secondItem="Iv4-QO-Ujj" secondAttribute="centerY" id="fnC-a6-t81"/>
+                            <constraint firstItem="hzu-r0-A9g" firstAttribute="trailing" secondItem="KMN-fU-0Uu" secondAttribute="trailing" id="gLw-ZK-eAa"/>
                             <constraint firstItem="rs4-7B-dYr" firstAttribute="leading" secondItem="cKd-hd-A3e" secondAttribute="trailing" constant="30" id="gRD-hL-bbg"/>
                             <constraint firstItem="Iv4-QO-Ujj" firstAttribute="height" secondItem="rs4-7B-dYr" secondAttribute="height" id="k2z-AU-KQs"/>
                             <constraint firstItem="Hd7-c9-E85" firstAttribute="top" secondItem="m1F-mF-gMa" secondAttribute="bottom" id="lVb-Vs-XWV"/>
@@ -158,6 +166,8 @@
                     <connections>
                         <outlet property="loopButton" destination="QFD-7k-E2P" id="wkg-50-4rV"/>
                         <outlet property="playButton" destination="cKd-hd-A3e" id="1CT-RZ-Wxn"/>
+                        <outlet property="playerStatusLabel" destination="Hd7-c9-E85" id="WQP-X2-XE8"/>
+                        <outlet property="queueTableView" destination="KMN-fU-0Uu" id="FJ6-KP-rza"/>
                         <outlet property="songProgressBar" destination="ZYv-Gc-1dc" id="TIS-2J-mgU"/>
                         <outlet property="songTitleLabel" destination="m1F-mF-gMa" id="7V4-mQ-Bm4"/>
                     </connections>

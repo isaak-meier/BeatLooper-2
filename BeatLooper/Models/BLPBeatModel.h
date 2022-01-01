@@ -25,12 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)saveSongWith:(NSString *)title url:(NSString *)url;
 - (void)deleteSong:(NSManagedObject *)song;
 - (void)deleteAllEntities;
-
-+ (void)exportClippedAudioFromSongURL:(NSURL *)songUrl
-                               withTempo:(int)tempo
-                    startingAtTimeInBars:(int)startBar
-                           endingAtTimeInBars:(int)endBar
-                          withCompletion:(void (^)(BOOL, NSURL *))exportedFileCompletion;
+- (void)saveTempo:(int)tempo forSong:(NSManagedObjectID *)songID;
 
 + (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo;
 

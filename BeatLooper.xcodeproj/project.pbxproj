@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EA93D91326A931C700B5F4F3 /* BLPAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */; };
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
 		EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
@@ -30,6 +29,9 @@
 		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAFE250E277E59040054E069 /* swish.wav in Resources */ = {isa = PBXBuildFile; fileRef = EAFE250D277E59040054E069 /* swish.wav */; };
 		EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE250F277EA7A20054E069 /* LooperViewController.m */; };
+		EAFE2515277FE8C30054E069 /* rise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE2512277FE8C30054E069 /* rise.mp3 */; };
+		EAFE2516277FE8C30054E069 /* swag.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE2513277FE8C30054E069 /* swag.mp3 */; };
+		EAFE2517277FE8C30054E069 /* '84.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE2514277FE8C30054E069 /* '84.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +53,6 @@
 
 /* Begin PBXFileReference section */
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		EA93D91126A931A500B5F4F3 /* BLPAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPAudioEngine.h; sourceTree = "<group>"; };
-		EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPAudioEngine.m; sourceTree = "<group>"; };
 		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
 		EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelFileExportTests.m; sourceTree = "<group>"; };
 		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
@@ -85,6 +85,9 @@
 		EAFE250D277E59040054E069 /* swish.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = swish.wav; path = ../../../../../Downloads/swish.wav; sourceTree = "<group>"; };
 		EAFE250F277EA7A20054E069 /* LooperViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LooperViewController.m; sourceTree = "<group>"; };
 		EAFE2511277EA7B30054E069 /* LooperViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LooperViewController.h; sourceTree = "<group>"; };
+		EAFE2512277FE8C30054E069 /* rise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = rise.mp3; path = ../../../../../Downloads/rise.mp3; sourceTree = "<group>"; };
+		EAFE2513277FE8C30054E069 /* swag.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = swag.mp3; path = ../../../../../Downloads/swag.mp3; sourceTree = "<group>"; };
+		EAFE2514277FE8C30054E069 /* '84.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "'84.mp3"; path = "../../../../../Downloads/'84.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,9 @@
 				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
 				EAB772C1277BD27400696CB3 /* forgetMe.mp3 */,
 				EAFE250D277E59040054E069 /* swish.wav */,
+				EAFE2514277FE8C30054E069 /* '84.mp3 */,
+				EAFE2512277FE8C30054E069 /* rise.mp3 */,
+				EAFE2513277FE8C30054E069 /* swag.mp3 */,
 				EAC4ECEC26176072006C9E87 /* main.m */,
 				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
 			);
@@ -151,8 +157,6 @@
 			children = (
 				EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */,
 				EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */,
-				EA93D91126A931A500B5F4F3 /* BLPAudioEngine.h */,
-				EA93D91226A931C700B5F4F3 /* BLPAudioEngine.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -328,9 +332,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAFE2516277FE8C30054E069 /* swag.mp3 in Resources */,
 				EAC4ECEA26176072006C9E87 /* LaunchScreen.storyboard in Resources */,
 				EAFE250E277E59040054E069 /* swish.wav in Resources */,
+				EAFE2517277FE8C30054E069 /* '84.mp3 in Resources */,
 				EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */,
+				EAFE2515277FE8C30054E069 /* rise.mp3 in Resources */,
 				EAB772C2277BD27400696CB3 /* forgetMe.mp3 in Resources */,
 				EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */,
 				EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */,
@@ -361,7 +368,6 @@
 				EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */,
 				EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */,
 				EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */,
-				EA93D91326A931C700B5F4F3 /* BLPAudioEngine.m in Sources */,
 				EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */,
 				EAC4ECED26176072006C9E87 /* main.m in Sources */,
 				EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */,

@@ -42,7 +42,7 @@
     
     // DEBUG ONLY: Clear out songs, and then add our test song
     [self.model deleteAllEntities];
-    [self addTestSong];
+    [self addTestSongs];
 
     [self songTableView].dataSource = self;
     [self songTableView].delegate = self;
@@ -51,12 +51,21 @@
     [self refreshSongsAndReloadData:YES];
 }
 
-- (void)addTestSong {
+- (void)addTestSongs {
     NSBundle *main = [NSBundle mainBundle];
     NSString *resourceURL1 = [main pathForResource:@"forgetMe" ofType:@"mp3"];
     NSString *resourceURL2 = [main pathForResource:@"swish" ofType:@"wav"];
+    NSString *resourceURL3 = [main pathForResource:@"dunevibes" ofType:@"mp3"];
+    NSString *resourceURL4 = [main pathForResource:@"'84" ofType:@"mp3"];
+    NSString *resourceURL5 = [main pathForResource:@"rise" ofType:@"mp3"];
+    NSString *resourceURL6 = [main pathForResource:@"swag" ofType:@"mp3"];
+
     [self.model saveSongWith:@"forgetMe" url:resourceURL1];
     [self.model saveSongWith:@"swish" url:resourceURL2];
+    [self.model saveSongWith:@"dunevibes" url:resourceURL3];
+    [self.model saveSongWith:@"'84" url:resourceURL4];
+    [self.model saveSongWith:@"rise" url:resourceURL5];
+    [self.model saveSongWith:@"swag" url:resourceURL6];
 
 }
 
