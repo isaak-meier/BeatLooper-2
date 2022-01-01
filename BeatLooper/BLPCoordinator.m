@@ -43,17 +43,17 @@
     [vc refreshSongsAndReloadData:YES];
 }
 
-- (void)songTapped:(NSManagedObjectID *)songID {
+- (void)openPlayerWithSongs:(NSArray *)songsForQueue {
     if (!self.playerController) {
         PlayerViewController *playerViewController = [[PlayerViewController alloc]
-                                                      initWithSongID:songID coordinator:self];
+                                                      initWithSongs:songsForQueue coordinator:self];
         self.playerController = playerViewController;
     } else {
-        if (self.playerController.songID != songID) {
-            NSLog(@"Switching songs.");
-            self.playerController.songID = songID;
-            self.looperController = nil;
-        }
+//        if (self.playerController.songID != songID) {
+//            NSLog(@"Switching songs.");
+//            self.playerController.songID = songID;
+//            self.looperController = nil;
+//        }
     }
     // TODO change song if different song & controller already exists
     [[self navigationController] pushViewController:self.playerController animated:YES];

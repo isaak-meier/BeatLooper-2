@@ -20,12 +20,17 @@
 @property (weak, nonatomic) IBOutlet UITableView *queueTableView;
 
 @property BLPBeatModel *model;
+
+@property NSMutableArray<AVPlayerItem *> *playerItems;
+// this should be the same as above, without the currently playing song
+@property NSMutableArray *songsInQueue;
+@property Beat *currentSong;
 @property AVQueuePlayer *player;
-@property AVPlayerItem *currentPlayerItem;
 @property AVPlayerLooper *beatLooper;
-@property NSOperationQueue *loopOperationQueue;
+
 @property NSProgress *progress;
 @property NSTimer *timer;
+
 @property BOOL isPlaying;
 @property BOOL isLooping;
 
@@ -37,15 +42,34 @@
 
 @implementation PlayerViewController
 
-- (id)initWithSongID:(id)songID coordinator:coordinator {
+- (id)initWithSongs:(NSArray *)songs coordinator:coordinator {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"PlayerViewController"])) {
         // assign properties
         _model = [[BLPBeatModel alloc] init];
-        _songID = songID;
         _coordinator = coordinator;
+        [self setupPlayerItems:songs];
     }
     return self;
+}
+
+// Sets properties playerItems, currentPlayerItem, and songsInQueue
+- (void)setupPlayerItems:(NSArray *)songs {
+    _playerItems = [NSMutableArray new];
+    _songsInQueue = [NSMutableArray new];
+    for (int i = 0; i < songs.count; i++) {
+        Beat *currentSong = songs[i];
+        NSURL *songURL = [_model getURLForCachedSong:currentSong.objectID];
+        AVAsset *songAsset = [AVAsset assetWithURL:songURL];
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+        if (i == 0) {
+            [_playerItems addObject:playerItem];
+            _currentSong = currentSong;
+        } else {
+            [_playerItems addObject:playerItem];
+            [_songsInQueue addObject:currentSong];
+        }
+    }
 }
 
 - (void)viewDidLoad {
@@ -59,7 +83,7 @@
     
     [self loadPlayer];
     
-//    [self configureAudioSession];
+    [self configureAudioSession];
     
 //    [self playOrPauseSong:nil];
 
@@ -87,23 +111,7 @@
 }
 
 - (void)loadPlayer {
-    NSURL *songURL = [[self model] getURLForCachedSong:[self songID]];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    BOOL exists = [fileManager fileExistsAtPath:songURL.path];
-
-    if (!exists) {
-        [self handleExistenceError];
-    } else {
-        NSError *error;
-        AVAsset *songAsset = [AVAsset assetWithURL:songURL];
-        NSLog(@"Provies precise timing?-> %d", songAsset.providesPreciseDurationAndTiming);
-        self.currentPlayerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
-        self.player = [AVQueuePlayer playerWithPlayerItem:self.currentPlayerItem];
-        if (error) {
-            NSLog(@"Error creating AVAudioPlayer: %@", error);
-        }
-    }
- 
+    self.player = [AVQueuePlayer queuePlayerWithItems:self.playerItems];
 }
 
 - (void)handleExistenceError {
@@ -141,7 +149,7 @@
 }
 
 - (IBAction)loopButtonTapped:(id)sender {
-    [self.coordinator openLooperViewForSong:self.songID];
+    [self.coordinator openLooperViewForSong:self.currentSong.objectID];
 }
 
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange {
@@ -157,7 +165,8 @@
         [self loadPlayer];
     }
     
-    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:self.currentPlayerItem timeRange:timeRange];
+    AVPlayerItem *currentPlayerItem = self.player.currentItem;
+    AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:currentPlayerItem timeRange:timeRange];
     self.beatLooper = beatLooper;
     if (!self.isPlaying) {
         [self playOrPauseSong:nil];
@@ -214,7 +223,7 @@
 }
 
 - (void)setupVisibleText {
-    Beat *song = [self.model getSongForUniqueID:self.songID];
+    Beat *song = [self.model getSongForUniqueID:self.currentSong.objectID];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.songTitleLabel setText:song.title];
         if (self.isLooping) {
@@ -237,12 +246,14 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
-    cell.textLabel.text = @"Sample";
+    Beat *songForCell = self.songsInQueue[indexPath.row];
+    cell.textLabel.text = songForCell.title;
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    NSLog(@"song count: %d", self.songsInQueue.count);
+    return self.songsInQueue.count;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -86,8 +86,12 @@
 // MARK: UITableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Beat *selectedBeat = self.songs[indexPath.row];
-    NSManagedObjectID *beatID = selectedBeat.objectID;
-    [[self coordinator] songTapped:beatID];
+    // this range encompasses the song we just selected and every song after it.
+    NSRange queueRange = NSMakeRange(indexPath.row, self.songs.count - indexPath.row);
+    NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
+    NSLog(@"Indexes in queue range: %@", indexes);
+    NSArray *songsForQueue = [NSArray arrayWithArray:[self.songs objectsAtIndexes:indexes]];
+    [[self coordinator] openPlayerWithSongs:songsForQueue];
     [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 

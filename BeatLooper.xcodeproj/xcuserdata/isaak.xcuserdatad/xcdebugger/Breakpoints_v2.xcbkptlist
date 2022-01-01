@@ -14,8 +14,8 @@
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "-startLoopWithTimeRange:"
             landmarkType = "7">
          </BreakpointContent>
@@ -23,16 +23,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "185F1CE5-EB82-407B-81AB-4A6DB62238A2"
+            uuid = "00FCFFD5-B2AC-4295-B865-E56D5EDD8274"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "-loadPlayer"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "-setupPlayerItems:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
