@@ -84,10 +84,16 @@
                             <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rs4-7B-dYr" userLabel="Skip to End Button">
                                 <rect key="frame" x="200" y="779" width="50" height="50"/>
                                 <state key="normal" image="icons8-end-100"/>
+                                <connections>
+                                    <action selector="skipForwardButtonTapped:" destination="zY8-PV-nFk" eventType="touchUpInside" id="YSl-YM-gVm"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="center" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cA-kL-d97" userLabel="Skip to Start Button">
                                 <rect key="frame" x="40" y="779" width="50" height="50"/>
                                 <state key="normal" image="icons8-skip-to-start-100"/>
+                                <connections>
+                                    <action selector="skipBackButtonTapped:" destination="zY8-PV-nFk" eventType="touchUpInside" id="WYg-JW-4Ay"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Queue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYl-FJ-L5g">
                                 <rect key="frame" x="20" y="64" width="99" height="39"/>
@@ -168,6 +174,8 @@
                         <outlet property="playButton" destination="cKd-hd-A3e" id="1CT-RZ-Wxn"/>
                         <outlet property="playerStatusLabel" destination="Hd7-c9-E85" id="WQP-X2-XE8"/>
                         <outlet property="queueTableView" destination="KMN-fU-0Uu" id="FJ6-KP-rza"/>
+                        <outlet property="skipBackButton" destination="7cA-kL-d97" id="2Cy-71-yQ8"/>
+                        <outlet property="skipForwardButton" destination="rs4-7B-dYr" id="arJ-aD-1nr"/>
                         <outlet property="songProgressBar" destination="ZYv-Gc-1dc" id="TIS-2J-mgU"/>
                         <outlet property="songTitleLabel" destination="m1F-mF-gMa" id="7V4-mQ-Bm4"/>
                     </connections>

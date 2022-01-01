@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *playerStatusLabel;
 @property (weak, nonatomic) IBOutlet UITableView *queueTableView;
+@property (weak, nonatomic) IBOutlet UIButton *skipForwardButton;
+@property (weak, nonatomic) IBOutlet UIButton *skipBackButton;
 
 @property BLPBeatModel *model;
 
@@ -89,8 +91,9 @@
 
 }
 
+
 - (void)viewDidAppear:(BOOL)animated {
-    [self setupVisibleText];
+    [self refreshVisibleText];
 }
 
 - (void)configureAudioSession {
@@ -148,9 +151,24 @@
     }
 }
 
+- (IBAction)skipBackButtonTapped:(id)sender {
+}
+
+- (IBAction)skipForwardButtonTapped:(id)sender {
+    [self.player advanceToNextItem];
+    self.currentSong = self.songsInQueue[0];
+    [self.songsInQueue removeObjectAtIndex:0];
+    [self.queueTableView reloadData];
+    [self refreshVisibleText];
+    // TODO nil out looperViewController
+}
+
+
 - (IBAction)loopButtonTapped:(id)sender {
     [self.coordinator openLooperViewForSong:self.currentSong.objectID];
 }
+
+
 
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange {
     if (self.beatLooper) {
@@ -168,6 +186,8 @@
     AVPlayerItem *currentPlayerItem = self.player.currentItem;
     AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:currentPlayerItem timeRange:timeRange];
     self.beatLooper = beatLooper;
+    self.isLooping = YES;
+    [self refreshVisibleText];
     if (!self.isPlaying) {
         [self playOrPauseSong:nil];
     } else {
@@ -177,13 +197,14 @@
 }
 
 - (void)stopLooping {
+    self.isLooping = NO;
     if (self.beatLooper) {
         self.beatLooper = nil;
-        self.isLooping = NO;
     }
     if (self.isPlaying) {
         [self playOrPauseSong:nil];
     }
+    [self refreshVisibleText];
 }
 
 - (void)setupProgressBar {
@@ -222,7 +243,7 @@
 
 }
 
-- (void)setupVisibleText {
+- (void)refreshVisibleText {
     Beat *song = [self.model getSongForUniqueID:self.currentSong.objectID];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.songTitleLabel setText:song.title];
@@ -234,15 +255,8 @@
     });
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+#pragma mark - UITableView Datasource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
@@ -252,7 +266,6 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"song count: %d", self.songsInQueue.count);
     return self.songsInQueue.count;
 }
 
@@ -265,8 +278,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    // do nothing for now
+    if (sourceIndexPath.row != destinationIndexPath.row) {
+        [self moveRowInTableViewAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+        [self moveSongInQueueAtIndex:(sourceIndexPath.row + 1) toIndex:(destinationIndexPath.row + 1)];
+    }
 }
 
+- (void)moveRowInTableViewAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
+    Beat *songToMove = self.songsInQueue[sourceIndex];
+    [self.songsInQueue removeObjectAtIndex:sourceIndex];
+    [self.songsInQueue insertObject:songToMove atIndex:destinationIndex];
+}
+
+- (void)moveSongInQueueAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
+    NSMutableArray<AVPlayerItem *> *items = [NSMutableArray arrayWithArray:self.player.items];
+    AVPlayerItem *itemToMove = items[sourceIndex];
+    [items removeObjectAtIndex:sourceIndex];
+    AVPlayerItem *itemToInsertAfter = items[destinationIndex - 1];
+    [self.player removeItem:itemToMove];
+    [self.player insertItem:itemToMove afterItem:itemToInsertAfter];
+}
 
 @end
