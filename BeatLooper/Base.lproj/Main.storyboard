@@ -134,9 +134,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="KMN-fU-0Uu" userLabel="Song Queue Table View">
-                                <rect key="frame" x="20" y="103" width="394" height="545"/>
+                                <rect key="frame" x="10" y="118" width="404" height="530"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="in1-x8-bzp">
+                                <rect key="frame" x="338" y="68" width="76" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Remove"/>
+                                <connections>
+                                    <action selector="removeButtonTapped:" destination="zY8-PV-nFk" eventType="touchUpInside" id="FLU-lz-G4B"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hzu-r0-A9g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -154,18 +162,20 @@
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="Hzq-pa-Amr"/>
                             <constraint firstItem="Hd7-c9-E85" firstAttribute="top" secondItem="KMN-fU-0Uu" secondAttribute="bottom" constant="60" id="LBH-YE-njN"/>
                             <constraint firstItem="Hd7-c9-E85" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="PVk-pI-ODm"/>
-                            <constraint firstItem="KMN-fU-0Uu" firstAttribute="top" secondItem="EYl-FJ-L5g" secondAttribute="bottom" id="Qbc-PC-fie"/>
+                            <constraint firstItem="KMN-fU-0Uu" firstAttribute="top" secondItem="EYl-FJ-L5g" secondAttribute="bottom" constant="15" id="Qbc-PC-fie"/>
                             <constraint firstItem="ZYv-Gc-1dc" firstAttribute="top" secondItem="Hd7-c9-E85" secondAttribute="bottom" constant="20" id="Qrf-cm-dmF"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="centerX" secondItem="Iv4-QO-Ujj" secondAttribute="centerX" id="W6G-XZ-RhE"/>
                             <constraint firstItem="m1F-mF-gMa" firstAttribute="leading" secondItem="7kw-7J-CH3" secondAttribute="leading" constant="20" id="ZsF-LW-v1C"/>
                             <constraint firstItem="EYl-FJ-L5g" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="biZ-Yq-FOL"/>
-                            <constraint firstItem="KMN-fU-0Uu" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="20" id="c8G-SU-tJP"/>
+                            <constraint firstItem="KMN-fU-0Uu" firstAttribute="leading" secondItem="hzu-r0-A9g" secondAttribute="leading" constant="10" id="c8G-SU-tJP"/>
                             <constraint firstItem="hzu-r0-A9g" firstAttribute="trailing" secondItem="Iv4-QO-Ujj" secondAttribute="trailing" id="cd9-v9-3QX"/>
                             <constraint firstItem="QFD-7k-E2P" firstAttribute="centerY" secondItem="Iv4-QO-Ujj" secondAttribute="centerY" id="fnC-a6-t81"/>
                             <constraint firstItem="hzu-r0-A9g" firstAttribute="trailing" secondItem="KMN-fU-0Uu" secondAttribute="trailing" id="gLw-ZK-eAa"/>
                             <constraint firstItem="rs4-7B-dYr" firstAttribute="leading" secondItem="cKd-hd-A3e" secondAttribute="trailing" constant="30" id="gRD-hL-bbg"/>
                             <constraint firstItem="Iv4-QO-Ujj" firstAttribute="height" secondItem="rs4-7B-dYr" secondAttribute="height" id="k2z-AU-KQs"/>
                             <constraint firstItem="Hd7-c9-E85" firstAttribute="top" secondItem="m1F-mF-gMa" secondAttribute="bottom" id="lVb-Vs-XWV"/>
+                            <constraint firstItem="in1-x8-bzp" firstAttribute="centerY" secondItem="EYl-FJ-L5g" secondAttribute="centerY" id="qmF-Q6-JQV"/>
+                            <constraint firstItem="hzu-r0-A9g" firstAttribute="trailing" secondItem="in1-x8-bzp" secondAttribute="trailing" id="rTV-d6-Z62"/>
                             <constraint firstItem="hzu-r0-A9g" firstAttribute="bottom" secondItem="cKd-hd-A3e" secondAttribute="bottom" constant="33" id="w19-NU-ax2"/>
                         </constraints>
                     </view>
@@ -174,6 +184,7 @@
                         <outlet property="playButton" destination="cKd-hd-A3e" id="1CT-RZ-Wxn"/>
                         <outlet property="playerStatusLabel" destination="Hd7-c9-E85" id="WQP-X2-XE8"/>
                         <outlet property="queueTableView" destination="KMN-fU-0Uu" id="FJ6-KP-rza"/>
+                        <outlet property="removeButton" destination="in1-x8-bzp" id="coT-bV-9IL"/>
                         <outlet property="skipBackButton" destination="7cA-kL-d97" id="2Cy-71-yQ8"/>
                         <outlet property="skipForwardButton" destination="rs4-7B-dYr" id="arJ-aD-1nr"/>
                         <outlet property="songProgressBar" destination="ZYv-Gc-1dc" id="TIS-2J-mgU"/>

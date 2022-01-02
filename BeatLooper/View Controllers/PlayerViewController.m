@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *queueTableView;
 @property (weak, nonatomic) IBOutlet UIButton *skipForwardButton;
 @property (weak, nonatomic) IBOutlet UIButton *skipBackButton;
+@property (weak, nonatomic) IBOutlet UIButton *removeButton;
 
 @property BLPBeatModel *model;
 
@@ -36,6 +37,8 @@
 @property BOOL isPlaying;
 @property BOOL isLooping;
 
+@property NSMutableArray<NSNumber *> *selectedIndexes;
+
 - (void)loadPlayer;
 - (void)setupProgressBar;
 - (void)incrementProgress;
@@ -51,6 +54,7 @@
         _model = [[BLPBeatModel alloc] init];
         _coordinator = coordinator;
         [self setupPlayerItems:songs];
+        _selectedIndexes = [NSMutableArray new];
     }
     return self;
 }
@@ -82,6 +86,8 @@
     self.queueTableView.dataSource = self;
     [self.queueTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongQueueCell"];
     [self.queueTableView setEditing:YES];
+    [self.queueTableView setAllowsMultipleSelectionDuringEditing:YES];
+    
     
     [self loadPlayer];
     
@@ -138,6 +144,7 @@
 - (IBAction)playOrPauseSong:(id)sender {
     if (!self.isPlaying) {
         if (self.player.items.count == 0) {
+            [self animateButtonToPlayIcon:YES];
             return;
         }
         [self.player play];
@@ -184,6 +191,23 @@
     [self.coordinator openLooperViewForSong:self.currentSong.objectID];
 }
 
+- (IBAction)removeButtonTapped:(id)sender {
+    NSArray<AVPlayerItem *> *items = self.player.items;
+    NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
+    NSMutableIndexSet *indexesToRemove = [NSMutableIndexSet new];
+    for (int i = 0; i < self.selectedIndexes.count; i++) {
+        int indexToRemoveAt = self.selectedIndexes[i].intValue;
+        AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1]; // items has a 'hidden' 0 element, currently playing
+        [itemsToRemove addObject:itemToRemove];
+        [indexesToRemove addIndex:indexToRemoveAt];
+    }
+    [self.songsInQueue removeObjectsAtIndexes:indexesToRemove];
+    for (AVPlayerItem *item in itemsToRemove) {
+        [self.player removeItem:item];
+    }
+    [self.queueTableView reloadData];
+    [self.removeButton setHidden:YES];
+}
 
 
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange {
@@ -290,12 +314,32 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.removeButton setHidden:NO];
+    [self.selectedIndexes addObject:[NSNumber numberWithInt:(int)indexPath.row]];
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    for (int i = 0; i < self.selectedIndexes.count; i++) {
+        NSNumber *number = self.selectedIndexes[i];
+        if (number.intValue == indexPath.row) {
+            [self.selectedIndexes removeObjectAtIndex:i];
+        }
+    }
+    if (self.selectedIndexes.count == 0) {
+        [self.removeButton setHidden:YES];
+    }
+}
+
+
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.songsInQueue.count;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellEditingStyleNone;
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSLog(@"OK!");
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {

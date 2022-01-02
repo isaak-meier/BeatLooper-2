@@ -14,8 +14,8 @@
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
             landmarkName = "-startLoopWithTimeRange:"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "-setupPlayerItems:"
             landmarkType = "7">
          </BreakpointContent>
