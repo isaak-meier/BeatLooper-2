@@ -44,16 +44,16 @@
 }
 
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue {
-    if (!self.playerController) {
+    if (!self.playerController || self.playerController.currentSong == nil) {
         PlayerViewController *playerViewController = [[PlayerViewController alloc]
                                                       initWithSongs:songsForQueue coordinator:self];
         self.playerController = playerViewController;
     } else {
-//        if (self.playerController.songID != songID) {
-//            NSLog(@"Switching songs.");
-//            self.playerController.songID = songID;
-//            self.looperController = nil;
-//        }
+        Beat *songTapped = songsForQueue[0];
+        if (self.playerController.currentSong.objectID != songTapped.objectID) {
+            NSLog(@"Switching songs.");
+            [self.playerController changeCurrentSongTo:songTapped];
+        }
     }
     // TODO change song if different song & controller already exists
     [[self navigationController] pushViewController:self.playerController animated:YES];

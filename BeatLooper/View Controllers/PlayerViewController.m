@@ -20,14 +20,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *queueTableView;
 @property (weak, nonatomic) IBOutlet UIButton *skipForwardButton;
 @property (weak, nonatomic) IBOutlet UIButton *skipBackButton;
-@property (weak, nonatomic) IBOutlet UIButton *removeButton;
+@property (weak, nonatomic) IBOutlet UIButton *removeButton; // also addSongButton
 
 @property BLPBeatModel *model;
 
 @property NSMutableArray<AVPlayerItem *> *playerItems;
 // this should be the same as above, without the currently playing song
 @property NSMutableArray *songsInQueue;
-@property Beat *currentSong;
 @property AVQueuePlayer *player;
 @property AVPlayerLooper *beatLooper;
 
@@ -184,8 +183,6 @@
         // this too kicks off KVO
         [self.player removeAllItems];
     }
-    
-    // TODO nil out looperViewController
 }
 
 
@@ -247,6 +244,17 @@
         [self playOrPauseSong:nil];
     }
     [self refreshVisibleText];
+}
+
+- (void)changeCurrentSongTo:(Beat *)newSong {
+    NSArray *items = self.player.items;
+    
+    NSURL *songURL = [_model getURLForCachedSong:newSong.objectID];
+    AVAsset *songAsset = [AVAsset assetWithURL:songURL];
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+    [self.player insertItem:playerItem afterItem:items[0]];
+    [self.songsInQueue insertObject:newSong atIndex:0];
+    [self.player advanceToNextItem];
 }
 
 - (void)setupProgressBar {
@@ -331,7 +339,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.removeButton setHidden:NO];
+    [self.removeButton setTitle:@"Remove" forState:UIControlStateNormal];
     [self.selectedIndexes addObject:[NSNumber numberWithInt:(int)indexPath.row]];
 }
 
@@ -343,7 +351,7 @@
         }
     }
     if (self.selectedIndexes.count == 0) {
-        [self.removeButton setHidden:YES];
+        [self.removeButton setTitle:@"Add Songs" forState:UIControlStateNormal];
     }
 }
 
