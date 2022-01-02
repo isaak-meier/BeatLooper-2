@@ -137,6 +137,9 @@
 
 - (IBAction)playOrPauseSong:(id)sender {
     if (!self.isPlaying) {
+        if (self.player.items.count == 0) {
+            return;
+        }
         [self.player play];
         [self animateButtonToPlayIcon:NO];
         self.isPlaying = YES;
@@ -149,17 +152,30 @@
         [self animateButtonToPlayIcon:YES];
         self.isPlaying = NO;
     }
+    [self refreshVisibleText];
 }
 
 - (IBAction)skipBackButtonTapped:(id)sender {
+    [self.player seekToTime:CMTimeMake(0, 1)];
+    if (!self.isPlaying) {
+        [self playOrPauseSong:nil];
+    }
 }
 
 - (IBAction)skipForwardButtonTapped:(id)sender {
-    [self.player advanceToNextItem];
-    self.currentSong = self.songsInQueue[0];
-    [self.songsInQueue removeObjectAtIndex:0];
+    if (self.player.items.count > 1) {
+        [self.player advanceToNextItem];
+        self.currentSong = self.songsInQueue[0];
+        [self.songsInQueue removeObjectAtIndex:0];
+    } else {
+        [self.player removeAllItems];
+        self.currentSong = nil;
+        self.isPlaying = NO;
+    }
+    
     [self.queueTableView reloadData];
     [self refreshVisibleText];
+    
     // TODO nil out looperViewController
 }
 
@@ -244,13 +260,22 @@
 }
 
 - (void)refreshVisibleText {
-    Beat *song = [self.model getSongForUniqueID:self.currentSong.objectID];
+    NSString *songTitle;
+    if (self.currentSong) {
+        Beat *song = [self.model getSongForUniqueID:self.currentSong.objectID];
+        songTitle = song.title;
+    } else {
+        songTitle = @"";
+        self.isPlaying = NO;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.songTitleLabel setText:song.title];
+        [self.songTitleLabel setText:songTitle];
         if (self.isLooping) {
             [self.playerStatusLabel setText:@"Now Looping"];
-        } else {
+        } else if (self.isPlaying) {
             [self.playerStatusLabel setText:@"Now Playing"];
+        } else {
+            [self.playerStatusLabel setText:@"Just chillin..."];
         }
     });
 }
