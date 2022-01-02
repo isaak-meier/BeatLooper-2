@@ -79,4 +79,11 @@
     [self.playerController stopLooping];
 }
 
+// if the song changes, we need to clear the looper view.
+- (void)clearLooperView {
+    if (self.looperController) {
+        self.looperController = nil;
+    }
+}
+
 @end

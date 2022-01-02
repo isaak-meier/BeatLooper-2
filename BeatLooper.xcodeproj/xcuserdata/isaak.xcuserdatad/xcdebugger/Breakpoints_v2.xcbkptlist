@@ -7,32 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4ADBF386-FFB4-4477-9BB8-7690F953ABA4"
+            uuid = "1A6086AB-327F-4344-AC11-35A3C82E9273"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
-            landmarkName = "-startLoopWithTimeRange:"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
+            landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "00FCFFD5-B2AC-4295-B865-E56D5EDD8274"
-            shouldBeEnabled = "Yes"
+            uuid = "4D165A5C-BE83-4C56-BBB1-403E52B09B2A"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeatLooper/View Controllers/PlayerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "-setupPlayerItems:"
+            startingLineNumber = "155"
+            endingLineNumber = "155"
+            landmarkName = "-playOrPauseSong:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -10,8 +10,8 @@
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
-@property (strong, nonatomic) NSArray *songs;
-@property (strong, nonatomic) NSArray *content;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (strong, nonatomic) NSMutableArray *songs;
 
 @end
 
@@ -23,14 +23,14 @@
         _coordinator = coordinator;
         // setup data
         _model = [[BLPBeatModel alloc] init];
-        _songs = [_model getAllSongs];
+        _songs = [NSMutableArray arrayWithArray:[_model getAllSongs]];
     }
     return self;
 }
 
 - (void)refreshSongsAndReloadData:(BOOL)shouldReloadData {
     NSArray *brandNewSongs = [[self model] getAllSongs];
-    [self setSongs:brandNewSongs];
+    [self setSongs:[NSMutableArray arrayWithArray:brandNewSongs]];
     if (shouldReloadData) {
         [[self songTableView] reloadData];
     }
@@ -68,6 +68,15 @@
     [self.model saveSongWith:@"swag" url:resourceURL6];
 
 }
+- (IBAction)editButtonTapped:(id)sender {
+    if (self.songTableView.isEditing) {
+        [self.songTableView setEditing:NO];
+        [self.editButton setTitle:@"Edit" forState:UIControlStateNormal];
+    } else {
+        [self.songTableView setEditing:YES];
+        [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
+    }
+}
 
 // MARK: UITableView Datasource
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -79,13 +88,24 @@
     
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    if (sourceIndexPath.row != destinationIndexPath.row) {
+        Beat *beatToMove = self.songs[sourceIndexPath.row];
+        [self.songs removeObjectAtIndex:sourceIndexPath.row];
+        [self.songs insertObject:beatToMove atIndex:destinationIndexPath.row];
+    }
+}
+
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.songs count];
 }
 
 // MARK: UITableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Beat *selectedBeat = self.songs[indexPath.row];
     // this range encompasses the song we just selected and every song after it.
     NSRange queueRange = NSMakeRange(indexPath.row, self.songs.count - indexPath.row);
     NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];

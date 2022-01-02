@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)openLooperViewForSong:(NSManagedObjectID *)songID;
 - (void)dismissLooperViewAndBeginLoopingTimeRange:(CMTimeRange)timeRange;
 - (void)dismissLooperViewAndStopLoop;
+- (void)clearLooperView;
 
 @end
 

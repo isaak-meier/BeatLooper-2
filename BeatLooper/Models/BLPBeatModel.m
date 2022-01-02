@@ -10,7 +10,7 @@
 
 @implementation BLPBeatModel
 
-- (NSArray*)getAllSongs {
+- (NSArray *)getAllSongs {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     

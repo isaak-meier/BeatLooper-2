@@ -121,6 +121,8 @@
 
 - (void)loadPlayer {
     self.player = [AVQueuePlayer queuePlayerWithItems:self.playerItems];
+    // KVO
+    [self.player addObserver:self forKeyPath:@"currentItem" options:0 context:nil];
 }
 
 - (void)handleExistenceError {
@@ -171,17 +173,17 @@
 
 - (IBAction)skipForwardButtonTapped:(id)sender {
     if (self.player.items.count > 1) {
+        // this will kick off our KVO method
+        if (self.isLooping) {
+            [self stopLooping];
+        }
         [self.player advanceToNextItem];
-        self.currentSong = self.songsInQueue[0];
-        [self.songsInQueue removeObjectAtIndex:0];
     } else {
-        [self.player removeAllItems];
         self.currentSong = nil;
         self.isPlaying = NO;
+        // this too kicks off KVO
+        [self.player removeAllItems];
     }
-    
-    [self.queueTableView reloadData];
-    [self refreshVisibleText];
     
     // TODO nil out looperViewController
 }
@@ -304,6 +306,20 @@
     });
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
+        // we need to check if we've advanced the song, or just changed it.
+        // if we've advanced the song, the player items will have one less than usual,
+        // and we need to remove an item from the tableView
+        if (self.player.items.count == self.songsInQueue.count && self.songsInQueue.count != 0) {
+            self.currentSong = self.songsInQueue[0];
+            [self.songsInQueue removeObjectAtIndex:0];
+            [self.coordinator clearLooperView];
+        }
+        [self refreshVisibleText];
+        [self.queueTableView reloadData];
+    }
+}
 
 #pragma mark - UITableView Datasource
 
@@ -334,12 +350,6 @@
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.songsInQueue.count;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSLog(@"OK!");
-    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
