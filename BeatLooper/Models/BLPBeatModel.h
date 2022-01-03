@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (Beat *)getSongForUniqueID:(NSManagedObjectID *)songID;
 - (BOOL)saveSongFromURL:(NSURL *)songURL;
 - (void)saveSongWith:(NSString *)title url:(NSString *)url;
-- (void)deleteSong:(NSManagedObject *)song;
+- (void)deleteSong:(Beat *)song;
 - (void)deleteAllEntities;
 - (void)saveTempo:(int)tempo forSong:(NSManagedObjectID *)songID;
 

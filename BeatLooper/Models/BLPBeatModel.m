@@ -39,16 +39,20 @@
     return beatFromSongID;
 }
 
-// TODO: for both delete methods, delete file stored at path before removing object from core data
-- (void)deleteSong:(NSManagedObject *)song {
+- (void)deleteSong:(Beat *)song {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     [context deleteObject:song];
     
     NSError *error;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *url = [NSURL fileURLWithPath:song.fileUrl];
+    [fileManager removeItemAtURL:url error:&error];
     [context save:&error];
+    
     if (error) {
-        NSLog(@"There somme error deleting: %@", error);
+        NSLog(@"There some error deleting: %@", error);
     }
 }
 
@@ -81,6 +85,7 @@
         [self saveSongWith:fileTitle url:newFileURL.path];
     } else {
         NSLog(@"Error saving file: %@", error);
+        return NO;
     }
    
     return YES;

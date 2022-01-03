@@ -10,7 +10,6 @@
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
 		EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
-		EAA1052126F065620052CF24 /* BLPModelFileExportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */; };
 		EAA3FA4F264B06AB008FFF92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
 		EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB5ECA32644A89300C4D535 /* PlayerViewController.m */; };
 		EAB772C2277BD27400696CB3 /* forgetMe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB772C1277BD27400696CB3 /* forgetMe.mp3 */; };
@@ -54,7 +53,6 @@
 /* Begin PBXFileReference section */
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
-		EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelFileExportTests.m; sourceTree = "<group>"; };
 		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		EAB5ECA32644A89300C4D535 /* PlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		EAB772C1277BD27400696CB3 /* forgetMe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = forgetMe.mp3; path = ../../../../../Downloads/forgetMe.mp3; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 			isa = PBXGroup;
 			children = (
 				EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */,
-				EAA1052026F065620052CF24 /* BLPModelFileExportTests.m */,
 			);
 			path = ModelTests;
 			sourceTree = "<group>";
@@ -381,7 +378,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAA1052126F065620052CF24 /* BLPModelFileExportTests.m in Sources */,
 				EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */,
 				EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */,
 				EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */,

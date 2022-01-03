@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithWindow:(UIWindow*)window;
 - (void)start; // kickoff application
 - (void)songAdded;
+- (void)failedToAddSong;
 - (void)showAddSongsView;
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue;
 - (void)addSongToQueue:(Beat *)song;

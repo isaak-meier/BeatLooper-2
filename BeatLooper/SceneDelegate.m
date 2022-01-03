@@ -83,8 +83,11 @@
     NSURL *openedFileURL = URLContexts.anyObject.URL;
     BLPBeatModel *model = [[BLPBeatModel alloc] init];
     if ([model saveSongFromURL:openedFileURL]) {
-        [_coordinator songAdded];
-    } // TODO handle failure here
+        [self.coordinator songAdded];
+    } else {
+        [self.coordinator failedToAddSong];
+    }
+    // TODO handle failure here
 }
 
 

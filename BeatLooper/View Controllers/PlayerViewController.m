@@ -281,7 +281,9 @@
 
 - (void)changeCurrentSongTo:(Beat *)newSong {
     [self addSongToQueue:newSong];
-    [self.player advanceToNextItem];
+    if (self.player.items.count >= 1) {
+        [self.player advanceToNextItem];
+    }
 }
 
 - (void)addSongToQueue:(Beat *)song {

@@ -43,6 +43,23 @@
     [vc refreshSongsAndReloadData:YES];
 }
 
+- (void)failedToAddSong {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    UIAlertController *alert = [UIAlertController
+                                     alertControllerWithTitle:@"Error Adding Song"
+                                     message:@"For some reason, we couldn't add this song. Please try again...?"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"Haha, Ok"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+                                        return;
+                                    }];
+    [alert addAction:okButton];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)showAddSongsView {
     HomeViewController *addSongsView = [[HomeViewController alloc] initWithCoordinator:self inAddSongsMode:YES];
     addSongsView.modalPresentationStyle = UIModalPresentationPageSheet;
