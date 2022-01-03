@@ -28,7 +28,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0fd-yO-EGo" userLabel="Edit Button">
-                                <rect key="frame" x="314.5" y="64" width="79.5" height="38.5"/>
+                                <rect key="frame" x="314.5" y="64" width="99.5" height="38.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
@@ -44,7 +44,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="top" secondItem="L0i-om-XOG" secondAttribute="top" id="6Oi-nL-Gyx"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0fd-yO-EGo" secondAttribute="trailing" constant="20" id="7QP-PF-Ssy"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0fd-yO-EGo" secondAttribute="trailing" id="7QP-PF-Ssy"/>
                             <constraint firstItem="ggH-9e-s6Z" firstAttribute="top" secondItem="KAL-yU-MS7" secondAttribute="bottom" constant="8" symbolic="YES" id="B7L-BX-3Nb"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="centerY" secondItem="KAL-yU-MS7" secondAttribute="centerY" id="Imh-mz-lxJ"/>
                             <constraint firstItem="L0i-om-XOG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JaU-cn-h8n"/>
