@@ -16,12 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PlayerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak) BLPCoordinator *coordinator;
-@property Beat *currentSong;
+@property (nullable) Beat *currentSong;
 
 - (id)initWithSongs:(NSArray *)songs coordinator:(BLPCoordinator *)coordinator;
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange;
 - (void)stopLooping;
 - (void)changeCurrentSongTo:(Beat *)newSong;
+- (void)addSongToQueue:(Beat *)song;
 
 @end
 

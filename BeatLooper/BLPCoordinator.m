@@ -32,7 +32,7 @@
 // MARK: Methods
 - (void)start {
     // Initialize homeViewController from storyboard
-    HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self];
+    HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self inAddSongsMode:NO];
     [self.navigationController pushViewController:homeViewController animated:NO];
     [[self window] makeKeyAndVisible];
 }
@@ -41,6 +41,17 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
     HomeViewController *vc = (HomeViewController *)[_navigationController visibleViewController];
     [vc refreshSongsAndReloadData:YES];
+}
+
+- (void)showAddSongsView {
+    HomeViewController *addSongsView = [[HomeViewController alloc] initWithCoordinator:self inAddSongsMode:YES];
+    addSongsView.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self.navigationController presentViewController:addSongsView animated:YES completion:nil];
+}
+
+- (void)addSongToQueue:(Beat *)song {
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.playerController addSongToQueue:song];
 }
 
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue {
@@ -55,7 +66,6 @@
             [self.playerController changeCurrentSongTo:songTapped];
         }
     }
-    // TODO change song if different song & controller already exists
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }
 

@@ -91,8 +91,6 @@
     [self loadPlayer];
     
     [self configureAudioSession];
-    
-//    [self playOrPauseSong:nil];
 
 }
 
@@ -119,6 +117,7 @@
 }
 
 - (void)loadPlayer {
+    self.player = nil;
     self.player = [AVQueuePlayer queuePlayerWithItems:self.playerItems];
     // KVO
     [self.player addObserver:self forKeyPath:@"currentItem" options:0 context:nil];
@@ -187,25 +186,32 @@
 
 
 - (IBAction)loopButtonTapped:(id)sender {
-    [self.coordinator openLooperViewForSong:self.currentSong.objectID];
+    if (self.currentSong) {
+        [self.coordinator openLooperViewForSong:self.currentSong.objectID];
+    }
 }
 
 - (IBAction)removeButtonTapped:(id)sender {
-    NSArray<AVPlayerItem *> *items = self.player.items;
-    NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
-    NSMutableIndexSet *indexesToRemove = [NSMutableIndexSet new];
-    for (int i = 0; i < self.selectedIndexes.count; i++) {
-        int indexToRemoveAt = self.selectedIndexes[i].intValue;
-        AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1]; // items has a 'hidden' 0 element, currently playing
-        [itemsToRemove addObject:itemToRemove];
-        [indexesToRemove addIndex:indexToRemoveAt];
+    if ([self.removeButton.currentTitle isEqualToString:@"Remove"]) {
+        NSArray<AVPlayerItem *> *items = self.player.items;
+        NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
+        NSMutableIndexSet *indexesToRemove = [NSMutableIndexSet new];
+        for (int i = 0; i < self.selectedIndexes.count; i++) {
+            int indexToRemoveAt = self.selectedIndexes[i].intValue;
+            AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1]; // items has a 'hidden' 0 element, currently playing
+            [itemsToRemove addObject:itemToRemove];
+            [indexesToRemove addIndex:indexToRemoveAt];
+        }
+        [self.songsInQueue removeObjectsAtIndexes:indexesToRemove];
+        for (AVPlayerItem *item in itemsToRemove) {
+            [self.player removeItem:item];
+        }
+        [self.queueTableView reloadData];
+        [self.removeButton setTitle:@"Add Songs" forState:UIControlStateNormal];
+    } else {
+        [self.coordinator showAddSongsView];
     }
-    [self.songsInQueue removeObjectsAtIndexes:indexesToRemove];
-    for (AVPlayerItem *item in itemsToRemove) {
-        [self.player removeItem:item];
-    }
-    [self.queueTableView reloadData];
-    [self.removeButton setHidden:YES];
+    
 }
 
 
@@ -247,14 +253,26 @@
 }
 
 - (void)changeCurrentSongTo:(Beat *)newSong {
+    [self addSongToQueue:newSong];
+    [self.player advanceToNextItem];
+}
+
+- (void)addSongToQueue:(Beat *)song {
     NSArray *items = self.player.items;
-    
-    NSURL *songURL = [_model getURLForCachedSong:newSong.objectID];
+    NSURL *songURL = [_model getURLForCachedSong:song.objectID];
     AVAsset *songAsset = [AVAsset assetWithURL:songURL];
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
-    [self.player insertItem:playerItem afterItem:items[0]];
-    [self.songsInQueue insertObject:newSong atIndex:0];
-    [self.player advanceToNextItem];
+    if (items.count != 0) {
+        [self.player insertItem:playerItem afterItem:items[0]];
+        [self.songsInQueue insertObject:song atIndex:0];
+    } else {
+        [self.playerItems removeAllObjects];
+        [self.playerItems addObject:playerItem];
+        self.currentSong = song;
+        [self loadPlayer];
+        [self refreshVisibleText];
+    }
+    [self.queueTableView reloadData];
 }
 
 - (void)setupProgressBar {

@@ -16,7 +16,7 @@
 @property BLPBeatModel *model;
 @property (weak) BLPCoordinator *coordinator;
 
-- (id)initWithCoordinator:(BLPCoordinator *)coordinator;
+- (id)initWithCoordinator:(BLPCoordinator *)coordinator inAddSongsMode:(BOOL)isAddSongsMode;
 - (void)refreshSongsAndReloadData:(BOOL)shouldReloadData;
 
 @end

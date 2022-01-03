@@ -12,18 +12,18 @@
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (strong, nonatomic) NSMutableArray *songs;
+@property BOOL isAddSongsMode;
 
 @end
 
 @implementation HomeViewController
 
-- (id)initWithCoordinator:(BLPCoordinator *)coordinator {
+- (id)initWithCoordinator:(BLPCoordinator *)coordinator inAddSongsMode:(BOOL)isAddSongsMode {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"HomeViewController"])) {
         _coordinator = coordinator;
-        // setup data
         _model = [[BLPBeatModel alloc] init];
-        _songs = [NSMutableArray arrayWithArray:[_model getAllSongs]];
+        _isAddSongsMode = isAddSongsMode;
     }
     return self;
 }
@@ -48,6 +48,9 @@
     [self songTableView].delegate = self;
     [[self songTableView] registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SongCell"];
 
+    if (self.isAddSongsMode) {
+        [self.editButton setHidden:YES];
+    }
     [self refreshSongsAndReloadData:YES];
 }
 
@@ -81,31 +84,20 @@
 // MARK: UITableView Datasource
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [_songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
+    UITableViewCell *cell = [self.songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
     Beat *beat = self.songs[indexPath.row];
     cell.textLabel.text = beat.title;
     return cell;
     
 }
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    if (sourceIndexPath.row != destinationIndexPath.row) {
-        Beat *beatToMove = self.songs[sourceIndexPath.row];
-        [self.songs removeObjectAtIndex:sourceIndexPath.row];
-        [self.songs insertObject:beatToMove atIndex:destinationIndexPath.row];
-    }
-}
-
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.songs count];
-}
 
 // MARK: UITableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.isAddSongsMode) {
+        [self.coordinator addSongToQueue:self.songs[indexPath.row]];
+        return;
+    }
     // this range encompasses the song we just selected and every song after it.
     NSRange queueRange = NSMakeRange(indexPath.row, self.songs.count - indexPath.row);
     NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
@@ -123,6 +115,22 @@
         NSArray *indexPaths = @[indexPath];
         [self.songTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    if (sourceIndexPath.row != destinationIndexPath.row) {
+        Beat *beatToMove = self.songs[sourceIndexPath.row];
+        [self.songs removeObjectAtIndex:sourceIndexPath.row];
+        [self.songs insertObject:beatToMove atIndex:destinationIndexPath.row];
+    }
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.songs count];
 }
 
 
