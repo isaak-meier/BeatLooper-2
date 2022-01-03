@@ -110,7 +110,6 @@
     XCTAssertEqual(startComparison, 0);
     XCTAssertEqual(durationComparison, 0);
 
-    //TODO: test negative tempo
 }
 
 @end

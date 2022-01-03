@@ -35,6 +35,41 @@
     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self inAddSongsMode:NO];
     [self.navigationController pushViewController:homeViewController animated:NO];
     [[self window] makeKeyAndVisible];
+    [self checkForFirstTimeUser];
+}
+
+- (void)checkForFirstTimeUser {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL isNotFirstTime = [userDefaults boolForKey:@"firstTime?"];
+    if (!isNotFirstTime) { // ...so it is their first time
+        [self presentOnboardingAlert];
+    }
+}
+
+- (void)presentOnboardingAlert {
+    UIAlertController *alert = [UIAlertController
+                                     alertControllerWithTitle:@"Hello There"
+                                     message:@"Congrats on downloading this app. I hope you're having a wonderful day. To add songs, you need to open the file (mp3 or wav or whatever) in this app, from another app. For example, from Files, select the share button and select Beat Looper in the list of apps. In Google Drive, select 'Open In', and then select Beat Looper in the list of apps. (Note, this is at time of writing. The exact process may change.) Basically you need to tap on Beat Looper from a different app that's holding the file to import it. Ok, that's all from me, everything else should be clear. Take it easy and enjoy."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"Got it."
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstTime?"];
+                                        return;
+                                    }];
+    UIAlertAction* notOkButton = [UIAlertAction
+                                    actionWithTitle:@"Maybe show me that one more time next time."
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstTime?"];
+                                        return;
+                                    }];
+    [alert addAction:okButton];
+    [alert addAction:notOkButton];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)songAdded {

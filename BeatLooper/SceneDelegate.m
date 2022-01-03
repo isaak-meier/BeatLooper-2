@@ -87,7 +87,6 @@
     } else {
         [self.coordinator failedToAddSong];
     }
-    // TODO handle failure here
 }
 
 
