@@ -18,14 +18,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rainbow-music-banner" translatesAutoresizingMaskIntoConstraints="NO" id="L0i-om-XOG">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="94"/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Songs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAL-yU-MS7">
-                                <rect key="frame" x="20" y="64" width="95" height="39"/>
+                                <rect key="frame" x="20" y="64" width="94.5" height="38.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0fd-yO-EGo" userLabel="Edit Button">
-                                <rect key="frame" x="315" y="64" width="79" height="39"/>
+                                <rect key="frame" x="314.5" y="64" width="79.5" height="38.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
@@ -33,21 +36,25 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ggH-9e-s6Z">
-                                <rect key="frame" x="20" y="111" width="394" height="751"/>
+                                <rect key="frame" x="20" y="110.5" width="394" height="751.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="top" secondItem="L0i-om-XOG" secondAttribute="top" id="6Oi-nL-Gyx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0fd-yO-EGo" secondAttribute="trailing" constant="20" id="7QP-PF-Ssy"/>
                             <constraint firstItem="ggH-9e-s6Z" firstAttribute="top" secondItem="KAL-yU-MS7" secondAttribute="bottom" constant="8" symbolic="YES" id="B7L-BX-3Nb"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="centerY" secondItem="KAL-yU-MS7" secondAttribute="centerY" id="Imh-mz-lxJ"/>
+                            <constraint firstItem="L0i-om-XOG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JaU-cn-h8n"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="leading" relation="lessThanOrEqual" secondItem="KAL-yU-MS7" secondAttribute="trailing" constant="200" id="Jnn-AE-DFV"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="leading" relation="lessThanOrEqual" secondItem="KAL-yU-MS7" secondAttribute="trailing" constant="200" id="Jxc-bz-jHr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ggH-9e-s6Z" secondAttribute="trailing" id="K1Y-S8-19e"/>
+                            <constraint firstItem="L0i-om-XOG" firstAttribute="bottom" secondItem="KAL-yU-MS7" secondAttribute="top" constant="30" id="XMn-9p-Nqd"/>
                             <constraint firstItem="ggH-9e-s6Z" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bIL-ap-fR3"/>
                             <constraint firstItem="0fd-yO-EGo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="dnq-WR-Vzl"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="L0i-om-XOG" secondAttribute="trailing" id="iYK-su-ZBZ"/>
                             <constraint firstItem="KAL-yU-MS7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="jNq-F0-Feq"/>
                             <constraint firstItem="ggH-9e-s6Z" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="pSF-xd-9JX"/>
                             <constraint firstItem="KAL-yU-MS7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="pTo-FT-rjW"/>
@@ -55,6 +62,7 @@
                     </view>
                     <connections>
                         <outlet property="editButton" destination="0fd-yO-EGo" id="dRh-GY-FfH"/>
+                        <outlet property="rainbowMusicBanner" destination="L0i-om-XOG" id="NTY-KY-vXA"/>
                         <outlet property="songTableView" destination="ggH-9e-s6Z" id="Ld8-HR-B46"/>
                     </connections>
                 </viewController>
@@ -310,6 +318,7 @@
         <image name="icons8-end-100" width="50" height="50"/>
         <image name="icons8-play-button-100" width="50" height="50"/>
         <image name="icons8-skip-to-start-100" width="50" height="50"/>
+        <image name="rainbow-music-banner" width="3354" height="1118"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

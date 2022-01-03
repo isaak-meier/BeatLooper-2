@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (strong, nonatomic) NSMutableArray *songs;
+@property (weak, nonatomic) IBOutlet UIImageView *rainbowMusicBanner;
 @property BOOL isAddSongsMode;
 
 @end
@@ -50,6 +51,7 @@
 
     if (self.isAddSongsMode) {
         [self.editButton setHidden:YES];
+        [self.rainbowMusicBanner setHidden:YES];
     }
     [self refreshSongsAndReloadData:YES];
 }
@@ -101,7 +103,6 @@
     // this range encompasses the song we just selected and every song after it.
     NSRange queueRange = NSMakeRange(indexPath.row, self.songs.count - indexPath.row);
     NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
-    NSLog(@"Indexes in queue range: %@", indexes);
     NSArray *songsForQueue = [NSArray arrayWithArray:[self.songs objectsAtIndexes:indexes]];
     [[self coordinator] openPlayerWithSongs:songsForQueue];
     [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];

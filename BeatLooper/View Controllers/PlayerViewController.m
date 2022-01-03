@@ -7,6 +7,7 @@
 
 #import "PlayerViewController.h"
 #import "BLPBeatModel.h"
+@import MediaPlayer;
 @import AVFAudio.AVAudioSession;
 @import AVFoundation;
 
@@ -87,11 +88,11 @@
     [self.queueTableView setEditing:YES];
     [self.queueTableView setAllowsMultipleSelectionDuringEditing:YES];
     
-    
     [self loadPlayer];
     
     [self configureAudioSession];
 
+    [self setupRemoteTransportControls];
 }
 
 
@@ -113,7 +114,32 @@
     if(!success) {
         NSLog(@"Error setting up audio session, log all the errors. %@", [error localizedDescription]);
     }
+}
 
+- (void)setupRemoteTransportControls {
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        if (self.player.items.count != 0) {
+            [self playOrPauseSong:nil];
+            return MPRemoteCommandHandlerStatusSuccess;
+        } else {
+            return MPRemoteCommandHandlerStatusCommandFailed;
+        }
+    }];
+    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        [self skipForwardButtonTapped:nil];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    [commandCenter.previousTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        [self skipBackButtonTapped:nil];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+}
+
+- (void)updateNowPlayingInfoCenterWithTitle:(NSString *)title {
+    MPNowPlayingInfoCenter *infoCenter = [MPNowPlayingInfoCenter defaultCenter];
+    NSDictionary<NSString *, id> *nowPlayingInfo = @{MPMediaItemPropertyTitle : title};
+    infoCenter.nowPlayingInfo = nowPlayingInfo;
 }
 
 - (void)loadPlayer {
@@ -179,6 +205,7 @@
     } else {
         self.currentSong = nil;
         self.isPlaying = NO;
+        [self animateButtonToPlayIcon:YES];
         // this too kicks off KVO
         [self.player removeAllItems];
     }
@@ -322,6 +349,7 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.songTitleLabel setText:songTitle];
+        [self updateNowPlayingInfoCenterWithTitle:songTitle];
         if (self.isLooping) {
             [self.playerStatusLabel setText:@"Now Looping"];
         } else if (self.isPlaying) {
