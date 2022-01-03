@@ -7,13 +7,22 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <AVFoundation/AVAudioPlayer.h>
+#import <AVFoundation/AVPlayer.h>
+#import "BLPCoordinator.h"
+@class BLPCoordinator;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlayerViewController : UIViewController <UITextFieldDelegate>
+@interface PlayerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-- (id)initWithSongID:(NSManagedObjectID *)songID;
+@property (weak) BLPCoordinator *coordinator;
+@property (nullable) Beat *currentSong;
+
+- (id)initWithSongs:(NSArray *)songs coordinator:(BLPCoordinator *)coordinator;
+- (void)startLoopWithTimeRange:(CMTimeRange)timeRange;
+- (void)stopLooping;
+- (void)changeCurrentSongTo:(Beat *)newSong;
+- (void)addSongToQueue:(Beat *)song;
 
 @end
 

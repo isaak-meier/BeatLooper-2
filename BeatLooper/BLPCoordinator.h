@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
 #import "PlayerViewController.h"
+#import "LooperViewController.h"
+@class AddSongsViewController;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithWindow:(UIWindow*)window;
 - (void)start; // kickoff application
 - (void)songAdded;
-- (void)songTapped:(NSManagedObjectID *)songID;
+- (void)showAddSongsView;
+- (void)openPlayerWithSongs:(NSArray *)songsForQueue;
+- (void)addSongToQueue:(Beat *)song;
+- (void)openLooperViewForSong:(NSManagedObjectID *)songID;
+- (void)dismissLooperViewAndBeginLoopingTimeRange:(CMTimeRange)timeRange;
+- (void)dismissLooperViewAndStopLoop;
+- (void)clearLooperView;
 
 @end
 

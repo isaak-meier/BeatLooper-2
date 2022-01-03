@@ -10,7 +10,7 @@
 
 @implementation BLPBeatModel
 
-- (NSArray*)getAllSongs {
+- (NSArray *)getAllSongs {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     
@@ -52,7 +52,7 @@
     }
 }
 
-// Used in development to clear core data. would be nice to have a button for this.
+// Used in development to clear core data. 
 - (void)deleteAllEntities {
     AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
@@ -68,7 +68,7 @@
 }
 
 - (BOOL)saveSongFromURL:(NSURL *)songURL {
-    NSURL *newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songURL];
+    NSURL *newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songURL withCafExtension:NO];
     NSString *urlStr = songURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
     
@@ -82,13 +82,12 @@
     } else {
         NSLog(@"Error saving file: %@", error);
     }
-
    
     return YES;
 }
 
 - (void)saveSongWith:(NSString *)title url:(NSString *)url {
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.container.viewContext;
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
@@ -103,48 +102,58 @@
     }
 }
 
+- (void)saveTempo:(int)tempo forSong:(NSManagedObjectID *)songID {
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = delegate.container.viewContext;
+    
+    Beat *beatFromSongID = [context objectWithID:songID];
+    beatFromSongID.tempo = tempo;
+    
+    NSError *error;
+    [context save:&error];
+    if (error) {
+        NSLog(@"There was some error updating: %@", error);
+    } else {
+        NSLog(@"Saved beat with id %@ named %@ with tempo %d", beatFromSongID.objectID, beatFromSongID.title, beatFromSongID.tempo);
+    }
+}
+
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
-+ (double)secondsFromTempo:(int)tempo withBars:(double)duration {
++ (double)secondsFromTempo:(int)tempo withBars:(int)duration {
     return 1.0 / (double)tempo * 60.0 * 4.0 * duration;
 }
 
-
-+ (NSURL *)exportClippedAudioFromBeat:(Beat *)beat withTempo:(int)tempo startingAtTimeInBars:(int)startTime forTimeInBars:(int)duration {
-    NSURL *fullSongURL = [NSURL fileURLWithPath:beat.fileUrl];
-    AVAsset *asset = [AVAsset assetWithURL:fullSongURL];
-    
-    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startTime];
+// time range for loop export cut
++ (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo {
+    if (startBar < 0) { // can't have negative time range
+        startBar = 0;
+    }
+    NSTimeInterval timeToStartCut = [self secondsFromTempo:tempo withBars:startBar];
     CMTime cmStartTime = CMTimeMakeWithSeconds(timeToStartCut, 1000000);
-    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:duration];
+    int durationBars = endBar - startBar;
+    if (durationBars < 0) {
+        durationBars = 0;
+    }
+    NSTimeInterval durationOfCut = [self secondsFromTempo:tempo withBars:durationBars];
     CMTime cmDuration = CMTimeMakeWithSeconds(durationOfCut, 1000000);
-    CMTimeRange timeRangeOfExport = CMTimeRangeMake(cmStartTime, cmDuration);
+    if (CMTIME_IS_INVALID(cmStartTime) || CMTIME_IS_INVALID(cmDuration)) {
+        NSLog(@"Start time or duration is invalid");
+        NSLog(@"Time range: %f full time %f", CMTimeGetSeconds(cmStartTime), CMTimeGetSeconds(cmDuration));
+    }
     
-    AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetAppleM4A];
-    if (nil == exportSession) return nil;
-    
-    NSURL *exportedFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:fullSongURL];
-    [exportSession setOutputURL:exportedFileURL];
-    [exportSession setTimeRange:timeRangeOfExport];
-    [exportSession setOutputFileType:AVAssetExportPresetAppleM4A];
-    
-    [exportSession exportAsynchronouslyWithCompletionHandler:^{
-        if (exportSession.status == AVAssetExportSessionStatusCompleted) {
-            NSLog(@"Successfully exported audio to %@", exportedFileURL.absoluteString);
-        } else if (exportSession.status == AVAssetExportSessionStatusFailed) {
-            // TODO: handle this appropriately
-            NSLog(@"Filed to export audio to %@", exportedFileURL.absoluteString);
-        } else {
-            NSLog(@"Status: %@", exportSession.status);
-        }
-        // need be completion block
-    }];
-    return exportedFileURL; // will prob be nil
+    return CMTimeRangeMake(cmStartTime, cmDuration);
 }
 
-+ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL {
+
++ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL withCafExtension:(BOOL)shouldUseCafExtension {
     NSString *urlStr = currentURL.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
+    NSString *fileExtension;
+    if (shouldUseCafExtension) {
+        fileExtension = @"caf";
+    } else {
+        fileExtension = [[urlStr lastPathComponent] pathExtension];
+    }
     // create path
     NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
     // unique id to ensure songs with same name are saved uniquely

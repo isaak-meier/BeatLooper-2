@@ -8,7 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "BLPBeatModel.h"
 #import "BLPCoordinator.h"
-#import <AVFoundation/AVAudioPlayer.h>
 #import "Beat+CoreDataClass.h"
 @class BLPCoordinator;
 
@@ -17,7 +16,7 @@
 @property BLPBeatModel *model;
 @property (weak) BLPCoordinator *coordinator;
 
-- (id)initWithCoordinator:(BLPCoordinator *)coordinator;
+- (id)initWithCoordinator:(BLPCoordinator *)coordinator inAddSongsMode:(BOOL)isAddSongsMode;
 - (void)refreshSongsAndReloadData:(BOOL)shouldReloadData;
 
 @end
