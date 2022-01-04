@@ -367,9 +367,11 @@
         // we need to check if we've advanced the song, or just changed it.
         // if we've advanced the song, the player items will have one less than usual,
         // and we need to remove an item from the tableView
-        if (self.player.items.count == self.songsInQueue.count && self.songsInQueue.count != 0) {
-            self.currentSong = self.songsInQueue[0];
-            [self.songsInQueue removeObjectAtIndex:0];
+        if (self.player.items.count == self.songsInQueue.count) {
+            if (self.songsInQueue.count != 0) {
+                self.currentSong = self.songsInQueue[0];
+                [self.songsInQueue removeObjectAtIndex:0];
+            }
             [self.coordinator clearLooperView];
         }
         [self refreshVisibleText];
@@ -420,18 +422,22 @@
 }
 
 - (void)moveRowInTableViewAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
-    Beat *songToMove = self.songsInQueue[sourceIndex];
-    [self.songsInQueue removeObjectAtIndex:sourceIndex];
-    [self.songsInQueue insertObject:songToMove atIndex:destinationIndex];
+    if (sourceIndex <= self.songsInQueue.count) {
+        Beat *songToMove = self.songsInQueue[sourceIndex];
+        [self.songsInQueue removeObjectAtIndex:sourceIndex];
+        [self.songsInQueue insertObject:songToMove atIndex:destinationIndex];
+    }
 }
 
 - (void)moveSongInQueueAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
     NSMutableArray<AVPlayerItem *> *items = [NSMutableArray arrayWithArray:self.player.items];
-    AVPlayerItem *itemToMove = items[sourceIndex];
-    [items removeObjectAtIndex:sourceIndex];
-    AVPlayerItem *itemToInsertAfter = items[destinationIndex - 1];
-    [self.player removeItem:itemToMove];
-    [self.player insertItem:itemToMove afterItem:itemToInsertAfter];
+    if (sourceIndex <= items.count && destinationIndex <= items.count) {
+        AVPlayerItem *itemToMove = items[sourceIndex];
+        [items removeObjectAtIndex:sourceIndex];
+        AVPlayerItem *itemToInsertAfter = items[destinationIndex - 1];
+        [self.player removeItem:itemToMove];
+        [self.player insertItem:itemToMove afterItem:itemToInsertAfter];
+    }
 }
 
 @end
