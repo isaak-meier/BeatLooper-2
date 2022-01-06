@@ -104,6 +104,8 @@
     BOOL success = [self.playerModel skipForward];
     if (!success) {
         NSLog(@"Skipping forward failed");
+    } else {
+        [self.queueTableView reloadData];
     }
 }
 

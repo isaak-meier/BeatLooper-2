@@ -45,7 +45,7 @@
     if (!isNotFirstTime) { // ...so it is their first time
         [self presentOnboardingAlert];
     }
-    if (shouldSetUpSampleSongs) {
+    if (YES) {
         [self setupSampleSongs];
         [userDefaults setBool:YES forKey:@"addSampleSongs"];
     }

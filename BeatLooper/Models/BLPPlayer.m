@@ -31,6 +31,7 @@
     if (self = [super init]) {
         if (songs.count > 0) {
             _selectedIndexes = [NSMutableArray new];
+            _model = [[BLPBeatModel alloc] init];
             NSMutableArray<AVPlayerItem *> *playerItems = [self setupPlayerItems:songs];
             [self loadPlayerWithItems:playerItems];
             [self configureAudioSession];
@@ -52,6 +53,10 @@
         NSURL *songURL = [_model getURLForCachedSong:currentSong.objectID];
         AVAsset *songAsset = [AVAsset assetWithURL:songURL];
         AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+        if (!playerItem) {
+            NSLog(@"Couldn't load asset... should error here");
+            continue;
+        }
         if (i == 0) {
             [playerItems addObject:playerItem];
             // _currentSong = currentSong;
@@ -249,8 +254,8 @@
 
 - (void)advanceToNextSong {
     if (self.playerState != BLPPlayerSongPlaying
-        || self.playerState != BLPPlayerSongPaused) {
-        NSLog(@"Error: cannot advance songs while looping or empty");
+        && self.playerState != BLPPlayerSongPaused) {
+        NSLog(@"Error: cannot advance songs while looping or empty. State: %d", (int)self.playerState);
         return;
     }
     BOOL isItemToSkipTo = self.player.items.count > 1;
