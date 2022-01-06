@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <AVFoundation/AVPlayer.h>
 #import "BLPCoordinator.h"
 @class BLPCoordinator;
 

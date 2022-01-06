@@ -6,10 +6,8 @@
 //
 
 #import "PlayerViewController.h"
-#import "BLPBeatModel.h"
+#import "BLPPlayer.h"
 @import MediaPlayer;
-@import AVFAudio.AVAudioSession;
-@import AVFoundation;
 
 @interface PlayerViewController ()
 
@@ -24,20 +22,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *removeButton; // also addSongButton
 
 @property BLPBeatModel *model;
-
-@property NSMutableArray<AVPlayerItem *> *playerItems;
-// this should be the same as above, without the currently playing song
-@property NSMutableArray *songsInQueue;
-@property AVQueuePlayer *player;
-@property AVPlayerLooper *beatLooper;
+@property BLPPlayer *playerModel;
 
 @property NSProgress *progress;
 @property NSTimer *timer;
-
-@property BOOL isPlaying;
-@property BOOL isLooping;
-
-@property NSMutableArray<NSNumber *> *selectedIndexes;
 
 - (void)loadPlayer;
 - (void)setupProgressBar;
@@ -53,29 +41,9 @@
         // assign properties
         _model = [[BLPBeatModel alloc] init];
         _coordinator = coordinator;
-        [self setupPlayerItems:songs];
-        _selectedIndexes = [NSMutableArray new];
+        _playerModel = [[BLPPlayer alloc] initWithSongs:songs];
     }
     return self;
-}
-
-// Sets properties playerItems, currentPlayerItem, and songsInQueue
-- (void)setupPlayerItems:(NSArray *)songs {
-    _playerItems = [NSMutableArray new];
-    _songsInQueue = [NSMutableArray new];
-    for (int i = 0; i < songs.count; i++) {
-        Beat *currentSong = songs[i];
-        NSURL *songURL = [_model getURLForCachedSong:currentSong.objectID];
-        AVAsset *songAsset = [AVAsset assetWithURL:songURL];
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
-        if (i == 0) {
-            [_playerItems addObject:playerItem];
-            _currentSong = currentSong;
-        } else {
-            [_playerItems addObject:playerItem];
-            [_songsInQueue addObject:currentSong];
-        }
-    }
 }
 
 - (void)viewDidLoad {
@@ -89,10 +57,6 @@
     [self.queueTableView setAllowsMultipleSelectionDuringEditing:YES];
     
     [self loadPlayer];
-    
-    [self configureAudioSession];
-
-    [self setupRemoteTransportControls];
 }
 
 
@@ -100,53 +64,12 @@
     [self refreshVisibleText];
 }
 
-- (void)configureAudioSession {
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    
-    NSError *error;
-    BOOL success = [session setCategory:AVAudioSessionCategoryPlayback error:&error];
-    double hwSampleRate = 44100.0;
-    success = [session setPreferredSampleRate:hwSampleRate error:&error];
-    
-    NSTimeInterval ioBufferDuration = 0.0029;
-    success = [session setPreferredIOBufferDuration:ioBufferDuration error:&error];
-    success = [session setActive:YES error:&error];
-    if(!success) {
-        NSLog(@"Error setting up audio session, log all the errors. %@", [error localizedDescription]);
-    }
-}
 
-- (void)setupRemoteTransportControls {
-    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-        if (self.player.items.count != 0) {
-            [self playOrPauseSong:nil];
-            return MPRemoteCommandHandlerStatusSuccess;
-        } else {
-            return MPRemoteCommandHandlerStatusCommandFailed;
-        }
-    }];
-    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-        [self skipForwardButtonTapped:nil];
-        return MPRemoteCommandHandlerStatusSuccess;
-    }];
-    [commandCenter.previousTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-        [self skipBackButtonTapped:nil];
-        return MPRemoteCommandHandlerStatusSuccess;
-    }];
-}
 
 - (void)updateNowPlayingInfoCenterWithTitle:(NSString *)title {
     MPNowPlayingInfoCenter *infoCenter = [MPNowPlayingInfoCenter defaultCenter];
     NSDictionary<NSString *, id> *nowPlayingInfo = @{MPMediaItemPropertyTitle : title};
     infoCenter.nowPlayingInfo = nowPlayingInfo;
-}
-
-- (void)loadPlayer {
-    self.player = nil;
-    self.player = [AVQueuePlayer queuePlayerWithItems:self.playerItems];
-    // KVO
-    [self.player addObserver:self forKeyPath:@"currentItem" options:0 context:nil];
 }
 
 - (void)handleExistenceError {
@@ -168,46 +91,31 @@
 
 
 - (IBAction)playOrPauseSong:(id)sender {
-    if (!self.isPlaying) {
-        if (self.player.items.count == 0) {
+    BOOL success = [self.playerModel togglePlayOrPause];
+    if (success) {
+        BLPPlayerState state = self.playerModel.playerState;
+        if (state == BLPPlayerSongPaused || state == BLPPlayerLoopPaused) {
             [self animateButtonToPlayIcon:YES];
-            return;
+        } else if (state == BLPPlayerSongPlaying || state == BLPPlayerLoopPlaying) {
+            [self animateButtonToPlayIcon:NO];
         }
-        [self.player play];
-        [self animateButtonToPlayIcon:NO];
-        self.isPlaying = YES;
-        if (!self.progress) {
-            // need to set up progress bar after play, but only once
-            [self setupProgressBar];
-        }
+        [self refreshVisibleText];
     } else {
-        [self.player pause];
-        [self animateButtonToPlayIcon:YES];
-        self.isPlaying = NO;
+        NSLog(@"Play/pause failed on empty player");
     }
-    [self refreshVisibleText];
 }
 
 - (IBAction)skipBackButtonTapped:(id)sender {
-    [self.player seekToTime:CMTimeMake(0, 1)];
-    if (!self.isPlaying) {
-        [self playOrPauseSong:nil];
+    BOOL success = [self.playerModel skipBackward];
+    if (!success) {
+        NSLog(@"Skipping backward failed");
     }
 }
 
 - (IBAction)skipForwardButtonTapped:(id)sender {
-    if (self.player.items.count > 1) {
-        // this will kick off our KVO method
-        if (self.isLooping) {
-            [self stopLooping];
-        }
-        [self.player advanceToNextItem];
-    } else {
-        self.currentSong = nil;
-        self.isPlaying = NO;
-        [self animateButtonToPlayIcon:YES];
-        // this too kicks off KVO
-        [self.player removeAllItems];
+    BOOL success = [self.playerModel skipForward];
+    if (!success) {
+        NSLog(@"Skipping forward failed");
     }
 }
 
@@ -266,17 +174,6 @@
         [self playOrPauseSong:nil];
         [self playOrPauseSong:nil];
     }
-}
-
-- (void)stopLooping {
-    self.isLooping = NO;
-    if (self.beatLooper) {
-        self.beatLooper = nil;
-    }
-    if (self.isPlaying) {
-        [self playOrPauseSong:nil];
-    }
-    [self refreshVisibleText];
 }
 
 - (void)changeCurrentSongTo:(Beat *)newSong {
@@ -379,65 +276,5 @@
     }
 }
 
-#pragma mark - UITableView Datasource
-
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
-    Beat *songForCell = self.songsInQueue[indexPath.row];
-    cell.textLabel.text = songForCell.title;
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.removeButton setTitle:@"Remove" forState:UIControlStateNormal];
-    [self.selectedIndexes addObject:[NSNumber numberWithInt:(int)indexPath.row]];
-}
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    for (int i = 0; i < self.selectedIndexes.count; i++) {
-        NSNumber *number = self.selectedIndexes[i];
-        if (number.intValue == indexPath.row) {
-            [self.selectedIndexes removeObjectAtIndex:i];
-        }
-    }
-    if (self.selectedIndexes.count == 0) {
-        [self.removeButton setTitle:@"Add Songs" forState:UIControlStateNormal];
-    }
-}
-
-
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.songsInQueue.count;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    if (sourceIndexPath.row != destinationIndexPath.row) {
-        [self moveRowInTableViewAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
-        [self moveSongInQueueAtIndex:(sourceIndexPath.row + 1) toIndex:(destinationIndexPath.row + 1)];
-    }
-}
-
-- (void)moveRowInTableViewAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
-    if (sourceIndex <= self.songsInQueue.count) {
-        Beat *songToMove = self.songsInQueue[sourceIndex];
-        [self.songsInQueue removeObjectAtIndex:sourceIndex];
-        [self.songsInQueue insertObject:songToMove atIndex:destinationIndex];
-    }
-}
-
-- (void)moveSongInQueueAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
-    NSMutableArray<AVPlayerItem *> *items = [NSMutableArray arrayWithArray:self.player.items];
-    if (sourceIndex <= items.count && destinationIndex <= items.count) {
-        AVPlayerItem *itemToMove = items[sourceIndex];
-        [items removeObjectAtIndex:sourceIndex];
-        AVPlayerItem *itemToInsertAfter = items[destinationIndex - 1];
-        [self.player removeItem:itemToMove];
-        [self.player insertItem:itemToMove afterItem:itemToInsertAfter];
-    }
-}
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA4504A3278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
+		EA4504A4278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
 		EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
@@ -52,6 +54,8 @@
 
 /* Begin PBXFileReference section */
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EA4504A1278529860054516E /* BLPPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPPlayer.h; sourceTree = "<group>"; };
+		EA4504A2278529860054516E /* BLPPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayer.m; sourceTree = "<group>"; };
 		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
 		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		EAB5ECA32644A89300C4D535 /* PlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
@@ -155,6 +159,8 @@
 			children = (
 				EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */,
 				EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */,
+				EA4504A1278529860054516E /* BLPPlayer.h */,
+				EA4504A2278529860054516E /* BLPPlayer.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -371,6 +377,7 @@
 				EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */,
 				EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */,
 				EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */,
+				EA4504A3278529860054516E /* BLPPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +389,7 @@
 				EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */,
 				EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */,
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
+				EA4504A4278529860054516E /* BLPPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +572,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooper/Info.plist;
@@ -574,6 +583,7 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Meier.BeatLooper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
