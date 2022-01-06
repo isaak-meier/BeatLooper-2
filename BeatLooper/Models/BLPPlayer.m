@@ -15,11 +15,13 @@
 @interface BLPPlayer()
 
 @property BLPBeatModel *model;
-// this should be the same as above, without the currently playing song
 @property NSMutableArray *songsInQueue;
 @property NSMutableArray<NSNumber *> *selectedIndexes; // songs selected from queue
 @property AVQueuePlayer *player;
 @property AVPlayerLooper *beatLooper;
+// progress bar
+@property NSProgress *progress;
+@property NSTimer *timer;
 
 @end
 
@@ -165,8 +167,82 @@
     }
 }
 
-- (void)removeSelectedSongs {
+- (BOOL)startLoopingTimeRange:(CMTimeRange)timeRange {
+    if (self.playerState == BLPPlayerEmpty) {
+        NSLog(@"Bruh, there's nothing to loop. Error starting loop");
+        return NO;
+    }
     
+    if (self.playerState == BLPPlayerLoopPlaying
+        || self.playerState == BLPPlayerLoopPaused) {
+        [self stopLooping];
+    }
+    if (self.playerState == BLPPlayerSongPlaying) {
+        [self togglePlayOrPause];
+    }
+    if (self.playerState == BLPPlayerSongPaused) {
+        AVPlayerItem *currentPlayerItem = self.player.currentItem;
+        AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:currentPlayerItem timeRange:timeRange];
+        self.beatLooper = beatLooper;
+        self.playerState = BLPPlayerLoopPaused;
+        [self togglePlayOrPause];
+        return YES;
+    }
+    NSLog(@"Couldn't loop due to unknown reason (read \"mistake\".");
+    return NO;
+}
+
+- (BOOL)changeCurrentSongTo:(Beat *)song {
+    BOOL success = [self addSongToQueue:song];
+    if (success) {
+        [self skipForward];
+    }
+    return YES; // this should succeed no matter the state
+}
+
+- (BOOL)addSongToQueue:(Beat *)song {
+    NSArray *items = self.player.items;
+    NSURL *songURL = [_model getURLForCachedSong:song.objectID];
+    AVAsset *songAsset = [AVAsset assetWithURL:songURL];
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+    if (self.playerState != BLPPlayerEmpty && items.count != 0) {
+        [self.player insertItem:playerItem afterItem:items[0]];
+        [self.songsInQueue insertObject:song atIndex:0];
+        return YES;
+    } else {
+        // if the player has no items, we need to recreate it.
+        [self loadPlayerWithItems:[NSMutableArray arrayWithObject:playerItem]];
+        // NO because we didn't actually add it to the queue
+        return NO;
+    }
+}
+
+- (void)removeSelectedSongs {
+    NSArray<AVPlayerItem *> *items = self.player.items;
+    NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
+    NSMutableIndexSet *indexesToRemove = [NSMutableIndexSet new];
+    for (int i = 0; i < self.selectedIndexes.count; i++) {
+        int indexToRemoveAt = self.selectedIndexes[i].intValue;
+        AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1]; // items has a 'hidden' 0 element, currently playing
+        [itemsToRemove addObject:itemToRemove];
+        [indexesToRemove addIndex:indexToRemoveAt];
+    }
+    [self.songsInQueue removeObjectsAtIndexes:indexesToRemove];
+    for (AVPlayerItem *item in itemsToRemove) {
+        [self.player removeItem:item];
+    }
+}
+
+- (NSProgress *)getProgressForCurrentItem {
+    NSProgress *progress = [[NSProgress alloc] init];
+    CMTime songDuration = [self.player.currentItem duration];
+    int durationInSeconds = (int)(songDuration.value / songDuration.timescale);
+    [progress setTotalUnitCount:durationInSeconds];
+    self.progress = progress;
+    // set refresh timer so progress is updated
+    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(incrementProgress) userInfo:nil repeats:YES];
+    self.timer = progressBarRefreshTimer;
+    return self.progress;
 }
 
 # pragma mark - Private Methods
@@ -193,17 +269,28 @@
     }
 }
 
-- (void)stopLooping {
+// Sets playerState to SongPaused as long as we're looping
+- (BOOL)stopLooping {
     if (self.playerState == BLPPlayerLoopPlaying) {
         [self togglePlayOrPause];
         [self stopLooping]; // recurr to hit LoopPaused case
     } else if (self.playerState == BLPPlayerLoopPaused) {
         self.beatLooper = nil;
-        [self skipBackward]; // restart song
+        [self skipBackward]; // restart song... might not be ness
         self.playerState = BLPPlayerSongPaused;
+        return YES;
     } else {
         NSLog(@"Error: Cannot stop looping if we aren't looping.");
-        return;
+        return NO;
+    }
+    return NO;
+}
+
+- (void)incrementProgress {
+    if (self.playerState == BLPPlayerSongPlaying || BLPPlayerLoopPlaying) {
+        CMTime currentTime = [self.player.currentItem currentTime];
+        int timeInSeconds = (int)(currentTime.value / currentTime.timescale);
+        [self.progress setCompletedUnitCount:timeInSeconds];
     }
 }
 

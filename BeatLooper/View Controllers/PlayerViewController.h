@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlayerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface PlayerViewController : UIViewController
 
 @property (weak) BLPCoordinator *coordinator;
 @property (nullable) Beat *currentSong;
