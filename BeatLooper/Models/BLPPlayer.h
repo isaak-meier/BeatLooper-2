@@ -40,7 +40,7 @@ typedef enum : NSUInteger {
 
 - (NSProgress *)getProgressForCurrentItem;
 
-@property BLPPlayerState playerState;
+@property (readonly) BLPPlayerState playerState;
 
 @end
 

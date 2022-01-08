@@ -23,6 +23,7 @@
 @property NSProgress *progress;
 @property NSTimer *timer;
 
+@property BLPPlayerState playerState;
 @end
 
 @implementation BLPPlayer
@@ -253,8 +254,9 @@
 # pragma mark - Private Methods
 
 - (void)advanceToNextSong {
-    if (self.playerState != BLPPlayerSongPlaying
-        && self.playerState != BLPPlayerSongPaused) {
+    if (self.playerState == BLPPlayerLoopPaused
+        || self.playerState == BLPPlayerLoopPlaying
+        || self.playerState == BLPPlayerEmpty) {
         NSLog(@"Error: cannot advance songs while looping or empty. State: %d", (int)self.playerState);
         return;
     }
@@ -278,8 +280,8 @@
 - (BOOL)stopLooping {
     if (self.playerState == BLPPlayerLoopPlaying) {
         [self togglePlayOrPause];
-        [self stopLooping]; // recurr to hit LoopPaused case
-    } else if (self.playerState == BLPPlayerLoopPaused) {
+    }
+    if (self.playerState == BLPPlayerLoopPaused) {
         self.beatLooper = nil;
         [self skipBackward]; // restart song... might not be ness
         self.playerState = BLPPlayerSongPaused;
@@ -288,7 +290,6 @@
         NSLog(@"Error: Cannot stop looping if we aren't looping.");
         return NO;
     }
-    return NO;
 }
 
 - (void)incrementProgress {

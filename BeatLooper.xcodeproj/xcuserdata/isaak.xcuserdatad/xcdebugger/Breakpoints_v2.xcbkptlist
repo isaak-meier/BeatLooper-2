@@ -7,33 +7,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "55F0200A-F454-4E9B-B367-C3D8F96988B5"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BeatLooper/Models/BLPPlayer.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "-setupPlayerItems:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "CE4AE09C-9EA5-4DBE-AEC5-0534D720323A"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BeatLooper/Models/BLPPlayer.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "-togglePlayOrPause"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CE4AE09C-9EA5-4DBE-AEC5-0534D720323A - 8889df8aac50d5e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer togglePlayOrPause]"
+                  moduleName = "BeatLooper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "CE4AE09C-9EA5-4DBE-AEC5-0534D720323A - 8598ce4a1c616fa6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer togglePlayOrPause]"
+                  moduleName = "BeatLooperTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -46,9 +62,153 @@
             filePath = "BeatLooper/Models/BLPPlayer.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "-skipForward"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FAD98170-0951-4D2A-8D1A-E077B14EC8DC - 269e919eccad988b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer skipForward]"
+                  moduleName = "BeatLooper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "153"
+                  endingLineNumber = "153"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "FAD98170-0951-4D2A-8D1A-E077B14EC8DC - ab8ec22c7a09fa73"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer skipForward]"
+                  moduleName = "BeatLooperTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "153"
+                  endingLineNumber = "153"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4DE1D4BF-CD41-4347-B6E6-2271F2024F1E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/Models/BLPPlayer.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "-skipBackward"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4DE1D4BF-CD41-4347-B6E6-2271F2024F1E - 7badeb783588d8bf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer skipBackward]"
+                  moduleName = "BeatLooper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "4DE1D4BF-CD41-4347-B6E6-2271F2024F1E - f6bdb8ca832cba47"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer skipBackward]"
+                  moduleName = "BeatLooperTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6ADCB164-DDF5-485E-92D9-7CD7135E73F4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/Models/BLPPlayer.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
+            landmarkName = "-stopLooping"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6ADCB164-DDF5-485E-92D9-7CD7135E73F4 - 78544b7e2764c6f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer stopLooping]"
+                  moduleName = "BeatLooper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "281"
+                  endingLineNumber = "281"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "6ADCB164-DDF5-485E-92D9-7CD7135E73F4 - f54418cc91c0a401"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BLPPlayer stopLooping]"
+                  moduleName = "BeatLooperTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPPlayer.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "281"
+                  endingLineNumber = "281"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0D0E1372-337F-4993-87DD-3A777D0BB237"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooperTests/ModelTests/BLPPlayerStateTests.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "-test"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

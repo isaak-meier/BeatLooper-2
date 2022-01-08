@@ -10,11 +10,9 @@
 #import <Foundation/Foundation.h>
 
 @interface BLPModelTimeRangeTests : XCTestCase
-@end
-
-@interface BLPModelTimeRangeTests ()
 @property BLPBeatModel *model;
 @end
+
 
 @implementation BLPModelTimeRangeTests
 
@@ -71,7 +69,7 @@
 
     CMTimeRange fourBarsInMiddle = [BLPBeatModel timeRangeFromBars:startBar to:endBar withTempo:tempo];
 
-    CMTimeRange expectedRange = CMTimeRangeMake(CMTimeMake(0, 10000000), CMTimeMake(0, 10000000));
+    CMTimeRange expectedRange = CMTimeRangeMake(CMTimeMake(137142850, 10000000), CMTimeMake(68571420, 10000000));
 
     NSLog(@"Time duration: %f expected duration %f", CMTimeGetSeconds(fourBarsInMiddle.duration), CMTimeGetSeconds(expectedRange.duration));
     NSLog(@"Time start: %f expected start: %f", CMTimeGetSeconds(fourBarsInMiddle.start), CMTimeGetSeconds(expectedRange.start));

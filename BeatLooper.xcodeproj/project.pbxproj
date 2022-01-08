@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */; };
 		EA4504A3278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EA4504A4278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerStateTests.m; sourceTree = "<group>"; };
 		EA4504A1278529860054516E /* BLPPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPPlayer.h; sourceTree = "<group>"; };
 		EA4504A2278529860054516E /* BLPPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayer.m; sourceTree = "<group>"; };
 		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */,
+				EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */,
 			);
 			path = ModelTests;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */,
 				EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */,
 				EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */,
+				EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */,
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
 				EA4504A4278529860054516E /* BLPPlayer.m in Sources */,
 			);
