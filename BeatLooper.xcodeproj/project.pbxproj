@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */; };
+		EA41C5EB278B7D44001E8C53 /* BLPModelSongsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */; };
 		EA4504A3278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EA4504A4278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
@@ -29,6 +30,9 @@
 		EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
 		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
 		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
+		EADF783C278D5A6900D796A8 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
+		EADF783E278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */; };
+		EADF783F278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */; };
 		EAFE250E277E59040054E069 /* swish.wav in Resources */ = {isa = PBXBuildFile; fileRef = EAFE250D277E59040054E069 /* swish.wav */; };
 		EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE250F277EA7A20054E069 /* LooperViewController.m */; };
 		EAFE2515277FE8C30054E069 /* rise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE2512277FE8C30054E069 /* rise.mp3 */; };
@@ -56,6 +60,7 @@
 /* Begin PBXFileReference section */
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerStateTests.m; sourceTree = "<group>"; };
+		EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelSongsTests.m; sourceTree = "<group>"; };
 		EA4504A1278529860054516E /* BLPPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPPlayer.h; sourceTree = "<group>"; };
 		EA4504A2278529860054516E /* BLPPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayer.m; sourceTree = "<group>"; };
 		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
@@ -86,6 +91,7 @@
 		EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPCoordinator.m; sourceTree = "<group>"; };
 		EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPBeatModel.h; sourceTree = "<group>"; };
 		EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPBeatModel.m; sourceTree = "<group>"; };
+		EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "life's good (ft. double trouble).mp3"; sourceTree = "<group>"; };
 		EAFE250D277E59040054E069 /* swish.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = swish.wav; path = ../../../../../Downloads/swish.wav; sourceTree = "<group>"; };
 		EAFE250F277EA7A20054E069 /* LooperViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LooperViewController.m; sourceTree = "<group>"; };
 		EAFE2511277EA7B30054E069 /* LooperViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LooperViewController.h; sourceTree = "<group>"; };
@@ -134,6 +140,7 @@
 				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
 				EAB772C1277BD27400696CB3 /* forgetMe.mp3 */,
 				EAFE250D277E59040054E069 /* swish.wav */,
+				EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */,
 				EAFE2514277FE8C30054E069 /* '84.mp3 */,
 				EAFE2512277FE8C30054E069 /* rise.mp3 */,
 				EAFE2513277FE8C30054E069 /* swag.mp3 */,
@@ -171,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */,
+				EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */,
 				EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */,
 			);
 			path = ModelTests;
@@ -340,6 +348,7 @@
 			files = (
 				EAFE2516277FE8C30054E069 /* swag.mp3 in Resources */,
 				EAC4ECEA26176072006C9E87 /* LaunchScreen.storyboard in Resources */,
+				EADF783E278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */,
 				EAFE250E277E59040054E069 /* swish.wav in Resources */,
 				EAFE2517277FE8C30054E069 /* '84.mp3 in Resources */,
 				EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */,
@@ -354,6 +363,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EADF783F278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */,
+				EADF783C278D5A6900D796A8 /* dunevibes.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +402,7 @@
 				EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */,
 				EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */,
 				EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */,
+				EA41C5EB278B7D44001E8C53 /* BLPModelSongsTests.m in Sources */,
 				EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */,
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
 				EA4504A4278529860054516E /* BLPPlayer.m in Sources */,

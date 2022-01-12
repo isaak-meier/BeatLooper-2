@@ -158,8 +158,8 @@
             filePath = "BeatLooper/Models/BLPPlayer.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "-stopLooping"
             landmarkType = "7">
             <Locations>
@@ -210,6 +210,86 @@
             endingLineNumber = "117"
             landmarkName = "-test"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E523AF4B-AE7F-4092-AF0E-2E96FFB3FDCF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooper/Models/BLPBeatModel.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "+uniqueURLFromExistingSongURL:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E523AF4B-AE7F-4092-AF0E-2E96FFB3FDCF - a363761768b5de80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[BLPBeatModel uniqueURLFromExistingSongURL:]"
+                  moduleName = "BeatLooper"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPBeatModel.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "173"
+                  endingLineNumber = "173"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "E523AF4B-AE7F-4092-AF0E-2E96FFB3FDCF - 2e7325a5de11bc78"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[BLPBeatModel uniqueURLFromExistingSongURL:]"
+                  moduleName = "BeatLooperTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/isaak/Documents/Git/BeatLooper/BeatLooper/Models/BLPBeatModel.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "173"
+                  endingLineNumber = "173"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "14DA4F49-C5AA-4931-B6D7-084224596F96"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooperTests/ModelTests/BLPModelSongsTests.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "-testAddingAndRemovingSongFromDatabase"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EDC11915-1013-4327-A093-73CB52CDEB23"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BeatLooperTests/ModelTests/BLPModelSongsTests.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "BLPModelSongsTests"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

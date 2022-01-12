@@ -138,7 +138,7 @@
 - (void)handleTimeRangeError {
     UIAlertController *alert = [UIAlertController
                                      alertControllerWithTitle:@"Ah ah ah~"
-                                     message:@"Hey Buddy, you provided an invalid time range. Make sure to set the tempo, start bar, and end bar, or else I can't be loopin' with much success."
+                                     message:@"Hey Buddy, you provided an invalid time range. Make sure to set the tempo, start bar, and end bar, or else I can't be loopin' with much success.\n\n You need to provide the right tempo, 0 as the start bar and 4 as the end bar is a pretty safe default."
                                      preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* okButton = [UIAlertAction
                                     actionWithTitle:@"Haha, Ok"

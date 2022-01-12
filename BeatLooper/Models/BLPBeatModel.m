@@ -8,11 +8,32 @@
 #import "BLPBeatModel.h"
 #import "Beat+CoreDataClass.h"
 
+@interface BLPBeatModel ()
+@property NSPersistentContainer *container;
+
+@end
+
 @implementation BLPBeatModel
 
+
+// Init with dependency
+- (id)initWithContainer:(NSPersistentContainer *)container {
+    if (self = [super init]) {
+        self.container = container;
+        [self.container.viewContext setAutomaticallyMergesChangesFromParent:YES];
+    }
+    return self;
+}
+
+// convenience init
+- (id)init {
+    AppDelegate *delegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSPersistentContainer *container = delegate.container;
+    return [self initWithContainer:container];
+}
+
 - (NSArray *)getAllSongs {
-    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
+    NSManagedObjectContext *context = self.container.viewContext;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Beat"];
     
@@ -33,15 +54,13 @@
 }
 
 - (Beat *)getSongForUniqueID:(NSManagedObjectID *)songID {
-    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
+    NSManagedObjectContext *context = self.container.viewContext;
     Beat *beatFromSongID = [context objectWithID:songID];
     return beatFromSongID;
 }
 
 - (void)deleteSong:(Beat *)song {
-    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
+    NSManagedObjectContext *context = self.container.viewContext;
     [context deleteObject:song];
     
     NSError *error;
@@ -58,8 +77,7 @@
 
 // Used in development to clear core data. 
 - (void)deleteAllEntities {
-    AppDelegate *delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
+    NSManagedObjectContext *context = self.container.viewContext;
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Beat"];
     NSBatchDeleteRequest *delete = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
@@ -72,28 +90,47 @@
 }
 
 - (BOOL)saveSongFromURL:(NSURL *)songURL {
-    NSURL *newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:songURL withCafExtension:NO];
-    NSString *urlStr = songURL.absoluteString;
-    NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
+    /** Here's the deal. When this method is called, it's because a user opened their song in our app.
+     That means that for us, we are given a temporary URL so we can access the item and do with it what we will.
+     So we create a new url (locally) that will hang around, and then copy our file over to the new url, and then save that url in our database.
+     */
+    return [self saveSongFromURL:songURL ToURL:nil acc:0];
+}
+
+- (BOOL)saveSongFromURL:(NSURL *)originalURL ToURL:(NSURL *)newURL acc:(int)accumulator {
+    NSLog(@"Original URL %@", originalURL);
+    NSURL *newFileURL;
+    if (newURL) {
+        newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:newURL];
+    } else {
+        newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:originalURL];
+    }
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-  
-    BOOL success = [fileManager copyItemAtURL:songURL toURL:newFileURL error:&error];
+    BOOL success = [fileManager copyItemAtURL:originalURL toURL:newFileURL error:&error];
+    
     if (success) {
         NSLog(@"The file was successfully saved to path %@", newFileURL);
-        [self saveSongWith:fileTitle url:newFileURL.path];
+        NSString *urlStr = originalURL.absoluteString;
+        NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
+        [self saveSongWith:[fileTitle stringByRemovingPercentEncoding] url:newFileURL.path];
+        return YES;
     } else {
-        NSLog(@"Error saving file: %@", error);
-        return NO;
+        // error code 516 means we couldn't copy because an item with the same name already exists
+        // we only want to recurr to handle this error. If there's a different error
+        // (i.e. original file cannot be found), we should fail. 
+        if (accumulator < 10 && error.code == 516) {
+            return [self saveSongFromURL:originalURL ToURL:newFileURL acc:accumulator+1];
+        } else {
+            NSLog(@"Error saving file: %@", error);
+            return NO;
+        }
     }
-   
-    return YES;
 }
 
 - (void)saveSongWith:(NSString *)title url:(NSString *)url {
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
+    NSManagedObjectContext *context = self.container.viewContext;
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
     NSManagedObject *managedObject = [[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
@@ -108,8 +145,7 @@
 }
 
 - (void)saveTempo:(int)tempo forSong:(NSManagedObjectID *)songID {
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.container.viewContext;
+    NSManagedObjectContext *context = self.container.viewContext;
     
     Beat *beatFromSongID = [context objectWithID:songID];
     beatFromSongID.tempo = tempo;
@@ -150,21 +186,17 @@
 }
 
 
-+ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL withCafExtension:(BOOL)shouldUseCafExtension {
++ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL {
+    NSLog(@"Current url: %@", currentURL.absoluteString);
     NSString *urlStr = currentURL.absoluteString;
+    NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    NSString *fileExtension;
-    if (shouldUseCafExtension) {
-        fileExtension = @"caf";
-    } else {
-        fileExtension = [[urlStr lastPathComponent] pathExtension];
-    }
     // create path
-    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
-    // unique id to ensure songs with same name are saved uniquely
-    NSString *guid = [[NSUUID new] UUIDString];
-    NSString *fileTitleByAppendingUniqueId = [NSString stringWithFormat:@"%@_%@.%@", fileTitle, guid, fileExtension];
-    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:fileTitleByAppendingUniqueId];
+    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    // append 1 to filename to ensure songs with same name are saved uniquely
+    NSString *unqiueFileTitle = [NSString stringWithFormat:@"%@%d.%@", fileTitle, 1, fileExtension];
+    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:unqiueFileTitle];
+    NSLog(@"newFilePath: %@", newFilePath);
     return [NSURL fileURLWithPath:newFilePath];
 }
 

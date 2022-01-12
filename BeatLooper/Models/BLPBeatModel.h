@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BLPBeatModel : NSObject
 
+// do not use in prod, use regular init instead.
+- (id)initWithContainer:(NSPersistentContainer *)container;
+
 - (NSArray *)getAllSongs;
 - (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID;
 - (Beat *)getSongForUniqueID:(NSManagedObjectID *)songID;

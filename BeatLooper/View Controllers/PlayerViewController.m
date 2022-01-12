@@ -120,6 +120,7 @@
     if ([self.removeButton.currentTitle isEqualToString:@"Remove"]) {
         [self.queueTableView reloadData];
         [self.removeButton setTitle:@"Add Songs" forState:UIControlStateNormal];
+        [self.playerModel removeSelectedSongs];
     } else {
         [self.coordinator showAddSongsView];
     }

@@ -223,6 +223,7 @@
     }
 }
 
+// TODO test this (will find bug)
 - (void)removeSelectedSongs {
     NSArray<AVPlayerItem *> *items = self.player.items;
     NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
@@ -237,6 +238,7 @@
     for (AVPlayerItem *item in itemsToRemove) {
         [self.player removeItem:item];
     }
+    [self.selectedIndexes removeAllObjects];
 }
 
 - (NSProgress *)getProgressForCurrentItem {
@@ -304,7 +306,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
-    UITableViewCell *cell = [[UITableViewCell alloc] init]; // TODO possible point of contention
+    UITableViewCell *cell = [[UITableViewCell alloc] init]; 
     Beat *songForCell = self.songsInQueue[indexPath.row];
     cell.textLabel.text = songForCell.title;
     return cell;
