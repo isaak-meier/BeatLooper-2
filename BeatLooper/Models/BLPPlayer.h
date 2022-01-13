@@ -21,6 +21,11 @@ typedef enum : NSUInteger {
     BLPPlayerEmpty,
 } BLPPlayerState;
 
+@protocol BLPPlayerDelegate <NSObject>
+
+- (void)playerDidChangeSongTitle:(NSString *)songTitle withState:(BLPPlayerState)state;
+@end
+
 @interface BLPPlayer : NSObject <UITableViewDelegate, UITableViewDataSource>
 
 // will return nil if songs array is empty
@@ -41,6 +46,7 @@ typedef enum : NSUInteger {
 - (NSProgress *)getProgressForCurrentItem;
 
 @property (readonly) BLPPlayerState playerState;
+@property (weak) id <BLPPlayerDelegate> delegate;
 
 @end
 

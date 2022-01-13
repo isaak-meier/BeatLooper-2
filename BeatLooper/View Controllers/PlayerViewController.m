@@ -193,22 +193,6 @@
     });
 }
 
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-//    if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
-//        // we need to check if we've advanced the song, or just changed it.
-//        // if we've advanced the song, the player items will have one less than usual,
-//        // and we need to remove an item from the tableView
-//        if (self.player.items.count == self.songsInQueue.count) {
-//            if (self.songsInQueue.count != 0) {
-//                self.currentSong = self.songsInQueue[0];
-//                [self.songsInQueue removeObjectAtIndex:0];
-//            }
-//            [self.coordinator clearLooperView];
-//        }
-//        [self refreshVisibleText];
-//        [self.queueTableView reloadData];
-//    }
-//}
 
 
 @end

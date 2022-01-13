@@ -114,10 +114,32 @@
     XCTAssertEqual(self.player.playerState, BLPPlayerEmpty);
 }
 
-- (void)test {
+- (void)testChangingSong {
     NSArray *songs = [self.model getAllSongs];
     
     XCTAssertTrue([self.player changeCurrentSongTo:songs[0]]);
+    XCTAssertEqual(self.player.playerState, BLPPlayerSongPlaying);
+    
+    CMTimeRange range = [BLPBeatModel timeRangeFromBars:8 to:16 withTempo:150];
+    [self.player startLoopingTimeRange:range];
+    XCTAssertEqual(self.player.playerState, BLPPlayerLoopPlaying);
+    XCTAssertTrue([self.player changeCurrentSongTo:songs[1]]);
+    XCTAssertEqual(self.player.playerState, BLPPlayerSongPlaying);
+    
+    [self.player startLoopingTimeRange:range];
+    [self.player togglePlayOrPause];
+    XCTAssertEqual(self.player.playerState, BLPPlayerLoopPaused);
+    XCTAssertTrue([self.player changeCurrentSongTo:songs[1]]);
+    XCTAssertEqual(self.player.playerState, BLPPlayerSongPlaying);
+    
+    [self.player skipForward];
+    [self.player skipForward];
+    [self.player skipForward];
+    [self.player skipForward];
+    [self.player skipForward];
+    XCTAssertEqual(self.player.playerState, BLPPlayerEmpty);
+    XCTAssertTrue([self.player changeCurrentSongTo:songs[1]]);
+    XCTAssertEqual(self.player.playerState, BLPPlayerSongPlaying);
 }
 
 - (void)tearDown {

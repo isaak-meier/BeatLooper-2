@@ -37,7 +37,6 @@
             [self loadPlayerWithItems:playerItems];
             [self configureAudioSession];
             [self setupRemoteTransportControls];
-            _playerState = BLPPlayerSongPaused;
         } else {
             self = nil;
         }
@@ -65,6 +64,7 @@
             [playerItems addObject:playerItem];
             [_songsInQueue addObject:currentSong];
         }
+        NSLog(@"Player item metadata:\n%@", playerItem.asset.metadata);
     }
     return playerItems;
 }
@@ -115,8 +115,11 @@
 - (void)loadPlayerWithItems:(NSMutableArray<AVPlayerItem *> *)playerItems {
     self.player = nil;
     self.player = [AVQueuePlayer queuePlayerWithItems:playerItems];
+    if (self.player) {
+        _playerState = BLPPlayerSongPaused;
+    }
     // KVO
-//    [self.player addObserver:self forKeyPath:@"currentItem" options:0 context:nil];
+    [self.player addObserver:self forKeyPath:@"currentItem" options:0 context:nil];
 }
 
 #pragma mark - Interface Methods
@@ -202,6 +205,8 @@
     BOOL success = [self addSongToQueue:song];
     if (success) {
         [self skipForward];
+    } else {
+        [self togglePlayOrPause];
     }
     return YES; // this should succeed no matter the state
 }
@@ -299,6 +304,23 @@
         CMTime currentTime = [self.player.currentItem currentTime];
         int timeInSeconds = (int)(currentTime.value / currentTime.timescale);
         [self.progress setCompletedUnitCount:timeInSeconds];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
+        // we need to check if we've advanced the song, or just changed it.
+        // if we've advanced the song, the player items will have one less than usual,
+        // and we need to remove an item from the tableView
+        if (self.player.items.count == self.songsInQueue.count) {
+            if (self.songsInQueue.count != 0) {
+                self.currentSong = self.songsInQueue[0];
+                [self.songsInQueue removeObjectAtIndex:0];
+            }
+            [self.coordinator clearLooperView];
+        }
+        [self refreshVisibleText];
+        [self.queueTableView reloadData];
     }
 }
 
