@@ -140,16 +140,14 @@
 }
 
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue {
-    if (!self.playerController || self.playerController.currentSong == nil) {
+    if (!self.playerController) {
         PlayerViewController *playerViewController = [[PlayerViewController alloc]
-                                                      initWithSongs:songsForQueue coordinator:self];
+                                                      initWithSongs:songsForQueue
+                                                      coordinator:self];
         self.playerController = playerViewController;
-    } else {
-        Beat *songTapped = songsForQueue[0];
-        if (self.playerController.currentSong.objectID != songTapped.objectID) {
-            NSLog(@"Switching songs.");
+    } else if (songsForQueue.count != 0) {
+            Beat *songTapped = songsForQueue[0];
             [self.playerController changeCurrentSongTo:songTapped];
-        }
     }
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }

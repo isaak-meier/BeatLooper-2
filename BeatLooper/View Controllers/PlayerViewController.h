@@ -8,14 +8,14 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "BLPCoordinator.h"
+#import "BLPPlayer.h"
 @class BLPCoordinator;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlayerViewController : UIViewController
+@interface PlayerViewController : UIViewController <BLPPlayerDelegate>
 
 @property (weak) BLPCoordinator *coordinator;
-@property (nullable) Beat *currentSong;
 
 - (id)initWithSongs:(NSArray *)songs coordinator:(BLPCoordinator *)coordinator;
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange;

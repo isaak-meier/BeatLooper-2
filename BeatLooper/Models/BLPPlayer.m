@@ -23,16 +23,39 @@
 @property NSProgress *progress;
 @property NSTimer *timer;
 
-@property BLPPlayerState playerState;
+@property (nonatomic) BLPPlayerState playerState;
+// need to maintain this to provide title for PlayerVC
+@property (nonatomic) Beat *currentSong;
+@property (weak) id <BLPPlayerDelegate> delegate;
 @end
 
 @implementation BLPPlayer
 
-- (instancetype)initWithSongs:(NSArray *)songs {
+- (void)setCurrentSong:(Beat *)currentSong {
+    if (currentSong != _currentSong) {
+        NSString *title = currentSong.title ? currentSong.title : @"";
+        if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:withState:)]) {
+            [self.delegate playerDidChangeSongTitle:title withState:self.playerState];
+        }
+    }
+}
+
+- (void)setPlayerState:(BLPPlayerState)playerState {
+    if (_playerState != playerState) {
+        if ([self.delegate respondsToSelector:@selector(playerDidChangeState:)]) {
+            [self.delegate playerDidChangeState:playerState];
+        }
+        _playerState = playerState;
+    }
+}
+
+#pragma mark - Initialization
+- (instancetype)initWithDelegate:(nullable id<BLPPlayerDelegate>)delegate andSongs:(NSArray *)songs {
     if (self = [super init]) {
         if (songs.count > 0) {
             _selectedIndexes = [NSMutableArray new];
             _model = [[BLPBeatModel alloc] init];
+            _delegate = delegate;
             NSMutableArray<AVPlayerItem *> *playerItems = [self setupPlayerItems:songs];
             [self loadPlayerWithItems:playerItems];
             [self configureAudioSession];
@@ -44,7 +67,10 @@
     return self;
 }
 
-// Sets properties playerItems, currentPlayerItem, and songsInQueue
+- (instancetype)initWithSongs:(NSArray *)songs {
+    return [self initWithDelegate:nil andSongs:songs];
+}
+
 - (NSMutableArray<AVPlayerItem *> *)setupPlayerItems:(NSArray *)songs {
     NSMutableArray<AVPlayerItem *> *playerItems = [NSMutableArray new];
     _songsInQueue = [NSMutableArray new];
@@ -59,12 +85,11 @@
         }
         if (i == 0) {
             [playerItems addObject:playerItem];
-            // _currentSong = currentSong;
+            _currentSong = currentSong;
         } else {
             [playerItems addObject:playerItem];
             [_songsInQueue addObject:currentSong];
         }
-        NSLog(@"Player item metadata:\n%@", playerItem.asset.metadata);
     }
     return playerItems;
 }
@@ -110,7 +135,6 @@
         }
     }];
 }
-
 
 - (void)loadPlayerWithItems:(NSMutableArray<AVPlayerItem *> *)playerItems {
     self.player = nil;
@@ -222,13 +246,14 @@
         return YES;
     } else {
         // if the player has no items, we need to recreate it.
+        self.currentSong = song;
         [self loadPlayerWithItems:[NSMutableArray arrayWithObject:playerItem]];
         // NO because we didn't actually add it to the queue
         return NO;
     }
 }
 
-// TODO test this (will find bug)
+// TODO test this
 - (void)removeSelectedSongs {
     NSArray<AVPlayerItem *> *items = self.player.items;
     NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
@@ -270,16 +295,23 @@
     BOOL isItemToSkipTo = self.player.items.count > 1;
     if (isItemToSkipTo) {
         [self.player advanceToNextItem];
-        // this should never happen, but lets make sure
-        if (self.songsInQueue.count != 0) {
-            [self.songsInQueue removeObjectAtIndex:0];
-        }
+    } else {
+        [self.player removeAllItems];
+    }
+    [self didAdvanceToNextSong];
+}
+
+- (void)didAdvanceToNextSong {
+    BOOL queueHasItems = self.songsInQueue.count != 0;
+    if (queueHasItems) {
+        self.currentSong = self.songsInQueue[0];
+        [self.songsInQueue removeObjectAtIndex:0];
         if (self.playerState == BLPPlayerSongPaused) {
             [self togglePlayOrPause];
         }
     } else {
-        [self.player removeAllItems];
         self.playerState = BLPPlayerEmpty;
+        self.currentSong = nil;
     }
 }
 
@@ -309,18 +341,21 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
-        // we need to check if we've advanced the song, or just changed it.
-        // if we've advanced the song, the player items will have one less than usual,
-        // and we need to remove an item from the tableView
-        if (self.player.items.count == self.songsInQueue.count) {
-            if (self.songsInQueue.count != 0) {
-                self.currentSong = self.songsInQueue[0];
-                [self.songsInQueue removeObjectAtIndex:0];
-            }
-            [self.coordinator clearLooperView];
+        NSLog(@"HERE!! Song changed!! :)");
+        if (self.playerState == BLPPlayerSongPaused
+            || self.playerState == BLPPlayerSongPlaying
+            || self.playerState == BLPPlayerEmpty) {
+            [self didAdvanceToNextSong];
         }
-        [self refreshVisibleText];
-        [self.queueTableView reloadData];
+//        if (self.player.items.count == self.songsInQueue.count) {
+//            if (self.songsInQueue.count != 0) {
+//                self.currentSong = self.songsInQueue[0];
+//                [self.songsInQueue removeObjectAtIndex:0];
+//            }
+//            [self.coordinator clearLooperView];
+//        }
+//        [self refreshVisibleText];
+//        [self.queueTableView reloadData];
     }
 }
 

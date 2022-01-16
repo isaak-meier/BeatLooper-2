@@ -23,6 +23,7 @@
 
 @property BLPBeatModel *model;
 @property BLPPlayer *playerModel;
+@property NSArray *songsForPlayer; // need to delay playerModel init until viewDidLoad
 
 @end
 
@@ -34,7 +35,7 @@
         // assign properties
         _model = [[BLPBeatModel alloc] init];
         _coordinator = coordinator;
-        _playerModel = [[BLPPlayer alloc] initWithSongs:songs]; // todo handle returning nil
+        _songsForPlayer = songs;
     }
     return self;
 }
@@ -42,6 +43,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if (!self.playerModel) {
+        self.playerModel = [[BLPPlayer alloc] initWithDelegate:(id<BLPPlayerDelegate>)self andSongs:self.songsForPlayer];
+    }
 
     self.queueTableView.delegate = self.playerModel;
     self.queueTableView.dataSource = self.playerModel;
@@ -49,15 +53,12 @@
     [self.queueTableView setAllowsMultipleSelectionDuringEditing:YES];
 }
 
-
-- (void)viewDidAppear:(BOOL)animated {
-    [self refreshVisibleText];
-}
-
 - (void)updateNowPlayingInfoCenterWithTitle:(NSString *)title {
     MPNowPlayingInfoCenter *infoCenter = [MPNowPlayingInfoCenter defaultCenter];
-    NSDictionary<NSString *, id> *nowPlayingInfo = @{MPMediaItemPropertyTitle : title};
-    infoCenter.nowPlayingInfo = nowPlayingInfo;
+    if (title) {
+        NSDictionary<NSString *, id> *nowPlayingInfo = @{MPMediaItemPropertyTitle : title};
+        infoCenter.nowPlayingInfo = nowPlayingInfo;
+    }
 }
 
 - (void)handleExistenceError {
@@ -82,14 +83,17 @@
     BOOL success = [self.playerModel togglePlayOrPause];
     if (success) {
         BLPPlayerState state = self.playerModel.playerState;
-        if (state == BLPPlayerSongPaused || state == BLPPlayerLoopPaused) {
-            [self animateButtonToPlayIcon:YES];
-        } else if (state == BLPPlayerSongPlaying || state == BLPPlayerLoopPlaying) {
-            [self animateButtonToPlayIcon:NO];
-        }
-        [self refreshVisibleText];
+        [self updatePlayButtonFromState:state];
     } else {
         NSLog(@"Play/pause failed on empty player");
+    }
+}
+
+- (void)updatePlayButtonFromState:(BLPPlayerState)state {
+    if (state == BLPPlayerSongPaused || state == BLPPlayerLoopPaused) {
+        [self animateButtonToPlayIcon:YES];
+    } else if (state == BLPPlayerSongPlaying || state == BLPPlayerLoopPlaying) {
+        [self animateButtonToPlayIcon:NO];
     }
 }
 
@@ -112,7 +116,7 @@
 
 - (IBAction)loopButtonTapped:(id)sender {
     if (self.playerModel.playerState != BLPPlayerEmpty) {
-        [self.coordinator openLooperViewForSong:self.currentSong.objectID];
+        [self.coordinator openLooperViewForSong:self.playerModel.currentSong.objectID];
     }
 }
 
@@ -130,9 +134,6 @@
     BOOL success = [self.playerModel startLoopingTimeRange:timeRange];
     if (!success) {
         NSLog(@"Loop failed.");
-        return;
-    } else {
-        [self refreshVisibleText];
     }
 }
 
@@ -141,8 +142,9 @@
 }
 
 - (void)changeCurrentSongTo:(Beat *)newSong {
-    [self.playerModel changeCurrentSongTo:newSong];
-    [self refreshVisibleText];
+    if (self.playerModel.currentSong.objectID != newSong.objectID) {
+        [self.playerModel changeCurrentSongTo:newSong];
+    }
 }
 
 - (void)addSongToQueue:(Beat *)song {
@@ -171,28 +173,34 @@
 
 }
 
-// TODO refactor
-- (void)refreshVisibleText {
-    NSString *songTitle;
-    if (self.currentSong) {
-        Beat *song = [self.model getSongForUniqueID:self.currentSong.objectID];
-        songTitle = song.title;
-    } else {
-        songTitle = @"";
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.songTitleLabel setText:songTitle];
-        [self updateNowPlayingInfoCenterWithTitle:songTitle];
-        if (self.playerModel.playerState == BLPPlayerLoopPlaying) {
-            [self.playerStatusLabel setText:@"Now Looping"];
-        } else if (self.playerModel.playerState == BLPPlayerSongPlaying) {
-            [self.playerStatusLabel setText:@"Now Playing"];
-        } else {
-            [self.playerStatusLabel setText:@"Just chillin..."];
-        }
-    });
+#pragma mark BLPPlayerDelegate
+- (void)playerDidChangeSongTitle:(NSString *)songTitle withState:(BLPPlayerState)state {
+    [self.songTitleLabel setText:songTitle];
+    [self playerDidChangeState:state];
+    [self setupProgressBar];
+    [self updateNowPlayingInfoCenterWithTitle:songTitle];
 }
 
+- (void)playerDidChangeState:(BLPPlayerState)state {
+    [self updatePlayButtonFromState:state];
+    switch (state) {
+        case BLPPlayerSongPlaying:
+            [self.playerStatusLabel setText:@"Now Playing"];
+            return;
+        case BLPPlayerSongPaused:
+            [self.playerStatusLabel setText:@"Song Paused"];
+            return;
+        case BLPPlayerLoopPaused:
+            [self.playerStatusLabel setText:@"Loop Paused"];
+            return;
+        case BLPPlayerLoopPlaying:
+            [self.playerStatusLabel setText:@"Now Looping"];
+            return;
+        case BLPPlayerEmpty:
+            [self.playerStatusLabel setText:@"Just chillin'"];
+            return;
+    }
+}
 
 
 @end

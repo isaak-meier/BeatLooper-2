@@ -22,14 +22,15 @@ typedef enum : NSUInteger {
 } BLPPlayerState;
 
 @protocol BLPPlayerDelegate <NSObject>
-
 - (void)playerDidChangeSongTitle:(NSString *)songTitle withState:(BLPPlayerState)state;
+- (void)playerDidChangeState:(BLPPlayerState)state;
 @end
 
 @interface BLPPlayer : NSObject <UITableViewDelegate, UITableViewDataSource>
 
 // will return nil if songs array is empty
 - (instancetype)initWithSongs:(NSArray *)songs;
+- (instancetype)initWithDelegate:(nullable id<BLPPlayerDelegate>)delegate andSongs:(NSArray *)songs;
 
 // Methods for player, return success
 - (BOOL)togglePlayOrPause;
@@ -46,7 +47,7 @@ typedef enum : NSUInteger {
 - (NSProgress *)getProgressForCurrentItem;
 
 @property (readonly) BLPPlayerState playerState;
-@property (weak) id <BLPPlayerDelegate> delegate;
+@property (readonly) Beat *currentSong;
 
 @end
 
