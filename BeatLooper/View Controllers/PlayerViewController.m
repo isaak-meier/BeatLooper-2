@@ -174,9 +174,8 @@
 }
 
 #pragma mark BLPPlayerDelegate
-- (void)playerDidChangeSongTitle:(NSString *)songTitle withState:(BLPPlayerState)state {
+- (void)playerDidChangeSongTitle:(NSString *)songTitle {
     [self.songTitleLabel setText:songTitle];
-    [self playerDidChangeState:state];
     [self setupProgressBar];
     [self updateNowPlayingInfoCenterWithTitle:songTitle];
 }

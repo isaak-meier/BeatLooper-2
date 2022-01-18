@@ -34,8 +34,8 @@
 - (void)setCurrentSong:(Beat *)currentSong {
     if (currentSong != _currentSong) {
         NSString *title = currentSong.title ? currentSong.title : @"";
-        if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:withState:)]) {
-            [self.delegate playerDidChangeSongTitle:title withState:self.playerState];
+        if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
+            [self.delegate playerDidChangeSongTitle:title];
         }
     }
 }
@@ -85,7 +85,8 @@
         }
         if (i == 0) {
             [playerItems addObject:playerItem];
-            _currentSong = currentSong;
+            [self setCurrentSong:currentSong];
+            // [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didAdvanceToNextSong) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
         } else {
             [playerItems addObject:playerItem];
             [_songsInQueue addObject:currentSong];
@@ -140,10 +141,12 @@
     self.player = nil;
     self.player = [AVQueuePlayer queuePlayerWithItems:playerItems];
     if (self.player) {
-        _playerState = BLPPlayerSongPaused;
+        [self setPlayerState:BLPPlayerSongPaused];
     }
     // KVO
-    [self.player addObserver:self forKeyPath:@"currentItem" options:0 context:nil];
+    [self.player addObserver:self forKeyPath:@"currentItem"
+                     options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                     context:nil];
 }
 
 #pragma mark - Interface Methods
@@ -193,7 +196,10 @@
 
 - (BOOL)skipBackward {
     if (self.playerState != BLPPlayerEmpty) {
-        [self.player seekToTime:CMTimeMake(0, 1)];
+        // [self.player seekToTime:CMTimeMake(0, 1)];
+        CMTime duration = [self.player.currentItem duration];
+        CMTime subtract = CMTimeMakeWithSeconds(2, duration.timescale);
+        [self.player seekToTime:CMTimeSubtract(duration, subtract)];
         return YES;
     } else {
         return NO;
@@ -341,11 +347,27 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
-        NSLog(@"HERE!! Song changed!! :)");
+        
+        AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
+        AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
+        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+        if (oldItem) {
+            [defaultCenter removeObserver:self
+                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                   object:oldItem];
+        }
+        if (newItem) {
+            [defaultCenter addObserver:self
+                              selector:@selector(didAdvanceToNextSong)
+                                  name:AVPlayerItemDidPlayToEndTimeNotification
+                                object:newItem];
+        }
         if (self.playerState == BLPPlayerSongPaused
             || self.playerState == BLPPlayerSongPlaying
             || self.playerState == BLPPlayerEmpty) {
-            [self didAdvanceToNextSong];
+            if (self.player.items.count == self.songsInQueue.count) {
+//                [self didAdvanceToNextSong];
+            }
         }
 //        if (self.player.items.count == self.songsInQueue.count) {
 //            if (self.songsInQueue.count != 0) {

@@ -22,7 +22,7 @@ typedef enum : NSUInteger {
 } BLPPlayerState;
 
 @protocol BLPPlayerDelegate <NSObject>
-- (void)playerDidChangeSongTitle:(NSString *)songTitle withState:(BLPPlayerState)state;
+- (void)playerDidChangeSongTitle:(NSString *)songTitle;
 - (void)playerDidChangeState:(BLPPlayerState)state;
 @end
 
