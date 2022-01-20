@@ -10,10 +10,11 @@
 #import "BLPBeatModel.h"
 
 @interface BLPPlayerDelegateTests : XCTestCase <BLPPlayerDelegate>
-@property XCTestExpectation *expectation;
+@property XCTestExpectation *titleExpectation;
+@property XCTestExpectation *stateExpectation;
+@property BLPPlayer *player;
 @property NSString *songTitle;
 @property BLPPlayerState playerState;
-
 @end
 
 @implementation BLPPlayerDelegateTests
@@ -26,14 +27,64 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
-- (void)testExample {
+- (void)testDelegateResponseOnInit {
+    self.titleExpectation = [[XCTestExpectation alloc] initWithDescription:@"Song title updates"];
+    self.stateExpectation = [[XCTestExpectation alloc] initWithDescription:@"State change expectation"];
+    
     BLPBeatModel *model = [[BLPBeatModel alloc] init];
     NSArray *songs = [model getAllSongs];
-    BLPPlayer *player = [[BLPPlayer alloc] initWithSongs:songs];
-    self.expectation = [[XCTestExpectation alloc] initWithDescription:@"Song title updates"];
-    [self waitForExpectations:@[self.expectation] timeout:10.0];
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-variable"
+    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegate:self andSongs:songs];
+    #pragma clang diagnostic pop
+    [self waitForExpectations:@[self.titleExpectation] timeout:2.0];
+    [self waitForExpectations:@[self.stateExpectation] timeout:2.0];
+    
     XCTAssertEqual(self.playerState, BLPPlayerSongPaused);
     XCTAssertTrue([self.songTitle isEqualToString:@"forgetMe"]);
+}
+
+- (void)testDelegateOnSkippingAndSuch {
+    self.titleExpectation = [[XCTestExpectation alloc] initWithDescription:@"Song title updates"];
+    
+    BLPBeatModel *model = [[BLPBeatModel alloc] init];
+    NSArray *songs = [model getAllSongs];
+    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegate:self andSongs:songs];
+    XCTAssertTrue([player skipForward]);
+    [self waitForExpectations:@[self.titleExpectation] timeout:5.0];
+    
+    XCTAssertEqual(self.playerState, BLPPlayerSongPlaying);
+    XCTAssertTrue([self.songTitle isEqualToString:@"swish"]);
+    [player skipForward];
+    XCTAssertEqual(self.playerState, BLPPlayerSongPlaying);
+    XCTAssertTrue([self.songTitle isEqualToString:@"'84"]);
+    [player skipBackward];
+    XCTAssertEqual(self.playerState, BLPPlayerSongPlaying);
+    XCTAssertTrue([self.songTitle isEqualToString:@"'84"]);
+    [player skipForward];
+    XCTAssertEqual(self.playerState, BLPPlayerSongPlaying);
+    XCTAssertTrue([self.songTitle isEqualToString:@"rise"]);
+    [player togglePlayOrPause];
+    XCTAssertEqual(self.playerState, BLPPlayerSongPaused);
+    XCTAssertTrue([self.songTitle isEqualToString:@"rise"]);
+}
+
+- (void)testDelegateOnLooping {
+    self.stateExpectation = [[XCTestExpectation alloc] initWithDescription:@"State change expectation"];
+    
+    
+    BLPBeatModel *model = [[BLPBeatModel alloc] init];
+    NSArray *songs = [model getAllSongs];
+    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegate:self andSongs:songs];
+    
+    [player startLoopingTimeRange:[BLPBeatModel timeRangeFromBars:0 to:4 withTempo:150]];
+    [self waitForExpectations:@[self.stateExpectation] timeout:1.0];
+    
+    XCTAssertEqual(self.playerState, BLPPlayerLoopPlaying);
+    [player togglePlayOrPause];
+    XCTAssertEqual(self.playerState, BLPPlayerLoopPaused);
+    [player stopLooping];
+    XCTAssertEqual(self.playerState, BLPPlayerSongPaused);
 }
 
 - (void)testPerformanceExample {
@@ -43,10 +94,14 @@
     }];
 }
 
-- (void)playerDidChangeSongTitle:(nonnull NSString *)songTitle withState:(BLPPlayerState)state {
+- (void)playerDidChangeSongTitle:(nonnull NSString *)songTitle {
     self.songTitle = songTitle;
+    [self.titleExpectation fulfill];
+}
+
+- (void)playerDidChangeState:(BLPPlayerState)state {
     self.playerState = state;
-    [self.expectation fulfill];
+    [self.stateExpectation fulfill];
 }
 
 @end

@@ -196,10 +196,10 @@
 
 - (BOOL)skipBackward {
     if (self.playerState != BLPPlayerEmpty) {
-        // [self.player seekToTime:CMTimeMake(0, 1)];
-        CMTime duration = [self.player.currentItem duration];
-        CMTime subtract = CMTimeMakeWithSeconds(2, duration.timescale);
-        [self.player seekToTime:CMTimeSubtract(duration, subtract)];
+         [self.player seekToTime:CMTimeMake(0, 1)];
+//        CMTime duration = [self.player.currentItem duration];
+//        CMTime subtract = CMTimeMakeWithSeconds(2, duration.timescale);
+//        [self.player seekToTime:CMTimeSubtract(duration, subtract)];
         return YES;
     } else {
         return NO;
