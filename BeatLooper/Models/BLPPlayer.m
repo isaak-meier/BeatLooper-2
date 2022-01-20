@@ -86,10 +86,7 @@
         if (i == 0) {
             [playerItems addObject:playerItem];
             [self setCurrentSong:currentSong];
-            [NSNotificationCenter.defaultCenter addObserver:self
-                                                   selector:@selector(didAdvanceToNextSong) name:AVPlayerItemDidPlayToEndTimeNotification
-                                                     object:playerItem];
-            [playerItem addObserver:self forKeyPath:@"status" options:0 context:nil];
+            [self addObseversToPlayerItem:playerItem];
         } else {
             [playerItems addObject:playerItem];
             [_songsInQueue addObject:currentSong];
@@ -348,6 +345,26 @@
     }
 }
 
+#pragma mark KVO
+
+- (void)addObseversToPlayerItem:(AVPlayerItem *)item {
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(didAdvanceToNextSong) name:AVPlayerItemDidPlayToEndTimeNotification
+                                             object:item];
+    [item addObserver:self forKeyPath:@"status" options:0 context:nil];
+}
+
+- (void)removeObseversFromPlayerItem:(AVPlayerItem *)item {
+    @try {
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                               object:item];
+        [item removeObserver:self forKeyPath:@"status"];
+    } @catch (NSException *exception) {
+        NSLog(@"Error there was, hmm, trying to remove observers from objects that have no observers, you are. Exception: %@", exception);
+    }
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
@@ -356,22 +373,11 @@
     if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
         AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
-        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
         if (oldItem) {
-            [defaultCenter removeObserver:self
-                                     name:AVPlayerItemDidPlayToEndTimeNotification
-                                   object:oldItem];
-            [oldItem removeObserver:self forKeyPath:@"status"];
+            [self removeObseversFromPlayerItem:oldItem];
         }
         if (newItem) {
-            [defaultCenter addObserver:self
-                              selector:@selector(didAdvanceToNextSong)
-                                  name:AVPlayerItemDidPlayToEndTimeNotification
-                                object:newItem];
-            
-            [newItem addObserver:self
-                      forKeyPath:@"status"
-                         options:0 context:nil];
+            [self addObseversToPlayerItem:newItem];
         }
     }
     
@@ -467,6 +473,9 @@
 
 - (void)dealloc {
     [self.player removeObserver:self forKeyPath:@"currentItem"];
+    if (self.player.currentItem) {
+        [self removeObseversFromPlayerItem:self.player.currentItem];
+    }
 }
 
 @end

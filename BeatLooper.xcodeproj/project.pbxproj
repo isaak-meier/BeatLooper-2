@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA32C4BE2798F2EE00492991 /* BLPPlayerProgressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA32C4BD2798F2EE00492991 /* BLPPlayerProgressTests.m */; };
 		EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */; };
 		EA41C5EB278B7D44001E8C53 /* BLPModelSongsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */; };
 		EA4504A3278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
@@ -59,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA32C4BD2798F2EE00492991 /* BLPPlayerProgressTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerProgressTests.m; sourceTree = "<group>"; };
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerStateTests.m; sourceTree = "<group>"; };
 		EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelSongsTests.m; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */,
 				EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */,
 				EADF7841278E97B900D796A8 /* BLPPlayerDelegateTests.m */,
+				EA32C4BD2798F2EE00492991 /* BLPPlayerProgressTests.m */,
 			);
 			path = ModelTests;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				EADF7842278E97B900D796A8 /* BLPPlayerDelegateTests.m in Sources */,
 				EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */,
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
+				EA32C4BE2798F2EE00492991 /* BLPPlayerProgressTests.m in Sources */,
 				EA4504A4278529860054516E /* BLPPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
