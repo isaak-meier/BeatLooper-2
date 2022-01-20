@@ -86,7 +86,10 @@
         if (i == 0) {
             [playerItems addObject:playerItem];
             [self setCurrentSong:currentSong];
-            // [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didAdvanceToNextSong) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
+            [NSNotificationCenter.defaultCenter addObserver:self
+                                                   selector:@selector(didAdvanceToNextSong) name:AVPlayerItemDidPlayToEndTimeNotification
+                                                     object:playerItem];
+            [playerItem addObserver:self forKeyPath:@"status" options:0 context:nil];
         } else {
             [playerItems addObject:playerItem];
             [_songsInQueue addObject:currentSong];
@@ -173,10 +176,10 @@
         case BLPPlayerEmpty:
             return NO;
     }
-//        if (!self.progress) {
-//            // need to set up progress bar after play, but only once
-//            [self setupProgressBar];
-//        }
+    //        if (!self.progress) {
+    //            // need to set up progress bar after play, but only once
+    //            [self setupProgressBar];
+    //        }
 }
 
 - (BOOL)skipForward {
@@ -196,10 +199,10 @@
 
 - (BOOL)skipBackward {
     if (self.playerState != BLPPlayerEmpty) {
-         [self.player seekToTime:CMTimeMake(0, 1)];
-//        CMTime duration = [self.player.currentItem duration];
-//        CMTime subtract = CMTimeMakeWithSeconds(2, duration.timescale);
-//        [self.player seekToTime:CMTimeSubtract(duration, subtract)];
+        [self.player seekToTime:CMTimeMake(0, 1)];
+        //        CMTime duration = [self.player.currentItem duration];
+        //        CMTime subtract = CMTimeMakeWithSeconds(2, duration.timescale);
+        //        [self.player seekToTime:CMTimeSubtract(duration, subtract)];
         return YES;
     } else {
         return NO;
@@ -345,9 +348,12 @@
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSKeyValueChangeKey,id> *)change
+                       context:(void *)context {
+    
     if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
-        
         AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
         NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
@@ -355,37 +361,52 @@
             [defaultCenter removeObserver:self
                                      name:AVPlayerItemDidPlayToEndTimeNotification
                                    object:oldItem];
+            [oldItem removeObserver:self forKeyPath:@"status"];
         }
         if (newItem) {
             [defaultCenter addObserver:self
                               selector:@selector(didAdvanceToNextSong)
                                   name:AVPlayerItemDidPlayToEndTimeNotification
                                 object:newItem];
+            
+            [newItem addObserver:self
+                      forKeyPath:@"status"
+                         options:0 context:nil];
         }
-        if (self.playerState == BLPPlayerSongPaused
-            || self.playerState == BLPPlayerSongPlaying
-            || self.playerState == BLPPlayerEmpty) {
-            if (self.player.items.count == self.songsInQueue.count) {
-//                [self didAdvanceToNextSong];
-            }
+    }
+    
+    if ([keyPath isEqualToString:@"status"]) {
+        AVPlayerItem *itemWithStatusChange = (AVPlayerItem *)object;
+        if (!object) {
+            NSLog(@"Error casting");
         }
-//        if (self.player.items.count == self.songsInQueue.count) {
-//            if (self.songsInQueue.count != 0) {
-//                self.currentSong = self.songsInQueue[0];
-//                [self.songsInQueue removeObjectAtIndex:0];
-//            }
-//            [self.coordinator clearLooperView];
-//        }
-//        [self refreshVisibleText];
-//        [self.queueTableView reloadData];
+        // Get the status change from the change dictionary
+       //  NSNumber *statusNumber = change[NSKeyValueChangeNewKey];
+        AVPlayerItemStatus status = itemWithStatusChange.status;
+        // Switch over the status
+        switch (status) {
+            case AVPlayerItemStatusReadyToPlay:
+                // Ready to Play
+                NSLog(@"Item ready to play");
+                break;
+            case AVPlayerItemStatusFailed:
+                // Failed. Examine AVPlayerItem.error
+                NSLog(@"Failed. Examine AVPlayerItem.error");
+                break;
+            case AVPlayerItemStatusUnknown:
+                // Not ready
+                NSLog(@"Not ready");
+                break;
+        }
     }
 }
+
 
 #pragma mark - UITableView Datasource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
-    UITableViewCell *cell = [[UITableViewCell alloc] init]; 
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
     Beat *songForCell = self.songsInQueue[indexPath.row];
     cell.textLabel.text = songForCell.title;
     return cell;
@@ -443,4 +464,9 @@
         [self.player insertItem:itemToMove afterItem:itemToInsertAfter];
     }
 }
+
+- (void)dealloc {
+    [self.player removeObserver:self forKeyPath:@"currentItem"];
+}
+
 @end
