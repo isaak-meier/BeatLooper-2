@@ -7,9 +7,6 @@
 
 #import "BLPPlayer.h"
 #import "BLPBeatModel.h"
-#import <AVFoundation/AVPlayer.h>
-@import AVFoundation;
-@import AVFAudio.AVAudioSession;
 @import MediaPlayer;
 
 @interface BLPPlayer()
@@ -37,6 +34,7 @@
         if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
             [self.delegate playerDidChangeSongTitle:title];
         }
+        _currentSong = currentSong;
     }
 }
 
@@ -173,10 +171,6 @@
         case BLPPlayerEmpty:
             return NO;
     }
-    //        if (!self.progress) {
-    //            // need to set up progress bar after play, but only once
-    //            [self setupProgressBar];
-    //        }
 }
 
 - (BOOL)skipForward {
@@ -323,10 +317,9 @@
 
 // Sets playerState to SongPaused as long as we're looping
 - (BOOL)stopLooping {
-    if (self.playerState == BLPPlayerLoopPlaying) {
-        [self togglePlayOrPause];
-    }
-    if (self.playerState == BLPPlayerLoopPaused) {
+    if (self.playerState == BLPPlayerLoopPaused
+        || self.playerState == BLPPlayerLoopPlaying) {
+        [self.beatLooper disableLooping];
         self.beatLooper = nil;
         [self skipBackward]; // restart song... might not be ness
         self.playerState = BLPPlayerSongPaused;
@@ -386,23 +379,10 @@
         if (!object) {
             NSLog(@"Error casting");
         }
-        // Get the status change from the change dictionary
-       //  NSNumber *statusNumber = change[NSKeyValueChangeNewKey];
         AVPlayerItemStatus status = itemWithStatusChange.status;
-        // Switch over the status
-        switch (status) {
-            case AVPlayerItemStatusReadyToPlay:
-                // Ready to Play
-                NSLog(@"Item ready to play");
-                break;
-            case AVPlayerItemStatusFailed:
-                // Failed. Examine AVPlayerItem.error
-                NSLog(@"Failed. Examine AVPlayerItem.error");
-                break;
-            case AVPlayerItemStatusUnknown:
-                // Not ready
-                NSLog(@"Not ready");
-                break;
+        // let our view controller handle this
+        if ([self.delegate respondsToSelector:@selector(currentItemDidChangeStatus:)]) {
+            [self.delegate currentItemDidChangeStatus:status];
         }
     }
 }

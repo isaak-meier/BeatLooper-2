@@ -9,10 +9,11 @@
 #import "BLPPlayer.h"
 #import "BLPBeatModel.h"
 
-@interface BLPPlayerProgressTests : XCTestCase
+@interface BLPPlayerProgressTests : XCTestCase <BLPPlayerDelegate>
 
 @property BLPPlayer *player;
 @property BLPBeatModel *model;
+@property XCTestExpectation *progressExpectation;
 
 @end
 
@@ -20,8 +21,12 @@
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.progressExpectation = [[XCTestExpectation alloc] initWithDescription:@"Status change"];
+    // [self waitForExpectations:@[self.progressExpectation] timeout:1.0];
     self.model = [[BLPBeatModel alloc] init];
-    self.player = [[BLPPlayer alloc] initWithSongs:[self.model getAllSongs]];
+    self.player = [[BLPPlayer alloc] initWithDelegate:self
+                                             andSongs:[self.model getAllSongs]];
+    [self waitForExpectations:@[self.progressExpectation] timeout:1.0];
 }
 
 - (void)tearDown {
@@ -30,18 +35,15 @@
 
 - (void)testBasicProgressBar {
     NSProgress *progress = [self.player getProgressForCurrentItem];
-    XCTAssertGreaterThan(0, progress.totalUnitCount);
+    XCTAssertGreaterThan(progress.totalUnitCount, 0);
     [self.player togglePlayOrPause];
     progress = [self.player getProgressForCurrentItem];
-    XCTAssertGreaterThan(0, progress.totalUnitCount);
-    NSLog(@"");
+    XCTAssertGreaterThan(progress.totalUnitCount, 0);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status {
+    NSLog(@"fulfilling");
+    [self.progressExpectation fulfill];
 }
 
 @end

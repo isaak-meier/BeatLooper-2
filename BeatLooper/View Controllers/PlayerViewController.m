@@ -97,6 +97,27 @@
     }
 }
 
+- (void)updateSongSubtitleWithState:(BLPPlayerState)state {
+    switch (state) {
+        case BLPPlayerSongPlaying:
+            [self.playerStatusLabel setText:@"Now Playing"];
+            return;
+        case BLPPlayerSongPaused:
+            [self.playerStatusLabel setText:@"Song Paused"];
+            return;
+        case BLPPlayerLoopPaused:
+            [self.playerStatusLabel setText:@"Loop Paused"];
+            return;
+        case BLPPlayerLoopPlaying:
+            [self.playerStatusLabel setText:@"Now Looping"];
+            return;
+        case BLPPlayerEmpty:
+            [self.playerStatusLabel setText:@"Just chillin'"];
+            return;
+    }
+    
+}
+
 - (IBAction)skipBackButtonTapped:(id)sender {
     BOOL success = [self.playerModel skipBackward];
     if (!success) {
@@ -116,7 +137,10 @@
 
 - (IBAction)loopButtonTapped:(id)sender {
     if (self.playerModel.playerState != BLPPlayerEmpty) {
-        [self.coordinator openLooperViewForSong:self.playerModel.currentSong.objectID];
+        NSManagedObjectID *currentSongID = self.playerModel.currentSong.objectID;
+        if (currentSongID) {
+            [self.coordinator openLooperViewForSong:currentSongID];
+        }
     }
 }
 
@@ -176,29 +200,32 @@
 #pragma mark BLPPlayerDelegate
 - (void)playerDidChangeSongTitle:(NSString *)songTitle {
     [self.songTitleLabel setText:songTitle];
-    [self setupProgressBar];
     [self updateNowPlayingInfoCenterWithTitle:songTitle];
 }
 
 - (void)playerDidChangeState:(BLPPlayerState)state {
     [self updatePlayButtonFromState:state];
-    switch (state) {
-        case BLPPlayerSongPlaying:
-            [self.playerStatusLabel setText:@"Now Playing"];
-            return;
-        case BLPPlayerSongPaused:
-            [self.playerStatusLabel setText:@"Song Paused"];
-            return;
-        case BLPPlayerLoopPaused:
-            [self.playerStatusLabel setText:@"Loop Paused"];
-            return;
-        case BLPPlayerLoopPlaying:
-            [self.playerStatusLabel setText:@"Now Looping"];
-            return;
-        case BLPPlayerEmpty:
-            [self.playerStatusLabel setText:@"Just chillin'"];
-            return;
-    }
+    [self updateSongSubtitleWithState:state];
+}
+
+- (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status {
+        switch (status) {
+            case AVPlayerItemStatusReadyToPlay:
+                // Ready to Play
+                NSLog(@"Item ready to play");
+                [self setupProgressBar];
+                break;
+            // TODO handle these cases for the user
+            // the songs usually load instantly but there could be a problem
+            case AVPlayerItemStatusFailed:
+                // Failed. Examine AVPlayerItem.error
+                NSLog(@"Failed. Examine AVPlayerItem.error");
+                break;
+            case AVPlayerItemStatusUnknown:
+                // Not ready
+                NSLog(@"Not ready");
+                break;
+        }
 }
 
 

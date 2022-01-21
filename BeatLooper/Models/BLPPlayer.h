@@ -10,6 +10,9 @@
 #import <CoreData/CoreData.h>
 #import "Beat+CoreDataClass.h"
 #import <CoreMedia/CMTimeRange.h>
+#import <AVFoundation/AVPlayer.h>
+@import AVFoundation;
+@import AVFAudio.AVAudioSession;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,6 +27,7 @@ typedef enum : NSUInteger {
 @protocol BLPPlayerDelegate <NSObject>
 - (void)playerDidChangeSongTitle:(NSString *)songTitle;
 - (void)playerDidChangeState:(BLPPlayerState)state;
+- (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status;
 @end
 
 @interface BLPPlayer : NSObject <UITableViewDelegate, UITableViewDataSource>
