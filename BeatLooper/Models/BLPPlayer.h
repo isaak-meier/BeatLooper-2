@@ -28,6 +28,8 @@ typedef enum : NSUInteger {
 - (void)playerDidChangeSongTitle:(NSString *)songTitle;
 - (void)playerDidChangeState:(BLPPlayerState)state;
 - (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status;
+- (void)didUpdateCurrentProgressTo:(double)fractionCompleted;
+- (void)requestTableViewUpdate;
 @end
 
 @interface BLPPlayer : NSObject <UITableViewDelegate, UITableViewDataSource>
@@ -42,6 +44,7 @@ typedef enum : NSUInteger {
 - (BOOL)skipBackward;
 - (BOOL)startLoopingTimeRange:(CMTimeRange)timeRange;
 - (BOOL)stopLooping;
+- (BOOL)seekToProgressValue:(float)value;
 // Methods for queue
 - (BOOL)changeCurrentSongTo:(Beat *)song;
 - (BOOL)addSongToQueue:(Beat *)song;

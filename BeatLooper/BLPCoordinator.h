@@ -10,6 +10,7 @@
 #import "HomeViewController.h"
 #import "PlayerViewController.h"
 #import "LooperViewController.h"
+#import "Models/BLPPlayer.h"
 @class AddSongsViewController;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showAddSongsView;
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue;
 - (void)addSongToQueue:(Beat *)song;
-- (void)openLooperViewForSong:(NSManagedObjectID *)songID;
+- (void)openLooperViewForSong:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping;
 - (void)dismissLooperViewAndBeginLoopingTimeRange:(CMTimeRange)timeRange;
 - (void)dismissLooperViewAndStopLoop;
 - (void)clearLooperView;

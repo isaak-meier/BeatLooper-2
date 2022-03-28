@@ -28,11 +28,16 @@
 
 @implementation BLPPlayer
 
+#pragma mark - Getters n Setters
+
 - (void)setCurrentSong:(Beat *)currentSong {
     if (currentSong != _currentSong) {
         NSString *title = currentSong.title ? currentSong.title : @"";
         if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
             [self.delegate playerDidChangeSongTitle:title];
+        }
+        if ([self.delegate respondsToSelector:@selector(didUpdateCurrentProgressTo:)]) {
+            [self.delegate didUpdateCurrentProgressTo:0];
         }
         _currentSong = currentSong;
     }
@@ -45,6 +50,10 @@
         }
         _playerState = playerState;
     }
+}
+
+- (BOOL)isPlayerLooping {
+    return self.playerState == BLPPlayerLoopPlaying || self.playerState == BLPPlayerLoopPaused;
 }
 
 #pragma mark - Initialization
@@ -179,12 +188,16 @@
         [self advanceToNextSong];
         return YES;
     }
-    if (state == BLPPlayerLoopPaused || state == BLPPlayerLoopPlaying) {
-        [self stopLooping];
-        [self advanceToNextSong];
-        return YES;
+    if (self.isPlayerLooping) {
+        /* ok so the player duplicates the item if we loop it
+        / so at this point we think we advanced the item but we really didn't
+         because there's actually two items. great.
+         * i'm just disabling this entirely because
+         * it makes no sense to skip forward while looping and
+         * its mad annoying to handle
+         */
+        return NO;
     }
-    // else state == BLPPlayerEmpty
     return NO;
 }
 
@@ -214,14 +227,18 @@
         [self togglePlayOrPause];
     }
     if (self.playerState == BLPPlayerSongPaused) {
-        AVPlayerItem *currentPlayerItem = self.player.currentItem;
-        AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:currentPlayerItem timeRange:timeRange];
-        self.beatLooper = beatLooper;
-        self.playerState = BLPPlayerLoopPaused;
-        [self togglePlayOrPause];
-        return YES;
+        // make sure the time range provided is a subset of the current song
+        CMTimeRange totalSongRange = CMTimeRangeMake(CMTimeMake(0, self.player.currentTime.timescale), self.player.currentItem.duration);
+        if (CMTimeRangeContainsTimeRange(totalSongRange, timeRange)) {
+            AVPlayerItem *currentPlayerItem = self.player.currentItem;
+            AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:currentPlayerItem timeRange:timeRange];
+            self.beatLooper = beatLooper;
+            self.playerState = BLPPlayerLoopPaused;
+            [self togglePlayOrPause];
+            return YES;
+        }
     }
-    NSLog(@"Couldn't loop due to unknown reason (read \"mistake\".");
+    NSLog(@"Couldn't loop due to unknown reason, likely invalid time range.");
     return NO;
 }
 
@@ -240,6 +257,7 @@
     NSURL *songURL = [_model getURLForCachedSong:song.objectID];
     AVAsset *songAsset = [AVAsset assetWithURL:songURL];
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
+    [self addObseversToPlayerItem:playerItem];
     if (self.playerState != BLPPlayerEmpty && items.count != 0) {
         [self.player insertItem:playerItem afterItem:items[0]];
         [self.songsInQueue insertObject:song atIndex:0];
@@ -271,6 +289,7 @@
     [self.selectedIndexes removeAllObjects];
 }
 
+// Sets up a refresh timer so the progress is updated
 - (NSProgress *)getProgressForCurrentItem {
     NSProgress *progress = [[NSProgress alloc] init];
     CMTime songDuration = [self.player.currentItem duration];
@@ -281,6 +300,20 @@
     NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(incrementProgress) userInfo:nil repeats:YES];
     self.timer = progressBarRefreshTimer;
     return self.progress;
+}
+
+- (BOOL)seekToProgressValue:(float)value {
+    if (self.isPlayerLooping) {
+        // for now don't let player slide around while looping
+        return NO;
+    }
+    // gotta get CMTIme from progress here
+    CMTime duration = self.player.currentItem.duration;
+    CMTime requestedTime = CMTimeMultiplyByFloat64(duration, value);
+    if (CMTIME_IS_VALID(requestedTime)) {
+        [self.player seekToTime:requestedTime];
+    }
+    return YES;
 }
 
 # pragma mark - Private Methods
@@ -302,6 +335,12 @@
 }
 
 - (void)didAdvanceToNextSong {
+    if (self.playerState == BLPPlayerLoopPaused
+        || self.playerState == BLPPlayerLoopPlaying
+        || self.playerState == BLPPlayerEmpty) {
+        NSLog(@"Did not really advance if we are looping");
+        return;
+    }
     BOOL queueHasItems = self.songsInQueue.count != 0;
     if (queueHasItems) {
         self.currentSong = self.songsInQueue[0];
@@ -313,15 +352,16 @@
         self.playerState = BLPPlayerEmpty;
         self.currentSong = nil;
     }
+    [self.delegate requestTableViewUpdate];
 }
 
 // Sets playerState to SongPaused as long as we're looping
 - (BOOL)stopLooping {
-    if (self.playerState == BLPPlayerLoopPaused
-        || self.playerState == BLPPlayerLoopPlaying) {
+    if (self.isPlayerLooping) {
         [self.beatLooper disableLooping];
         self.beatLooper = nil;
         [self skipBackward]; // restart song... might not be ness
+        [self.player pause];
         self.playerState = BLPPlayerSongPaused;
         return YES;
     } else {
@@ -331,10 +371,13 @@
 }
 
 - (void)incrementProgress {
-    if (self.playerState == BLPPlayerSongPlaying || BLPPlayerLoopPlaying) {
+    if (self.playerState == BLPPlayerSongPlaying || self.playerState == BLPPlayerLoopPlaying) {
         CMTime currentTime = [self.player.currentItem currentTime];
         int timeInSeconds = (int)(currentTime.value / currentTime.timescale);
         [self.progress setCompletedUnitCount:timeInSeconds];
+        if ([self.delegate respondsToSelector:@selector(didUpdateCurrentProgressTo:)]) {
+            [self.delegate didUpdateCurrentProgressTo:self.progress.fractionCompleted];
+        }
     }
 }
 
@@ -362,27 +405,30 @@
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
                        context:(void *)context {
-    
-    if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
-        AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
-        AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
-        if (oldItem) {
-            [self removeObseversFromPlayerItem:oldItem];
+
+    if (!self.isPlayerLooping) {
+        if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
+            AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
+            AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
+            if (oldItem) {
+                [self removeObseversFromPlayerItem:oldItem];
+            }
+            if (newItem) {
+                [self addObseversToPlayerItem:newItem];
+            }
         }
-        if (newItem) {
-            [self addObseversToPlayerItem:newItem];
-        }
-    }
-    
-    if ([keyPath isEqualToString:@"status"]) {
-        AVPlayerItem *itemWithStatusChange = (AVPlayerItem *)object;
-        if (!object) {
-            NSLog(@"Error casting");
-        }
-        AVPlayerItemStatus status = itemWithStatusChange.status;
-        // let our view controller handle this
-        if ([self.delegate respondsToSelector:@selector(currentItemDidChangeStatus:)]) {
-            [self.delegate currentItemDidChangeStatus:status];
+
+        if ([keyPath isEqualToString:@"status"]) {
+            AVPlayerItem *itemWithStatusChange = (AVPlayerItem *)object;
+            if (!object) {
+                NSLog(@"Error casting, returning before crash");
+                return;
+            }
+            AVPlayerItemStatus status = itemWithStatusChange.status;
+            // let our view controller handle this
+            if ([self.delegate respondsToSelector:@selector(currentItemDidChangeStatus:)]) {
+                [self.delegate currentItemDidChangeStatus:status];
+            }
         }
     }
 }

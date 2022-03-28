@@ -20,7 +20,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *skipForwardButton;
 @property (weak, nonatomic) IBOutlet UIButton *skipBackButton;
 @property (weak, nonatomic) IBOutlet UIButton *removeButton; // also addSongButton
+@property (weak, nonatomic) IBOutlet UISlider *songProgressSlider;
 
+@property BOOL userIsHoldingSlider;
 @property BLPBeatModel *model;
 @property BLPPlayer *playerModel;
 @property NSArray *songsForPlayer; // need to delay playerModel init until viewDidLoad
@@ -97,6 +99,18 @@
     }
 }
 
+- (void)updateButtonsWithState:(BLPPlayerState)state {
+    if (state == BLPPlayerLoopPlaying || state == BLPPlayerLoopPaused) {
+        [self.skipForwardButton setHidden:YES];
+        [self.removeButton setHidden:YES];
+        [self.queueTableView setEditing:NO];
+    } else {
+        [self.skipForwardButton setHidden:NO];
+        [self.removeButton setHidden:NO];
+        [self.queueTableView setEditing:YES];
+    }
+}
+
 - (void)updateSongSubtitleWithState:(BLPPlayerState)state {
     switch (state) {
         case BLPPlayerSongPlaying:
@@ -129,17 +143,17 @@
     BOOL success = [self.playerModel skipForward];
     if (!success) {
         NSLog(@"Skipping forward failed");
-    } else {
-        [self.queueTableView reloadData];
     }
+    [self.queueTableView reloadData];
 }
-
 
 - (IBAction)loopButtonTapped:(id)sender {
     if (self.playerModel.playerState != BLPPlayerEmpty) {
         NSManagedObjectID *currentSongID = self.playerModel.currentSong.objectID;
         if (currentSongID) {
-            [self.coordinator openLooperViewForSong:currentSongID];
+            BOOL playerIsLooping = self.playerModel.playerState == BLPPlayerLoopPlaying
+            || self.playerModel.playerState == BLPPlayerLoopPaused;
+            [self.coordinator openLooperViewForSong:currentSongID isLooping:playerIsLooping];
         }
     }
 }
@@ -153,12 +167,41 @@
         [self.coordinator showAddSongsView];
     }
 }
+- (IBAction)songSliderDidTouchDown:(id)sender {
+    self.userIsHoldingSlider = YES;
+}
+
+- (IBAction)songSliderWasReleased:(id)sender {
+    self.userIsHoldingSlider = NO;
+    if (self.playerModel.playerState == BLPPlayerEmpty) {
+        [self.playerStatusLabel setText:@"Just chillin' ;)"];
+    } else {
+        [self.playerModel seekToProgressValue:self.songProgressSlider.value];
+    }
+}
 
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange {
     BOOL success = [self.playerModel startLoopingTimeRange:timeRange];
     if (!success) {
         NSLog(@"Loop failed.");
+        [self handleErrorStartingLoop];
     }
+}
+
+- (void)handleErrorStartingLoop {
+    UIAlertController *alert = [UIAlertController
+                                     alertControllerWithTitle:@"Ay va voi"
+                                     message:@"Hey Buddy, we couldn't start the loop for some reason. If I had to make an educated guess, it's because you tried to loop what couldn't be looped. That is, the song probably couldn't be looped between the bars that you provided."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"Haha, Ok"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+                                        return;
+                                    }];
+    [alert addAction:okButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)stopLooping {
@@ -179,6 +222,7 @@
 - (void)setupProgressBar {
     NSProgress *progress = [self.playerModel getProgressForCurrentItem];
     [self.songProgressBar setObservedProgress:progress];
+    [self.songProgressSlider setValue:0];
 }
 
 
@@ -206,6 +250,7 @@
 - (void)playerDidChangeState:(BLPPlayerState)state {
     [self updatePlayButtonFromState:state];
     [self updateSongSubtitleWithState:state];
+    [self updateButtonsWithState:state];
 }
 
 - (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status {
@@ -226,6 +271,20 @@
                 NSLog(@"Not ready");
                 break;
         }
+}
+
+- (void)didUpdateCurrentProgressTo:(double)fractionCompleted {
+    if (fractionCompleted) {
+        if (!self.userIsHoldingSlider) {
+            [self.songProgressSlider setValue:fractionCompleted];
+        }
+    }
+}
+
+- (void)requestTableViewUpdate {
+    [self.queueTableView reloadData];
+    [self.songProgressSlider setValue:0.0];
+    [self.songProgressBar setProgress:0.0];
 }
 
 

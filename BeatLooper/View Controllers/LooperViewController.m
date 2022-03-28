@@ -27,11 +27,12 @@
 
 @implementation LooperViewController
 
--(id)initWithSongID:(NSManagedObjectID *)songID {
+-(id)initWithSongID:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"LooperViewController"])) {
         _songID = songID;
         _model = [[BLPBeatModel alloc] init];
+        self.isLooping = isLooping;
     }
     return self;
 }

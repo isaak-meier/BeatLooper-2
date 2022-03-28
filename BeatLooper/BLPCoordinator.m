@@ -152,9 +152,9 @@
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }
 
-- (void)openLooperViewForSong:(NSManagedObjectID *)songID {
+- (void)openLooperViewForSong:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping {
     if (!self.looperController) {
-        LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID];
+        LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID isLooping:isLooping];
         looperController.modalPresentationStyle = UIModalPresentationPageSheet;
         looperController.coordinator = self;
         self.looperController = looperController; // retain a reference so the user can stop the loop

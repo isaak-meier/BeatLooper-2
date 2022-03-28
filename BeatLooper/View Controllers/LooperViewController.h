@@ -12,6 +12,6 @@
 @interface LooperViewController : UIViewController <UITextFieldDelegate>
 
 @property (weak) BLPCoordinator *coordinator;
-- (id)initWithSongID:(NSManagedObjectID *)songID;
+- (id)initWithSongID:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping;
 
 @end
