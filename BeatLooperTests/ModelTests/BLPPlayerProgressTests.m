@@ -46,4 +46,14 @@
     [self.progressExpectation fulfill];
 }
 
+- (void)playerDidChangeSongTitle:(nonnull NSString *)songTitle {
+    return;
+}
+
+
+- (void)playerDidChangeState:(BLPPlayerState)state {
+    return;
+}
+
+
 @end

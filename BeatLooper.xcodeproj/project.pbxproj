@@ -12,6 +12,7 @@
 		EA41C5EB278B7D44001E8C53 /* BLPModelSongsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */; };
 		EA4504A3278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EA4504A4278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
+		EA8D4D5227A3111100E7BEAF /* BLPPlayerChangeSongTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8D4D5127A3111100E7BEAF /* BLPPlayerChangeSongTests.m */; };
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
 		EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
@@ -66,6 +67,7 @@
 		EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelSongsTests.m; sourceTree = "<group>"; };
 		EA4504A1278529860054516E /* BLPPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPPlayer.h; sourceTree = "<group>"; };
 		EA4504A2278529860054516E /* BLPPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayer.m; sourceTree = "<group>"; };
+		EA8D4D5127A3111100E7BEAF /* BLPPlayerChangeSongTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerChangeSongTests.m; sourceTree = "<group>"; };
 		EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPModelTimeRangeTests.m; sourceTree = "<group>"; };
 		EAB5ECA22644A89300C4D535 /* PlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		EAB5ECA32644A89300C4D535 /* PlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */,
 				EADF7841278E97B900D796A8 /* BLPPlayerDelegateTests.m */,
 				EA32C4BD2798F2EE00492991 /* BLPPlayerProgressTests.m */,
+				EA8D4D5127A3111100E7BEAF /* BLPPlayerChangeSongTests.m */,
 			);
 			path = ModelTests;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */,
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
 				EA32C4BE2798F2EE00492991 /* BLPPlayerProgressTests.m in Sources */,
+				EA8D4D5227A3111100E7BEAF /* BLPPlayerChangeSongTests.m in Sources */,
 				EA4504A4278529860054516E /* BLPPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

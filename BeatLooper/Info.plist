@@ -29,7 +29,7 @@
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.microsoft.waveform-​audio</string>
+				<string>com.microsoft.waveform-audio</string>
 			</array>
 		</dict>
 	</array>
@@ -95,39 +95,5 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
-	<key>UTImportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.audio</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>.WAV</string>
-			<key>UTTypeIconFiles</key>
-			<array/>
-			<key>UTTypeIdentifier</key>
-			<string>.wav</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>.wav</string>
-				</array>
-				<key>public.mime-type</key>
-				<array>
-					<string>com.microsoft.waveform-​audio</string>
-				</array>
-			</dict>
-		</dict>
-		<dict>
-			<key>UTTypeDescription</key>
-			<string></string>
-			<key>UTTypeIconFiles</key>
-			<array/>
-			<key>UTTypeTagSpecification</key>
-			<dict/>
-		</dict>
-	</array>
 </dict>
 </plist>

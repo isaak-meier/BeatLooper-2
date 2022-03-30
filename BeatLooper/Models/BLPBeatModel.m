@@ -43,7 +43,11 @@
         NSLog(@"Error fetching Beat objects: %@\n%@", [error localizedDescription], [error userInfo]);
     }
 
-	return songs;
+    NSMutableArray *songsReversed = [NSMutableArray new];
+    for (long i = songs.count - 1; i >= 0; i--) {
+        [songsReversed addObject:songs[i]];
+    }
+	return songsReversed;
 }
 
 - (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID {

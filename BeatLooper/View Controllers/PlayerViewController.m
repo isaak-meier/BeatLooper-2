@@ -55,6 +55,13 @@
     [self.queueTableView setAllowsMultipleSelectionDuringEditing:YES];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    if (self.playerModel.playerState == BLPPlayerEmpty) {
+        // please kill me
+        [self.coordinator playerViewControllerRequestsDeath];
+    }
+}
+
 - (void)updateNowPlayingInfoCenterWithTitle:(NSString *)title {
     MPNowPlayingInfoCenter *infoCenter = [MPNowPlayingInfoCenter defaultCenter];
     if (title) {

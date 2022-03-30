@@ -106,7 +106,9 @@
     AVAudioSession *session = [AVAudioSession sharedInstance];
     
     NSError *error;
-    BOOL success = [session setCategory:AVAudioSessionCategoryPlayback error:&error];
+    BOOL success = [session setCategory:AVAudioSessionCategoryPlayback
+                            withOptions:AVAudioSessionCategoryOptionAllowBluetooth
+                                  error:&error];
     double hwSampleRate = 44100.0;
     success = [session setPreferredSampleRate:hwSampleRate error:&error];
     
@@ -204,9 +206,6 @@
 - (BOOL)skipBackward {
     if (self.playerState != BLPPlayerEmpty) {
         [self.player seekToTime:CMTimeMake(0, 1)];
-        //        CMTime duration = [self.player.currentItem duration];
-        //        CMTime subtract = CMTimeMakeWithSeconds(2, duration.timescale);
-        //        [self.player seekToTime:CMTimeSubtract(duration, subtract)];
         return YES;
     } else {
         return NO;
@@ -243,6 +242,9 @@
 }
 
 - (BOOL)changeCurrentSongTo:(Beat *)song {
+    if (self.isPlayerLooping) {
+        return NO;
+    }
     BOOL success = [self addSongToQueue:song];
     if (success) {
         [self skipForward];

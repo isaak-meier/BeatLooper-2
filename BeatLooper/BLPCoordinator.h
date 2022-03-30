@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showAddSongsView;
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue;
 - (void)addSongToQueue:(Beat *)song;
+- (void)playerViewControllerRequestsDeath;
 - (void)openLooperViewForSong:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping;
 - (void)dismissLooperViewAndBeginLoopingTimeRange:(CMTimeRange)timeRange;
 - (void)dismissLooperViewAndStopLoop;
