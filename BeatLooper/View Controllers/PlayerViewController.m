@@ -136,7 +136,6 @@
             [self.playerStatusLabel setText:@"Just chillin'"];
             return;
     }
-    
 }
 
 - (IBAction)skipBackButtonTapped:(id)sender {
@@ -292,6 +291,14 @@
     [self.queueTableView reloadData];
     [self.songProgressSlider setValue:0.0];
     [self.songProgressBar setProgress:0.0];
+}
+
+- (void)selectedIndexesChanged:(NSUInteger)count {
+    if (count == 0) {
+        [self.removeButton setTitle:@"Add Songs" forState:UIControlStateNormal];
+    } else {
+        [self.removeButton setTitle:@"Remove" forState:UIControlStateNormal];
+    }
 }
 
 

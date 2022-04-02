@@ -185,20 +185,9 @@
 }
 
 - (BOOL)skipForward {
-    BLPPlayerState state = self.playerState;
-    if (state == BLPPlayerSongPaused || state == BLPPlayerSongPlaying) {
+    if (self.playerState == BLPPlayerSongPaused || self.playerState == BLPPlayerSongPlaying) {
         [self advanceToNextSong];
         return YES;
-    }
-    if (self.isPlayerLooping) {
-        /* ok so the player duplicates the item if we loop it
-        / so at this point we think we advanced the item but we really didn't
-         because there's actually two items. great.
-         * i'm just disabling this entirely because
-         * it makes no sense to skip forward while looping and
-         * its mad annoying to handle
-         */
-        return NO;
     }
     return NO;
 }
@@ -218,8 +207,7 @@
         return NO;
     }
     
-    if (self.playerState == BLPPlayerLoopPlaying
-        || self.playerState == BLPPlayerLoopPaused) {
+    if (self.isPlayerLooping) {
         [self stopLooping];
     }
     if (self.playerState == BLPPlayerSongPlaying) {
@@ -276,11 +264,16 @@
 // TODO test this
 - (void)removeSelectedSongs {
     NSArray<AVPlayerItem *> *items = self.player.items;
+    if (items.count == 0) {
+        // saw this happen once
+        return;
+    }
     NSMutableArray<AVPlayerItem *> *itemsToRemove = [NSMutableArray new];
     NSMutableIndexSet *indexesToRemove = [NSMutableIndexSet new];
     for (int i = 0; i < self.selectedIndexes.count; i++) {
         int indexToRemoveAt = self.selectedIndexes[i].intValue;
-        AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1]; // items has a 'hidden' 0 element, currently playing
+        // items has a 'hidden' 0 element, currently playing
+        AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1];
         [itemsToRemove addObject:itemToRemove];
         [indexesToRemove addIndex:indexToRemoveAt];
     }
@@ -289,6 +282,7 @@
         [self.player removeItem:item];
     }
     [self.selectedIndexes removeAllObjects];
+    [self.delegate requestTableViewUpdate];
 }
 
 // Sets up a refresh timer so the progress is updated
@@ -299,7 +293,11 @@
     [progress setTotalUnitCount:durationInSeconds];
     self.progress = progress;
     // set refresh timer so progress is updated
-    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(incrementProgress) userInfo:nil repeats:YES];
+    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
+                                                                        target:self
+                                                                      selector:@selector(incrementProgress)
+                                                                      userInfo:nil
+                                                                       repeats:YES];
     self.timer = progressBarRefreshTimer;
     return self.progress;
 }
@@ -350,8 +348,16 @@
         if (self.playerState == BLPPlayerSongPaused) {
             [self togglePlayOrPause];
         }
+        // if we had the any songs selected and the current one skipped,
+        // we need to deselect them all.
+        if (self.selectedIndexes.count != 0) {
+            [self.selectedIndexes removeAllObjects];
+            [self.delegate selectedIndexesChanged:self.selectedIndexes.count];
+        }
     } else {
         self.playerState = BLPPlayerEmpty;
+        // lets make sure that we're really empty
+        [self.player removeAllItems];
         self.currentSong = nil;
     }
     [self.delegate requestTableViewUpdate];
@@ -387,7 +393,8 @@
 
 - (void)addObseversToPlayerItem:(AVPlayerItem *)item {
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(didAdvanceToNextSong) name:AVPlayerItemDidPlayToEndTimeNotification
+                                           selector:@selector(didAdvanceToNextSong)
+                                               name:AVPlayerItemDidPlayToEndTimeNotification
                                              object:item];
     [item addObserver:self forKeyPath:@"status" options:0 context:nil];
 }
@@ -395,8 +402,8 @@
 - (void)removeObseversFromPlayerItem:(AVPlayerItem *)item {
     @try {
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                               object:item];
+                                                      name:AVPlayerItemDidPlayToEndTimeNotification
+                                                    object:item];
         [item removeObserver:self forKeyPath:@"status"];
     } @catch (NSException *exception) {
         NSLog(@"Error there was, hmm, trying to remove observers from objects that have no observers, you are. Exception: %@", exception);
@@ -441,8 +448,10 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-    Beat *songForCell = self.songsInQueue[indexPath.row];
-    cell.textLabel.text = songForCell.title;
+    if (indexPath.row < self.songsInQueue.count ) {
+        Beat *songForCell = self.songsInQueue[indexPath.row];
+        cell.textLabel.text = songForCell.title;
+    }
     return cell;
 }
 
@@ -453,8 +462,11 @@
 #pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // [self.removeButton setTitle:@"Remove" forState:UIControlStateNormal]; TODO delegate
     [self.selectedIndexes addObject:[NSNumber numberWithInt:(int)indexPath.row]];
+
+    if ([self.delegate respondsToSelector:@selector(selectedIndexesChanged:)]) {
+        [self.delegate selectedIndexesChanged:self.selectedIndexes.count];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -464,8 +476,9 @@
             [self.selectedIndexes removeObjectAtIndex:i];
         }
     }
-    if (self.selectedIndexes.count == 0) {
-        // [self.removeButton setTitle:@"Add Songs" forState:UIControlStateNormal];
+
+    if ([self.delegate respondsToSelector:@selector(selectedIndexesChanged:)]) {
+        [self.delegate selectedIndexesChanged:self.selectedIndexes.count];
     }
 }
 

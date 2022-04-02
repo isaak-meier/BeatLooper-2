@@ -30,6 +30,7 @@ typedef enum : NSUInteger {
 - (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status;
 - (void)didUpdateCurrentProgressTo:(double)fractionCompleted;
 - (void)requestTableViewUpdate;
+- (void)selectedIndexesChanged:(NSUInteger)count;
 @end
 
 @interface BLPPlayer : NSObject <UITableViewDelegate, UITableViewDataSource>
