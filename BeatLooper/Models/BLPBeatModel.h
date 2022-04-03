@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteSong:(Beat *)song;
 - (void)deleteAllEntities;
 - (void)saveTempo:(int)tempo forSong:(NSManagedObjectID *)songID;
+- (void)updatePathsOfAllEntities;
 
 + (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo;
 

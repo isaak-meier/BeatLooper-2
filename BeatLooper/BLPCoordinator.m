@@ -35,19 +35,26 @@
     HomeViewController *homeViewController = [[HomeViewController alloc] initWithCoordinator:self inAddSongsMode:NO];
     [self.navigationController pushViewController:homeViewController animated:NO];
     [[self window] makeKeyAndVisible];
-    [self checkForFirstTimeUser];
+    [self checkForFirstTimeUserOrUpdate];
 }
 
-- (void)checkForFirstTimeUser {
+- (void)checkForFirstTimeUserOrUpdate {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL isNotFirstTime = [userDefaults boolForKey:@"firstTime?"];
+    BOOL isFirstTime = ![userDefaults boolForKey:@"firstTime?"];
     BOOL shouldSetUpSampleSongs = ![userDefaults boolForKey:@"addSampleSongs"];
-    if (!isNotFirstTime) { // ...so it is their first time
+    BOOL applicationDidUpdate = [self didSongDirectoryPathChange];
+
+    if (isFirstTime) {
         [self presentOnboardingAlert];
     }
-    if (YES) {
+    if (shouldSetUpSampleSongs) {
         [self setupSampleSongs];
         [userDefaults setBool:YES forKey:@"addSampleSongs"];
+    }
+    if (applicationDidUpdate) {
+        // change paths
+        NSLog(@"Need to update all the damn paths");
+        [[BLPBeatModel new] updatePathsOfAllEntities];
     }
 }
 
@@ -56,22 +63,18 @@
                                      alertControllerWithTitle:@"Hello There"
                                      message:@"Congrats on downloading this app. I hope you're having a wonderful day. To add songs, you need to open the file (mp3 or wav only) in this app, from another app. For example, from Files, select the share button and select Beat Looper in the list of apps. In Google Drive, select 'Open In', and then select Beat Looper in the list of apps. (Note, this is at time of writing. The exact process may change.) Basically you need to tap on Beat Looper from a different app that's holding the file to import it. \n I've added some sample beats for you, feel free to remove them. Try looping forgetMe or swish! (prod. credit No Gravity)\n Ok, that's all from me, everything else should be clear. Take it easy and enjoy."
                                      preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* okButton = [UIAlertAction
-                                    actionWithTitle:@"Got it."
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-                                        //Handle your yes please button action here
+    UIAlertAction* okButton = [UIAlertAction actionWithTitle:@"Got it."
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * action) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstTime?"];
-                                        return;
-                                    }];
-    UIAlertAction* notOkButton = [UIAlertAction
-                                    actionWithTitle:@"Maybe show me that one more time next time."
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-                                        //Handle your yes please button action here
+        return;
+    }];
+    UIAlertAction* notOkButton = [UIAlertAction actionWithTitle:@"Maybe show me that one more time next time."
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstTime?"];
-                                        return;
-                                    }];
+        return;
+    }];
     [alert addAction:okButton];
     [alert addAction:notOkButton];
     [self.navigationController presentViewController:alert animated:YES completion:nil];
@@ -87,12 +90,12 @@
     NSString *resourceURL5 = [main pathForResource:@"rise" ofType:@"mp3"];
     NSString *resourceURL6 = [main pathForResource:@"swag" ofType:@"mp3"];
 
-    [model saveSongWith:@"forgetMe" url:resourceURL1];
-    [model saveSongWith:@"swish" url:resourceURL2];
-    [model saveSongWith:@"'84" url:resourceURL4];
-    [model saveSongWith:@"rise" url:resourceURL5];
-    [model saveSongWith:@"swag" url:resourceURL6];
-    
+    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL1]];
+    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL2]];
+    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL4]];
+    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL5]];
+    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL6]];
+
     NSArray<Beat *> *songs = [model getAllSongs];
     for (Beat *song in songs) {
         if ([song.title isEqualToString:@"forgetMe"]) {
@@ -103,6 +106,22 @@
         }
     }
     
+}
+
+- (BOOL)didSongDirectoryPathChange {
+    NSArray<Beat *> *songs = [[BLPBeatModel new] getAllSongs];
+    if (songs.count != 0) {
+        NSString *path = songs[0].fileUrl;
+        NSFileManager *defaultManager = [NSFileManager defaultManager];
+        if ([defaultManager fileExistsAtPath:path]) {
+            NSLog(@"File Exists at Path");
+            return NO;
+        } else {
+            NSLog(@"We Updated... nothing exists at Path");
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)songAdded {

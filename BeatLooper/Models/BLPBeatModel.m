@@ -163,6 +163,44 @@
     }
 }
 
+- (void)saveFilePath:(NSString *)filePath forSong:(NSManagedObjectID *)songID {
+    NSManagedObjectContext *context = self.container.viewContext;
+
+    Beat *beatFromSongID = [context objectWithID:songID];
+    beatFromSongID.fileUrl = filePath;
+
+    NSError *error;
+    [context save:&error];
+    if (error) {
+        NSLog(@"There was some error updating: %@", error);
+    } else {
+        NSLog(@"Saved beat with id %@ named %@ with filePath %@",
+              beatFromSongID.objectID,
+              beatFromSongID.title,
+              beatFromSongID.fileUrl);
+    }
+}
+// If we reinstall the application, all our songs get moved to a new directory.
+// So all the paths we store in core data are now wrong, and point to nothing.
+// So we need to update the paths of all the entities so they point to the files
+// apple so kindly moved to a new location for us.
+- (void)updatePathsOfAllEntities {
+    NSArray<Beat *> *allSongs = [self getAllSongs];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *documentRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSLog(@"Document root path: %@", documentRootPath);
+    NSArray<NSString *> *allFilesInDocumentsDirectory = [manager contentsOfDirectoryAtPath:documentRootPath error:nil];
+    for (Beat *song in allSongs) {
+        NSString *name = song.title;
+        for (NSString *fileName in allFilesInDocumentsDirectory) {
+            if ([fileName containsString:name]) {
+                NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:fileName];
+                [self saveFilePath:newFilePath forSong:song.objectID];
+            }
+        }
+    }
+}
+
 // Pass 0.25 for quarter note, 1 for bar, 4 for phrase.
 + (double)secondsFromTempo:(int)tempo withBars:(int)duration {
     return 1.0 / (double)tempo * 60.0 * 4.0 * duration;
@@ -196,10 +234,10 @@
     NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
     // create path
-    NSString *libraryRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *documentRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     // append 1 to filename to ensure songs with same name are saved uniquely
     NSString *unqiueFileTitle = [NSString stringWithFormat:@"%@%d.%@", fileTitle, 1, fileExtension];
-    NSString *newFilePath = [libraryRootPath stringByAppendingPathComponent:unqiueFileTitle];
+    NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:unqiueFileTitle];
     NSLog(@"newFilePath: %@", newFilePath);
     return [NSURL fileURLWithPath:newFilePath];
 }
