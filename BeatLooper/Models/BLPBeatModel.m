@@ -104,10 +104,11 @@
 - (BOOL)saveSongFromURL:(NSURL *)originalURL ToURL:(NSURL *)newURL acc:(int)accumulator {
     NSLog(@"Original URL %@", originalURL);
     NSURL *newFileURL;
+    NSNumber *fileNumber = accumulator == 0 ? nil : [[NSNumber alloc] initWithInt:accumulator];
     if (newURL) {
-        newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:newURL];
+        newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:newURL fileNumber:fileNumber];
     } else {
-        newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:originalURL];
+        newFileURL = [BLPBeatModel uniqueURLFromExistingSongURL:originalURL fileNumber:fileNumber];
     }
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -116,7 +117,7 @@
     
     if (success) {
         NSLog(@"The file was successfully saved to path %@", newFileURL);
-        NSString *urlStr = originalURL.absoluteString;
+        NSString *urlStr = newFileURL.absoluteString;
         NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
         [self saveSongWith:[fileTitle stringByRemovingPercentEncoding] url:newFileURL.path];
         return YES;
@@ -124,7 +125,7 @@
         // error code 516 means we couldn't copy because an item with the same name already exists
         // we only want to recurr to handle this error. If there's a different error
         // (i.e. original file cannot be found), we should fail. 
-        if (accumulator < 10 && error.code == 516) {
+        if (accumulator < 20 && error.code == 516) {
             return [self saveSongFromURL:originalURL ToURL:newFileURL acc:accumulator+1];
         } else {
             NSLog(@"Error saving file: %@", error);
@@ -188,12 +189,14 @@
     NSArray<Beat *> *allSongs = [self getAllSongs];
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *documentRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    NSLog(@"Document root path: %@", documentRootPath);
     NSArray<NSString *> *allFilesInDocumentsDirectory = [manager contentsOfDirectoryAtPath:documentRootPath error:nil];
     for (Beat *song in allSongs) {
         NSString *name = song.title;
         for (NSString *fileName in allFilesInDocumentsDirectory) {
+            // NSString *fileTitleFromFileName = [[fileName lastPathComponent] stringByDeletingPathExtension];
+            // if ([fileTitleFromFileName isEqualToString:name]) {
             if ([fileName containsString:name]) {
+                NSLog(@"Matched fileName %@\nWith name %@", fileName, name);
                 NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:fileName];
                 [self saveFilePath:newFilePath forSong:song.objectID];
             }
@@ -228,7 +231,7 @@
 }
 
 
-+ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL {
++ (NSURL *)uniqueURLFromExistingSongURL:(NSURL *)currentURL fileNumber:(NSNumber *)fileNumber {
     NSLog(@"Current url: %@", currentURL.absoluteString);
     NSString *urlStr = currentURL.absoluteString;
     NSString *fileExtension = [[urlStr lastPathComponent] pathExtension];
@@ -236,8 +239,16 @@
     // create path
     NSString *documentRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     // append 1 to filename to ensure songs with same name are saved uniquely
-    NSString *unqiueFileTitle = [NSString stringWithFormat:@"%@%d.%@", fileTitle, 1, fileExtension];
-    NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:unqiueFileTitle];
+    NSString *uniqueFileTitle;
+    if (fileNumber) {
+        if (fileNumber.intValue != 1) {
+            fileTitle = [fileTitle substringToIndex:fileTitle.length - 1];
+        }
+        uniqueFileTitle = [NSString stringWithFormat:@"%@%@.%@", fileTitle, fileNumber, fileExtension];
+    } else {
+        uniqueFileTitle = [NSString stringWithFormat:@"%@.%@", fileTitle, fileExtension];
+    }
+    NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:uniqueFileTitle];
     NSLog(@"newFilePath: %@", newFilePath);
     return [NSURL fileURLWithPath:newFilePath];
 }

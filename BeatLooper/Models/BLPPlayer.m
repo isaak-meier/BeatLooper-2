@@ -247,7 +247,6 @@
     NSURL *songURL = [_model getURLForCachedSong:song.objectID];
     AVAsset *songAsset = [AVAsset assetWithURL:songURL];
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
-    [self addObseversToPlayerItem:playerItem];
     if (self.playerState != BLPPlayerEmpty && items.count != 0) {
         [self.player insertItem:playerItem afterItem:items[0]];
         [self.songsInQueue insertObject:song atIndex:0];
@@ -392,19 +391,25 @@
 #pragma mark KVO
 
 - (void)addObseversToPlayerItem:(AVPlayerItem *)item {
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(didAdvanceToNextSong)
-                                               name:AVPlayerItemDidPlayToEndTimeNotification
-                                             object:item];
-    [item addObserver:self forKeyPath:@"status" options:0 context:nil];
+    NSLog(@"Adding observer to item %@", item.description);
+    if (item) {
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(didAdvanceToNextSong)
+                                                   name:AVPlayerItemDidPlayToEndTimeNotification
+                                                 object:item];
+        [item addObserver:self forKeyPath:@"status" options:0 context:nil];
+    }
 }
 
 - (void)removeObseversFromPlayerItem:(AVPlayerItem *)item {
     @try {
-        [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:AVPlayerItemDidPlayToEndTimeNotification
-                                                    object:item];
-        [item removeObserver:self forKeyPath:@"status"];
+        if (item) {
+            NSLog(@"Removing observer from item %@", item.description);
+            [NSNotificationCenter.defaultCenter removeObserver:self
+                                                          name:AVPlayerItemDidPlayToEndTimeNotification
+                                                        object:item];
+            [item removeObserver:self forKeyPath:@"status"];
+        }
     } @catch (NSException *exception) {
         NSLog(@"Error there was, hmm, trying to remove observers from objects that have no observers, you are. Exception: %@", exception);
     }
