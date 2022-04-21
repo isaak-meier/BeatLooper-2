@@ -102,7 +102,6 @@
 }
 
 - (BOOL)saveSongFromURL:(NSURL *)originalURL ToURL:(NSURL *)newURL acc:(int)accumulator {
-    NSLog(@"Original URL %@", originalURL);
     NSURL *newFileURL;
     NSNumber *fileNumber = accumulator == 0 ? nil : [[NSNumber alloc] initWithInt:accumulator];
     if (newURL) {
@@ -123,7 +122,7 @@
         return YES;
     } else {
         // error code 516 means we couldn't copy because an item with the same name already exists
-        // we only want to recurr to handle this error. If there's a different error
+        // we only want to recur to handle this error. If there's a different error
         // (i.e. original file cannot be found), we should fail. 
         if (accumulator < 20 && error.code == 516) {
             return [self saveSongFromURL:originalURL ToURL:newFileURL acc:accumulator+1];
@@ -190,16 +189,19 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *documentRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     NSArray<NSString *> *allFilesInDocumentsDirectory = [manager contentsOfDirectoryAtPath:documentRootPath error:nil];
+    NSMutableDictionary *fileNames = [NSMutableDictionary new];
+    for (NSString *fileName in allFilesInDocumentsDirectory) {
+        [fileNames setValue:0 forKey:fileName];
+    }
     for (Beat *song in allSongs) {
         NSString *name = song.title;
-        for (NSString *fileName in allFilesInDocumentsDirectory) {
-            // NSString *fileTitleFromFileName = [[fileName lastPathComponent] stringByDeletingPathExtension];
-            // if ([fileTitleFromFileName isEqualToString:name]) {
-            if ([fileName containsString:name]) {
-                NSLog(@"Matched fileName %@\nWith name %@", fileName, name);
-                NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:fileName];
-                [self saveFilePath:newFilePath forSong:song.objectID];
-            }
+        // NSString *fileTitleFromFileName = [[fileName lastPathComponent] stringByDeletingPathExtension];
+        // if ([fileTitleFromFileName isEqualToString:name]) {
+        if ([fileNames valueForKey:name] == 0) {
+            NSLog(@"Matched fileName %@\nWith name %@", fileName, name);
+            NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:fileName];
+            [self saveFilePath:newFilePath forSong:song.objectID];
+            [fileNames removeObjectForKey:name];
         }
     }
 }
@@ -238,7 +240,7 @@
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
     // create path
     NSString *documentRootPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    // append 1 to filename to ensure songs with same name are saved uniquely
+    // append number to filename to ensure songs with same name are saved uniquely
     NSString *uniqueFileTitle;
     if (fileNumber) {
         if (fileNumber.intValue != 1) {
