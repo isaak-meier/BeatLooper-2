@@ -12,7 +12,7 @@
 @interface BLPPlayer()
 
 @property BLPBeatModel *model;
-@property NSMutableArray *songsInQueue;
+@property (nonatomic, readonly, getter=getSongNames) NSMutableArray *songNames;
 @property NSMutableArray<NSNumber *> *selectedIndexes; // songs selected from queue
 @property AVQueuePlayer *player;
 @property AVPlayerLooper *beatLooper;
@@ -29,6 +29,19 @@
 @implementation BLPPlayer
 
 #pragma mark - Getters n Setters
+
+-  (NSArray<NSString *> *)getSongNames {
+    NSMutableArray<NSString *> *currentPlayerItemsAsSongNames = [NSMutableArray<NSString *> new];
+
+    if (self.player && self.player.currentItem) {
+        for (int i = 0; i < self.player.items.count; i++) {
+            NSString *songName = [BLPBeatModel getSongNameFrom:self.player.items[i]];
+            NSLog(@"%@", songName);
+            [currentPlayerItemsAsSongNames addObject:songName];
+        }
+    }
+    return currentPlayerItemsAsSongNames;
+}
 
 - (void)setCurrentSong:(Beat *)currentSong {
     if (currentSong != _currentSong) {
@@ -80,7 +93,6 @@
 
 - (NSMutableArray<AVPlayerItem *> *)setupPlayerItems:(NSArray *)songs {
     NSMutableArray<AVPlayerItem *> *playerItems = [NSMutableArray new];
-    _songsInQueue = [NSMutableArray new];
     for (int i = 0; i < songs.count; i++) {
         Beat *currentSong = songs[i];
         NSURL *songURL = [_model getURLForCachedSong:currentSong.objectID];
@@ -96,7 +108,6 @@
             [self addObseversToPlayerItem:playerItem];
         } else {
             [playerItems addObject:playerItem];
-            [_songsInQueue addObject:currentSong];
         }
     }
     return playerItems;
@@ -249,7 +260,6 @@
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:songAsset automaticallyLoadedAssetKeys:@[@"playable"]];
     if (self.playerState != BLPPlayerEmpty && items.count != 0) {
         [self.player insertItem:playerItem afterItem:items[0]];
-        [self.songsInQueue insertObject:song atIndex:0];
         return YES;
     } else {
         // if the player has no items, we need to recreate it.
@@ -276,7 +286,6 @@
         [itemsToRemove addObject:itemToRemove];
         [indexesToRemove addIndex:indexToRemoveAt];
     }
-    [self.songsInQueue removeObjectsAtIndexes:indexesToRemove];
     for (AVPlayerItem *item in itemsToRemove) {
         [self.player removeItem:item];
     }
@@ -340,10 +349,8 @@
         NSLog(@"Did not really advance if we are looping");
         return;
     }
-    BOOL queueHasItems = self.songsInQueue.count != 0;
+    BOOL queueHasItems = self.songNames.count != 0;
     if (queueHasItems) {
-        self.currentSong = self.songsInQueue[0];
-        [self.songsInQueue removeObjectAtIndex:0];
         if (self.playerState == BLPPlayerSongPaused) {
             [self togglePlayOrPause];
         }
@@ -453,15 +460,14 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-    if (indexPath.row < self.songsInQueue.count ) {
-        Beat *songForCell = self.songsInQueue[indexPath.row];
-        cell.textLabel.text = songForCell.title;
+    if (indexPath.row < self.songNames.count ) {
+        cell.textLabel.text = self.songNames[indexPath.row];
     }
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.songsInQueue.count;
+    return self.songNames.count - 1;
 }
 
 #pragma mark - UITableView Delegate
@@ -499,11 +505,7 @@
 }
 
 - (void)moveRowInTableViewAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {
-    if (sourceIndex <= self.songsInQueue.count) {
-        Beat *songToMove = self.songsInQueue[sourceIndex];
-        [self.songsInQueue removeObjectAtIndex:sourceIndex];
-        [self.songsInQueue insertObject:songToMove atIndex:destinationIndex];
-    }
+    NSLog(@"Not implemented");
 }
 
 - (void)moveSongInQueueAtIndex:(NSInteger)sourceIndex toIndex:(NSInteger)destinationIndex {

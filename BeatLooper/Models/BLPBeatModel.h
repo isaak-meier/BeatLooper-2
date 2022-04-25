@@ -12,6 +12,7 @@
 #import <AVFoundation/AVAsset.h>
 #import <AVFoundation/AVAssetExportSession.h>
 #import <AVFoundation/AVComposition.h>
+#import <AVFoundation/AVPlayerItem.h>
 #import <CoreMedia/CMTimeRange.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updatePathsOfAllEntities;
 
 + (CMTimeRange)timeRangeFromBars:(int)startBar to:(int)endBar withTempo:(int)tempo;
++ (NSString *)getSongNameFrom:(AVPlayerItem *)playerItem;
 
 @end
 
