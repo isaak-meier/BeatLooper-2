@@ -180,10 +180,12 @@
               beatFromSongID.fileUrl);
     }
 }
-// If we reinstall the application, all our songs get moved to a new directory.
-// So all the paths we store in core data are now wrong, and point to nothing.
-// So we need to update the paths of all the entities so they point to the files
-// apple so kindly moved to a new location for us.
+/**
+    If we reinstall the application, all our songs get moved to a new directory.
+    So all the paths we store in core data are now wrong, and point to nothing.
+    So we need to update the paths of all the entities so they point to the files
+    apple so kindly moved to a new location for us.
+ */
 - (void)updatePathsOfAllEntities {
     NSArray<Beat *> *allSongs = [self getAllSongs];
     NSFileManager *manager = [NSFileManager defaultManager];
@@ -194,12 +196,10 @@
         [fileNames setValue:0 forKey:fileName];
     }
     for (Beat *song in allSongs) {
-        NSString *name = song.title;
-        // NSString *fileTitleFromFileName = [[fileName lastPathComponent] stringByDeletingPathExtension];
-        // if ([fileTitleFromFileName isEqualToString:name]) {
+        NSString *previousfileUrl = song.fileUrl;
+        NSString *name = [previousfileUrl lastPathComponent];
         if ([fileNames valueForKey:name] == 0) {
-            NSLog(@"Matched fileName %@\nWith name %@", fileName, name);
-            NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:fileName];
+            NSString *newFilePath = [documentRootPath stringByAppendingPathComponent:name];
             [self saveFilePath:newFilePath forSong:song.objectID];
             [fileNames removeObjectForKey:name];
         }
