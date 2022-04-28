@@ -182,12 +182,12 @@
 }
 
 - (IBAction)songSliderWasReleased:(id)sender {
-    self.userIsHoldingSlider = NO;
     if (self.playerModel.playerState == BLPPlayerEmpty) {
         [self.playerStatusLabel setText:@"Just chillin' ;)"];
     } else {
         [self.playerModel seekToProgressValue:self.songProgressSlider.value];
     }
+    self.userIsHoldingSlider = NO;
 }
 
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange {
