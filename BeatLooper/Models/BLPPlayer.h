@@ -30,6 +30,7 @@ typedef enum : NSUInteger {
 - (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status;
 - (void)didUpdateCurrentProgressTo:(double)fractionCompleted;
 - (void)requestTableViewUpdate;
+- (void)requestProgressBarUpdate;
 - (void)selectedIndexesChanged:(NSUInteger)count;
 @end
 

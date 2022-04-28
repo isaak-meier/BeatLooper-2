@@ -279,7 +279,6 @@
     for (int i = 0; i < self.selectedIndexes.count; i++) {
         int indexToRemoveAt = self.selectedIndexes[i].intValue;
         // items has a 'hidden' 0 element, currently playing
-        // im not sure if this is true anymore ^^
         AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1];
         [itemsToRemove addObject:itemToRemove];
         [indexesToRemove addIndex:indexToRemoveAt];
@@ -294,6 +293,7 @@
 // Sets up a refresh timer so the progress is updated
 - (NSProgress *)getProgressForCurrentItem {
     NSProgress *progress = [[NSProgress alloc] init];
+    NSLog(@"creating progress for %@", self.player.currentItem);
     CMTime songDuration = [self.player.currentItem duration];
     int durationInSeconds = (int)(songDuration.value / songDuration.timescale);
     [progress setTotalUnitCount:durationInSeconds];
@@ -341,7 +341,6 @@
 }
 
 - (void)didAdvanceToNextSong {
-    // sleep(1);
     if (self.playerState == BLPPlayerLoopPaused
         || self.playerState == BLPPlayerLoopPlaying
         || self.playerState == BLPPlayerEmpty) {
@@ -392,8 +391,8 @@
 #pragma mark KVO
 
 - (void)addObseversToPlayerItem:(AVPlayerItem *)item {
-    NSLog(@"Adding observer to item %@", item.description);
     if (item) {
+        NSLog(@"Adding observers to item %@", item.description);
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(didAdvanceToNextSong)
                                                    name:AVPlayerItemDidPlayToEndTimeNotification
@@ -432,6 +431,7 @@
                 [self addObseversToPlayerItem:newItem];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.delegate requestTableViewUpdate];
+                    [self.delegate requestProgressBarUpdate];
                 });
             } else {
                 [self setCurrentSong:@""];
@@ -458,7 +458,6 @@
 #pragma mark - UITableView Datasource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    // UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
     NSArray<NSString *> *names = [self getSongNames];
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     if (indexPath.row < names.count) {

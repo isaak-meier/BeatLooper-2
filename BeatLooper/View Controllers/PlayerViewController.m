@@ -230,6 +230,7 @@
 }
 
 - (void)setupProgressBar {
+    NSLog(@"Setting up progress bar");
     NSProgress *progress = [self.playerModel getProgressForCurrentItem];
     [self.songProgressBar setObservedProgress:progress];
     [self.songProgressSlider setValue:0];
@@ -291,10 +292,15 @@
     }
 }
 
+// also updates progress bar
 - (void)requestTableViewUpdate {
     [self.queueTableView reloadData];
+}
+
+- (void)requestProgressBarUpdate {
     [self.songProgressSlider setValue:0.0];
     [self.songProgressBar setProgress:0.0];
+    [self setupProgressBar];
 }
 
 - (void)selectedIndexesChanged:(NSUInteger)count {
