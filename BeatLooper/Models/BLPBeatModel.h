@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)getAllSongs;
 - (NSURL *)getURLForCachedSong:(NSManagedObjectID *)songID;
+- (Beat *)getSongFromSongName:(NSString *)songName;
 - (Beat *)getSongForUniqueID:(NSManagedObjectID *)songID;
 - (BOOL)saveSongFromURL:(NSURL *)songURL;
 - (void)saveSongWith:(NSString *)title url:(NSString *)url;

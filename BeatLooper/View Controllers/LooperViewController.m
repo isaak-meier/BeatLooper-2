@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *loopButton;
 
 @property BLPBeatModel *model;
-@property NSManagedObjectID *songID;
 @property BOOL isLooping;
 @property int tempo;
 @property int startBar;
@@ -27,10 +26,10 @@
 
 @implementation LooperViewController
 
--(id)initWithSongID:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping {
+-(id)initWithSong:(Beat *)song isLooping:(BOOL)isLooping {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"LooperViewController"])) {
-        _songID = songID;
+        _song = song;
         _model = [[BLPBeatModel alloc] init];
         self.isLooping = isLooping;
     }
@@ -79,11 +78,9 @@
         [self.endBarTextField setText:endBarStr];
         self.endBar = lastEndBar;
     }
-    
-    Beat *currSong = [self.model getSongForUniqueID:self.songID];
-    NSLog(@"Loaded song from id %@ with name %@ and tempo %d", currSong.objectID, currSong.title, currSong.tempo);
-    
-    int savedTempo = currSong.tempo;
+
+    NSLog(@"getting tempo from %@", self.song.title);
+    int savedTempo = self.song.tempo;
     if (savedTempo > 0 && savedTempo != self.tempo) {
         self.tempo = savedTempo;
         NSString *tempoStr = [NSString stringWithFormat:@"%d", self.tempo];
@@ -97,7 +94,7 @@
     // save all the values
     NSString *tempoStr = [self.tempoTextField text];
     self.tempo = [tempoStr intValue]; // save this to core data
-    [self.model saveTempo:self.tempo forSong:self.songID];
+    [self.model saveTempo:self.tempo forSong:self.song.objectID];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *startBarStr = [self.startBarTextField text];

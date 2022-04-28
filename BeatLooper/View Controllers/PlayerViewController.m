@@ -139,8 +139,7 @@
 }
 
 - (IBAction)skipBackButtonTapped:(id)sender {
-    BOOL success = [self.playerModel skipBackward];
-    if (!success) {
+    BOOL success = [self.playerModel skipBackward]; if (!success) {
         NSLog(@"Skipping backward failed");
     }
 }
@@ -155,12 +154,14 @@
 
 - (IBAction)loopButtonTapped:(id)sender {
     if (self.playerModel.playerState != BLPPlayerEmpty) {
-        NSString *currentSongTitle = self.playerModel.currentSong;
-        if (currentSongTitle) {
+        Beat *songToLoop = [[BLPBeatModel new] getSongFromSongName:self.songTitleLabel.text];
+        if (songToLoop) {
             BOOL playerIsLooping = self.playerModel.playerState == BLPPlayerLoopPlaying
             || self.playerModel.playerState == BLPPlayerLoopPaused;
-            [self.coordinator openLooperViewForSong:currentSongTitle
+            [self.coordinator openLooperViewForSong:songToLoop
                                           isLooping:playerIsLooping];
+        } else {
+            NSLog(@"ok");
         }
     } else {
         NSLog(@"Player state empty");
@@ -218,7 +219,7 @@
 }
 
 - (void)changeCurrentSongTo:(Beat *)newSong {
-    if (self.playerModel.currentSong.objectID != newSong.objectID) {
+    if (self.playerModel.currentSong != newSong.title) {
         [self.playerModel changeCurrentSongTo:newSong];
     }
 }

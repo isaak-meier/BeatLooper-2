@@ -171,13 +171,17 @@
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }
 
-- (void)openLooperViewForSong:(NSString *)songName isLooping:(BOOL)isLooping {
-    if (!self.looperController) {
-        NSManagedObjectID *songID = [[BLPBeatModel new] getSongIDFromName:songName];
-        LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID isLooping:isLooping];
-        looperController.modalPresentationStyle = UIModalPresentationPageSheet;
-        looperController.coordinator = self;
-        self.looperController = looperController; // retain a reference so the user can stop the loop
+- (void)openLooperViewForSong:(Beat *)song isLooping:(BOOL)isLooping {
+    if (!self.looperController || self.looperController.song.objectID != song.objectID) {
+        if (song) {
+            LooperViewController *looperController = [[LooperViewController alloc] initWithSong:song isLooping:isLooping];
+            looperController.modalPresentationStyle = UIModalPresentationPageSheet;
+            looperController.coordinator = self;
+            self.looperController = looperController; // retain a reference so the user can stop the loop
+        } else {
+            NSLog(@"cound't find song by name");
+        }
+
     }
     [self.navigationController presentViewController:self.looperController animated:YES completion:nil];
 }

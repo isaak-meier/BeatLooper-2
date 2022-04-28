@@ -63,6 +63,16 @@
     return beatFromSongID;
 }
 
+- (Beat *)getSongFromSongName:(NSString *)songName {
+    NSArray<Beat *> *allSongs = [self getAllSongs];
+    for (Beat *song in allSongs) {
+        if ([song.title isEqualToString:songName]) {
+            return song;
+        }
+    }
+    return nil;
+}
+
 - (void)deleteSong:(Beat *)song {
     NSManagedObjectContext *context = self.container.viewContext;
     [context deleteObject:song];
