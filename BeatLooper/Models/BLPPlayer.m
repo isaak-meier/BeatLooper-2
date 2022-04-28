@@ -21,8 +21,6 @@
 @property NSTimer *timer;
 
 @property (nonatomic) BLPPlayerState playerState;
-// need to maintain this to provide title for PlayerVC
-@property (nonatomic) Beat *currentSong;
 @property (weak) id <BLPPlayerDelegate> delegate;
 @end
 
@@ -33,26 +31,25 @@
 -  (NSArray<NSString *> *)getSongNames {
     NSMutableArray<NSString *> *currentPlayerItemsAsSongNames = [NSMutableArray<NSString *> new];
 
-    if (self.player && self.player.currentItem) {
+    if (self.player && self.player.items) {
         for (int i = 0; i < self.player.items.count; i++) {
             NSString *songName = [BLPBeatModel getSongNameFrom:self.player.items[i]];
-            NSLog(@"%@", songName);
-            [currentPlayerItemsAsSongNames addObject:songName];
+            if (i == 0) {
+                [self setCurrentSong:songName];
+            } else {
+                [currentPlayerItemsAsSongNames addObject:songName];
+            }
         }
     }
     return currentPlayerItemsAsSongNames;
 }
 
-- (void)setCurrentSong:(Beat *)currentSong {
-    if (currentSong != _currentSong) {
-        NSString *title = currentSong.title ? currentSong.title : @"";
-        if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
-            [self.delegate playerDidChangeSongTitle:title];
-        }
-        if ([self.delegate respondsToSelector:@selector(didUpdateCurrentProgressTo:)]) {
-            [self.delegate didUpdateCurrentProgressTo:0];
-        }
-        _currentSong = currentSong;
+- (void)setCurrentSong:(NSString *)currentSong {
+    if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
+        [self.delegate playerDidChangeSongTitle:currentSong];
+    }
+    if ([self.delegate respondsToSelector:@selector(didUpdateCurrentProgressTo:)]) {
+        [self.delegate didUpdateCurrentProgressTo:0];
     }
 }
 
@@ -104,7 +101,6 @@
         }
         if (i == 0) {
             [playerItems addObject:playerItem];
-            [self setCurrentSong:currentSong];
             [self addObseversToPlayerItem:playerItem];
         } else {
             [playerItems addObject:playerItem];
@@ -229,9 +225,11 @@
         CMTimeRange totalSongRange = CMTimeRangeMake(CMTimeMake(0, self.player.currentTime.timescale), self.player.currentItem.duration);
         if (CMTimeRangeContainsTimeRange(totalSongRange, timeRange)) {
             AVPlayerItem *currentPlayerItem = self.player.currentItem;
-            AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player templateItem:currentPlayerItem timeRange:timeRange];
+            AVPlayerLooper *beatLooper = [[AVPlayerLooper alloc] initWithPlayer:self.player
+                                                                   templateItem:currentPlayerItem
+                                                                      timeRange:timeRange];
             self.beatLooper = beatLooper;
-            self.playerState = BLPPlayerLoopPaused;
+            [self setPlayerState:BLPPlayerLoopPaused];
             [self togglePlayOrPause];
             return YES;
         }
@@ -263,7 +261,6 @@
         return YES;
     } else {
         // if the player has no items, we need to recreate it.
-        self.currentSong = song;
         [self loadPlayerWithItems:[NSMutableArray arrayWithObject:playerItem]];
         // NO because we didn't actually add it to the queue
         return NO;
@@ -282,6 +279,7 @@
     for (int i = 0; i < self.selectedIndexes.count; i++) {
         int indexToRemoveAt = self.selectedIndexes[i].intValue;
         // items has a 'hidden' 0 element, currently playing
+        // im not sure if this is true anymore ^^
         AVPlayerItem *itemToRemove = items[indexToRemoveAt + 1];
         [itemsToRemove addObject:itemToRemove];
         [indexesToRemove addIndex:indexToRemoveAt];
@@ -343,6 +341,7 @@
 }
 
 - (void)didAdvanceToNextSong {
+    // sleep(1);
     if (self.playerState == BLPPlayerLoopPaused
         || self.playerState == BLPPlayerLoopPlaying
         || self.playerState == BLPPlayerEmpty) {
@@ -360,11 +359,6 @@
             [self.selectedIndexes removeAllObjects];
             [self.delegate selectedIndexesChanged:self.selectedIndexes.count];
         }
-    } else {
-        self.playerState = BLPPlayerEmpty;
-        // lets make sure that we're really empty
-        [self.player removeAllItems];
-        self.currentSong = nil;
     }
     [self.delegate requestTableViewUpdate];
 }
@@ -376,7 +370,7 @@
         self.beatLooper = nil;
         [self skipBackward]; // restart song... might not be ness
         [self.player pause];
-        self.playerState = BLPPlayerSongPaused;
+        [self setPlayerState:BLPPlayerSongPaused];
         return YES;
     } else {
         NSLog(@"Error: Cannot stop looping if we aren't looping.");
@@ -431,11 +425,17 @@
         if (object == self.player && [keyPath isEqualToString:@"currentItem"]) {
             AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
             AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
-            if (oldItem) {
+            if (oldItem != (AVPlayerItem *) [NSNull null]) {
                 [self removeObseversFromPlayerItem:oldItem];
             }
-            if (newItem) {
+            if (newItem != (AVPlayerItem *) [NSNull null]) {
                 [self addObseversToPlayerItem:newItem];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate requestTableViewUpdate];
+                });
+            } else {
+                [self setCurrentSong:@""];
+                [self setPlayerState:BLPPlayerEmpty];
             }
         }
 
@@ -459,15 +459,17 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // UITableViewCell *cell = [self.queueTableView dequeueReusableCellWithIdentifier:@"SongQueueCell"];
+    NSArray<NSString *> *names = [self getSongNames];
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-    if (indexPath.row < self.songNames.count ) {
-        cell.textLabel.text = self.songNames[indexPath.row];
+    if (indexPath.row < names.count) {
+        cell.textLabel.text = names[indexPath.row];
     }
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.songNames.count - 1;
+    NSArray<NSString *> *names = [self getSongNames];
+    return names.count;
 }
 
 #pragma mark - UITableView Delegate

@@ -171,8 +171,9 @@
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }
 
-- (void)openLooperViewForSong:(NSManagedObjectID *)songID isLooping:(BOOL)isLooping {
+- (void)openLooperViewForSong:(NSString *)songName isLooping:(BOOL)isLooping {
     if (!self.looperController) {
+        NSManagedObjectID *songID = [[BLPBeatModel new] getSongIDFromName:songName];
         LooperViewController *looperController = [[LooperViewController alloc] initWithSongID:songID isLooping:isLooping];
         looperController.modalPresentationStyle = UIModalPresentationPageSheet;
         looperController.coordinator = self;

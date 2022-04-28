@@ -155,12 +155,15 @@
 
 - (IBAction)loopButtonTapped:(id)sender {
     if (self.playerModel.playerState != BLPPlayerEmpty) {
-        NSManagedObjectID *currentSongID = self.playerModel.currentSong.objectID;
-        if (currentSongID) {
+        NSString *currentSongTitle = self.playerModel.currentSong;
+        if (currentSongTitle) {
             BOOL playerIsLooping = self.playerModel.playerState == BLPPlayerLoopPlaying
             || self.playerModel.playerState == BLPPlayerLoopPaused;
-            [self.coordinator openLooperViewForSong:currentSongID isLooping:playerIsLooping];
+            [self.coordinator openLooperViewForSong:currentSongTitle
+                                          isLooping:playerIsLooping];
         }
+    } else {
+        NSLog(@"Player state empty");
     }
 }
 
@@ -270,6 +273,7 @@
             // the songs usually load instantly but there could be a problem
             case AVPlayerItemStatusFailed:
                 // Failed. Examine AVPlayerItem.error
+                [self.playerStatusLabel setText:@"Failed to load song. Please delete & re-add."];
                 NSLog(@"Failed. Examine AVPlayerItem.error");
                 break;
             case AVPlayerItemStatusUnknown:
@@ -280,10 +284,9 @@
 }
 
 - (void)didUpdateCurrentProgressTo:(double)fractionCompleted {
-    if (fractionCompleted) {
-        if (!self.userIsHoldingSlider) {
-            [self.songProgressSlider setValue:fractionCompleted];
-        }
+    if (!self.userIsHoldingSlider) {
+        [self.songProgressSlider setValue:fractionCompleted];
+        [self.songProgressBar setProgress:fractionCompleted];
     }
 }
 

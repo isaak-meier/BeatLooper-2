@@ -259,7 +259,6 @@
     AVAsset *currentPlayerAsset = playerItem.asset;
     // make sure the current asset is an AVURLAsset
     if (![currentPlayerAsset isKindOfClass:AVURLAsset.class]) return @"Error";
-    // return the NSURL
     NSURL *url = [(AVURLAsset *)currentPlayerAsset URL];
     NSString *urlStr = url.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];

@@ -89,7 +89,6 @@
         NSString *tempoStr = [NSString stringWithFormat:@"%d", self.tempo];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tempoTextField setText:tempoStr];
-
         });
     }
 }

@@ -55,7 +55,7 @@ typedef enum : NSUInteger {
 - (NSProgress *)getProgressForCurrentItem;
 
 @property (readonly) BLPPlayerState playerState;
-@property (readonly) Beat *currentSong;
+@property (readonly) NSString *currentSong;
 
 @end
 
