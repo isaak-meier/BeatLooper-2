@@ -299,7 +299,7 @@
     [progress setTotalUnitCount:durationInSeconds];
     self.progress = progress;
     // set refresh timer so progress is updated
-    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
+    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                                                         target:self
                                                                       selector:@selector(incrementProgress)
                                                                       userInfo:nil

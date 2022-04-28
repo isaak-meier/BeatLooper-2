@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UISlider *songProgressSlider;
 
 @property BOOL userIsHoldingSlider;
+@property int sliderUpdatesToIgnoreCount;
 @property BLPBeatModel *model;
 @property BLPPlayer *playerModel;
 @property NSArray *songsForPlayer; // need to delay playerModel init until viewDidLoad
@@ -186,6 +187,7 @@
         [self.playerStatusLabel setText:@"Just chillin' ;)"];
     } else {
         [self.playerModel seekToProgressValue:self.songProgressSlider.value];
+        self.sliderUpdatesToIgnoreCount = 5;
     }
     self.userIsHoldingSlider = NO;
 }
@@ -287,8 +289,14 @@
 
 - (void)didUpdateCurrentProgressTo:(double)fractionCompleted {
     if (!self.userIsHoldingSlider) {
-        [self.songProgressSlider setValue:fractionCompleted];
         [self.songProgressBar setProgress:fractionCompleted];
+        // we ignore a few updates when we seek to a new time because
+        // theres a gross visual glitch otherwise
+        if (self.sliderUpdatesToIgnoreCount == 0) {
+            [self.songProgressSlider setValue:fractionCompleted];
+        } else {
+            self.sliderUpdatesToIgnoreCount--;
+        }
     }
 }
 
