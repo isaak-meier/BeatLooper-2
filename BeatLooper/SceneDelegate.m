@@ -78,6 +78,8 @@
  Called when a user opens a file with this app. May be .mp3 or .wav format
  
  Save into Core Data and refresh app.
+
+ TODO this doesn't work when app is first opening on device only
  */
 -(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
     NSURL *openedFileURL = URLContexts.anyObject.URL;

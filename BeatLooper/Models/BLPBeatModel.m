@@ -128,8 +128,7 @@
         NSLog(@"The file was successfully saved to path %@", newFileURL);
         NSString *urlStr = newFileURL.absoluteString;
         NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-        [self saveSongWith:[fileTitle stringByRemovingPercentEncoding] url:newFileURL.path];
-        return YES;
+        return [self saveSongWith:[fileTitle stringByRemovingPercentEncoding] url:newFileURL.path];
     } else {
         // error code 516 means we couldn't copy because an item with the same name already exists
         // we only want to recur to handle this error. If there's a different error
@@ -143,7 +142,7 @@
     }
 }
 
-- (void)saveSongWith:(NSString *)title url:(NSString *)url {
+- (BOOL)saveSongWith:(NSString *)title url:(NSString *)url {
     NSManagedObjectContext *context = self.container.viewContext;
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Beat" inManagedObjectContext:context];
@@ -151,11 +150,14 @@
     [managedObject setValue:title forKey:@"title"];
     [managedObject setValue:url forKey:@"fileUrl"];
 
+    BOOL success = YES;
     @try {
         [context save:nil];
     } @catch (NSException *exception) {
         NSLog(@"%@", exception);
+        success = NO;
     }
+    return success;
 }
 
 - (void)saveTempo:(int)tempo forSong:(NSManagedObjectID *)songID {
