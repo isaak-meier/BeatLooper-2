@@ -57,10 +57,6 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if (self.playerModel.playerState == BLPPlayerEmpty) {
-        // please kill me
-        [self.coordinator playerViewControllerRequestsDeath];
-    }
 }
 
 - (void)updateNowPlayingInfoCenterWithTitle:(NSString *)title {
@@ -264,6 +260,11 @@
     [self updatePlayButtonFromState:state];
     [self updateSongSubtitleWithState:state];
     [self updateButtonsWithState:state];
+    
+    if (state == BLPPlayerEmpty) {
+        // please kill me
+        [self.coordinator playerViewControllerRequestsDeath];
+    }
 }
 
 - (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status {
