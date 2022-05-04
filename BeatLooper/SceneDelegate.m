@@ -27,12 +27,6 @@
     UIWindowScene *windowScene = (UIWindowScene *)scene; // UIWindowScene inherits from UIScene
     window.windowScene = windowScene;
     
-    // Setup background playback
-//    NSError *categoryError;
-//    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&categoryError];
-//    if (categoryError) {
-//        NSLog(@"Error setting category! %@", [categoryError description]);
-//    }
     // Init Coordinator using instance of window
     _coordinator = [[BLPCoordinator alloc] initWithWindow:window];
     

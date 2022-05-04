@@ -36,6 +36,7 @@
     [self.navigationController pushViewController:homeViewController animated:NO];
     [[self window] makeKeyAndVisible];
     [self checkForFirstTimeUserOrUpdate];
+    [homeViewController refreshSongsAndReloadData:YES];
 }
 
 - (void)checkForFirstTimeUserOrUpdate {

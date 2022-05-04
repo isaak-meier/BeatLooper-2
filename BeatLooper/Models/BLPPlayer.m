@@ -76,6 +76,7 @@
             NSMutableArray<AVPlayerItem *> *playerItems = [self setupPlayerItems:songs];
             [self loadPlayerWithItems:playerItems];
             [self configureAudioSession];
+            [self setupNotifications];
             [self setupRemoteTransportControls];
         } else {
             self = nil;
@@ -127,6 +128,14 @@
     }
 }
 
+- (void)setupNotifications {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+
+    [center addObserver:self selector:@selector(handleInterruptionNotification:)
+                   name:AVAudioSessionInterruptionNotification
+                 object:session];
+}
 
 - (void)setupRemoteTransportControls {
     MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
@@ -156,8 +165,11 @@
 - (void)loadPlayerWithItems:(NSMutableArray<AVPlayerItem *> *)playerItems {
     self.player = nil;
     self.player = [AVQueuePlayer queuePlayerWithItems:playerItems];
+
     if (self.player) {
         [self setPlayerState:BLPPlayerSongPaused];
+    } else {
+        NSLog(@"Failed to load player");
     }
     // KVO
     [self.player addObserver:self forKeyPath:@"currentItem"
@@ -384,6 +396,29 @@
         [self.progress setCompletedUnitCount:timeInSeconds];
         if ([self.delegate respondsToSelector:@selector(didUpdateCurrentProgressTo:)]) {
             [self.delegate didUpdateCurrentProgressTo:self.progress.fractionCompleted];
+        }
+    }
+}
+
+- (void)handleInterruptionNotification:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    if (userInfo) {
+        NSNumber *typeValue = userInfo[AVAudioSessionInterruptionTypeKey];
+        AVAudioSessionInterruptionType type = typeValue.unsignedIntValue;
+        switch (type) {
+            case AVAudioSessionInterruptionTypeBegan:
+                NSLog(@"Interrupt began");
+                [self setPlayerState:BLPPlayerSongPaused];
+                break;
+            case AVAudioSessionInterruptionTypeEnded:
+                NSLog(@"Interrupt ended");
+                [self togglePlayOrPause];
+                NSNumber *typeValue = userInfo[AVAudioSessionInterruptionTypeKey];
+                AVAudioSessionInterruptionOptions options = typeValue.unsignedIntValue;
+                if (options == AVAudioSessionInterruptionOptionShouldResume) {
+                    NSLog(@"Should resume");
+                }
+                break;
         }
     }
 }

@@ -84,6 +84,13 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    BLPPlayerState state = self.playerModel.playerState;
+    NSLog(@"view will appear");
+    [self playerDidChangeState:state];
+}
+
 
 - (IBAction)playOrPauseSong:(id)sender {
     BOOL success = [self.playerModel togglePlayOrPause];
