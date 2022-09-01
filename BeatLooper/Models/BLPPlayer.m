@@ -48,9 +48,6 @@
     if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
         [self.delegate playerDidChangeSongTitle:currentSong];
     }
-    if ([self.delegate respondsToSelector:@selector(didUpdateCurrentProgressTo:)]) {
-        [self.delegate didUpdateCurrentProgressTo:0];
-    }
 }
 
 - (void)setPlayerState:(BLPPlayerState)playerState {
@@ -412,11 +409,11 @@
                 break;
             case AVAudioSessionInterruptionTypeEnded:
                 NSLog(@"Interrupt ended");
-                [self togglePlayOrPause];
                 NSNumber *typeValue = userInfo[AVAudioSessionInterruptionTypeKey];
                 AVAudioSessionInterruptionOptions options = typeValue.unsignedIntValue;
                 if (options == AVAudioSessionInterruptionOptionShouldResume) {
                     NSLog(@"Should resume");
+                    [self togglePlayOrPause];
                 }
                 break;
         }
@@ -494,10 +491,10 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSArray<NSString *> *names = [self getSongNames];
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
-    if (indexPath.row < names.count) {
-        cell.textLabel.text = names[indexPath.row];
-    }
+    NSString *cellIdentifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                   reuseIdentifier:cellIdentifier];
+    cell.textLabel.text = names[indexPath.row];
     return cell;
 }
 

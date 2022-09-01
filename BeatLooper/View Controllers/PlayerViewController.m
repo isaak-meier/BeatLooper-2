@@ -301,6 +301,7 @@
         // we ignore a few updates when we seek to a new time because
         // theres a gross visual glitch otherwise
         if (self.sliderUpdatesToIgnoreCount == 0) {
+            NSLog(@"setting fraction: %f", fractionCompleted);
             [self.songProgressSlider setValue:fractionCompleted];
         } else {
             self.sliderUpdatesToIgnoreCount--;

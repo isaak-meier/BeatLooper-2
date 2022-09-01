@@ -29,6 +29,9 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0fd-yO-EGo" userLabel="Edit Button">
                                 <rect key="frame" x="314.5" y="64" width="99.5" height="38.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="99.5" id="gra-2m-kvb"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>

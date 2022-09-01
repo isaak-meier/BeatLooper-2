@@ -126,9 +126,8 @@
     
     if (success) {
         NSLog(@"The file was successfully saved to path %@", newFileURL);
-        NSString *urlStr = newFileURL.absoluteString;
-        NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-        return [self saveSongWith:[fileTitle stringByRemovingPercentEncoding] url:newFileURL.path];
+        NSString *songTitle = [BLPBeatModel parseSongNameFrom:newFileURL];
+        return [self saveSongWith:songTitle url:newFileURL.path];
     } else {
         // error code 516 means we couldn't copy because an item with the same name already exists
         // we only want to recur to handle this error. If there's a different error
@@ -272,9 +271,14 @@
     // make sure the current asset is an AVURLAsset
     if (![currentPlayerAsset isKindOfClass:AVURLAsset.class]) return @"Error";
     NSURL *url = [(AVURLAsset *)currentPlayerAsset URL];
+    return [BLPBeatModel parseSongNameFrom:url];
+}
+
++ (NSString *)parseSongNameFrom:(NSURL *)url {
     NSString *urlStr = url.absoluteString;
     NSString *fileTitle = [[urlStr lastPathComponent] stringByDeletingPathExtension];
-    return fileTitle;
+    // for some reason we have to call this twice for it to fully transform a space from percent encoding.
+    return [[fileTitle stringByRemovingPercentEncoding] stringByRemovingPercentEncoding];
 }
 
 @end
