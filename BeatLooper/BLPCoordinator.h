@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)failedToAddSong;
 - (void)showAddSongsView;
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue;
+- (void)openPlayerWithoutSong;
 - (void)addSongToQueue:(Beat *)song;
 - (void)playerViewControllerRequestsDeath;
 - (void)openLooperViewForSong:(Beat *)song isLooping:(BOOL)isLooping;

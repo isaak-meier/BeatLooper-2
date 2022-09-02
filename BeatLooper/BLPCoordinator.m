@@ -172,9 +172,13 @@
         [playerViewController setPlayerModel:player];
         self.playerController = playerViewController;
     } else if (songsForQueue.count != 0) {
-            Beat *songTapped = songsForQueue[0];
-            [self.playerController changeCurrentSongTo:songTapped];
+        Beat *songTapped = songsForQueue[0];
+        [self.playerController changeCurrentSongTo:songTapped];
     }
+    [self openPlayerWithoutSong];
+}
+
+- (void)openPlayerWithoutSong {
     [[self navigationController] pushViewController:self.playerController animated:YES];
 }
 

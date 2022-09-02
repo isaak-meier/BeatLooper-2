@@ -46,7 +46,6 @@
     if (!self.playerModel) {
         NSLog(@"timing issue");
     }
-
     self.queueTableView.delegate = self.playerModel;
     self.queueTableView.dataSource = self.playerModel;
     [self.queueTableView setEditing:YES];

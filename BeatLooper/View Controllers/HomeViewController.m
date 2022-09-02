@@ -14,6 +14,7 @@
 @property (strong, nonatomic) NSMutableArray *songs;
 @property (weak, nonatomic) IBOutlet UIImageView *rainbowMusicBanner;
 @property BOOL isAddSongsMode;
+@property NSString *currentlyPlayingSongTitle;
 
 @end
 
@@ -68,7 +69,7 @@
     UITableViewCell *cell = [self.songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
     Beat *beat = self.songs[indexPath.row];
     cell.textLabel.text = beat.title;
-    if ([@"swag" isEqualToString:beat.title]) {
+    if ([self.currentlyPlayingSongTitle isEqualToString:beat.title]) {
         UILabel *nowPlayingView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, cell.frame.size.height)];
         [nowPlayingView setText:@"Now Playing  →"];
         [nowPlayingView setTextColor:UIColor.grayColor];
@@ -76,6 +77,8 @@
         labelHolder.backgroundColor = UIColor.clearColor;
         [labelHolder addSubview:nowPlayingView];
         cell.accessoryView = labelHolder;
+    } else {
+        cell.accessoryView = nil;
     }
     return cell;
     
@@ -88,12 +91,17 @@
         [self.coordinator addSongToQueue:self.songs[indexPath.row]];
         return;
     }
-    // this range encompasses the song we just selected and every song after it.
-    NSRange queueRange = NSMakeRange(indexPath.row, self.songs.count - indexPath.row);
-    NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
-    NSArray *songsForQueue = [NSArray arrayWithArray:[self.songs objectsAtIndexes:indexes]];
-    [[self coordinator] openPlayerWithSongs:songsForQueue];
-    [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
+    Beat *beat = self.songs[indexPath.row];
+    if ([self.currentlyPlayingSongTitle isEqualToString:beat.title]) {
+        [self.coordinator openPlayerWithoutSong];
+    } else {
+        // this range encompasses the song we just selected and every song after it.
+        NSRange queueRange = NSMakeRange(indexPath.row, self.songs.count - indexPath.row);
+        NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
+        NSArray *songsForQueue = [NSArray arrayWithArray:[self.songs objectsAtIndexes:indexes]];
+        [[self coordinator] openPlayerWithSongs:songsForQueue];
+        [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -123,7 +131,7 @@
 }
 
 
-// MARK: BLPPlayer Datasource
+// MARK: BLPPlayer Delegate
 - (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status {
     // do nothing
 }
@@ -133,7 +141,9 @@
 }
 
 - (void)playerDidChangeSongTitle:(nonnull NSString *)songTitle {
-    // do nothing
+    // update the correct tableviewcell with the title
+    self.currentlyPlayingSongTitle = songTitle;
+    [self.songTableView reloadData];
 }
 
 - (void)playerDidChangeState:(BLPPlayerState)state {
