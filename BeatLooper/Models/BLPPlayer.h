@@ -38,7 +38,7 @@ typedef enum : NSUInteger {
 
 // will return nil if songs array is empty
 - (instancetype)initWithSongs:(NSArray *)songs;
-- (instancetype)initWithDelegate:(nullable id<BLPPlayerDelegate>)delegate andSongs:(NSArray *)songs;
+- (instancetype)initWithDelegates:(NSArray *)delegates andSongs:(NSArray *)songs;
 
 // Methods for player, return success
 - (BOOL)togglePlayOrPause;

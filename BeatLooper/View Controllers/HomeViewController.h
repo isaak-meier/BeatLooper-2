@@ -7,11 +7,12 @@
 
 #import <UIKit/UIKit.h>
 #import "BLPBeatModel.h"
+#import "BLPPlayer.h"
 #import "BLPCoordinator.h"
 #import "Beat+CoreDataClass.h"
 @class BLPCoordinator;
 
-@interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, BLPPlayerDelegate>
 
 @property BLPBeatModel *model;
 @property (weak) BLPCoordinator *coordinator;

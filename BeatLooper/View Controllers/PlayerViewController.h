@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PlayerViewController : UIViewController <BLPPlayerDelegate>
 
 @property (weak) BLPCoordinator *coordinator;
+@property BLPPlayer *playerModel;
 
 - (id)initWithSongs:(NSArray *)songs coordinator:(BLPCoordinator *)coordinator;
 - (void)startLoopWithTimeRange:(CMTimeRange)timeRange;

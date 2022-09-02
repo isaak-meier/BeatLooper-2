@@ -13,6 +13,7 @@
 
 @property BLPBeatModel *model;
 @property (nonatomic, readonly, getter=getSongNames) NSMutableArray *songNames;
+@property (nonatomic, readonly, weak, getter=getDelegate) id <BLPPlayerDelegate> delegate;
 @property NSMutableArray<NSNumber *> *selectedIndexes; // songs selected from queue
 @property AVQueuePlayer *player;
 @property AVPlayerLooper *beatLooper;
@@ -21,14 +22,18 @@
 @property NSTimer *timer;
 
 @property (nonatomic) BLPPlayerState playerState;
-@property (weak) id <BLPPlayerDelegate> delegate;
+@property NSArray<id <BLPPlayerDelegate>> *delegates;
 @end
 
 @implementation BLPPlayer
 
 #pragma mark - Getters n Setters
 
--  (NSArray<NSString *> *)getSongNames {
+- (id <BLPPlayerDelegate>)getDelegate {
+    return _delegates[0];
+}
+
+- (NSArray<NSString *> *)getSongNames {
     NSMutableArray<NSString *> *currentPlayerItemsAsSongNames = [NSMutableArray<NSString *> new];
 
     if (self.player && self.player.items) {
@@ -45,8 +50,10 @@
 }
 
 - (void)setCurrentSong:(NSString *)currentSong {
-    if ([self.delegate respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
-        [self.delegate playerDidChangeSongTitle:currentSong];
+    for (id <BLPPlayerDelegate> element in _delegates) {
+        if ([element respondsToSelector:@selector(playerDidChangeSongTitle:)]) {
+            [element playerDidChangeSongTitle:currentSong];
+        }
     }
 }
 
@@ -64,12 +71,12 @@
 }
 
 #pragma mark - Initialization
-- (instancetype)initWithDelegate:(nullable id<BLPPlayerDelegate>)delegate andSongs:(NSArray *)songs {
+- (instancetype)initWithDelegates:(NSArray<BLPPlayerDelegate> *)delegates andSongs:(NSArray *)songs {
     if (self = [super init]) {
         if (songs.count > 0) {
             _selectedIndexes = [NSMutableArray new];
             _model = [[BLPBeatModel alloc] init];
-            _delegate = delegate;
+            _delegates = delegates;
             NSMutableArray<AVPlayerItem *> *playerItems = [self setupPlayerItems:songs];
             [self loadPlayerWithItems:playerItems];
             [self configureAudioSession];
@@ -83,7 +90,7 @@
 }
 
 - (instancetype)initWithSongs:(NSArray *)songs {
-    return [self initWithDelegate:nil andSongs:songs];
+    return [self initWithDelegates:@[] andSongs:songs];
 }
 
 - (NSMutableArray<AVPlayerItem *> *)setupPlayerItems:(NSArray *)songs {
@@ -136,6 +143,21 @@
 
 - (void)setupRemoteTransportControls {
     MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    // pause and play commands are for airpod double tap. togglePlayPause is for system controls.
+    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        if ([self togglePlayOrPause]) {
+            return MPRemoteCommandHandlerStatusSuccess;
+        } else {
+            return MPRemoteCommandHandlerStatusCommandFailed;
+        }
+    }];
+    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        if ([self togglePlayOrPause]) {
+            return MPRemoteCommandHandlerStatusSuccess;
+        } else {
+            return MPRemoteCommandHandlerStatusCommandFailed;
+        }
+    }];
     [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
         if ([self togglePlayOrPause]) {
             return MPRemoteCommandHandlerStatusSuccess;

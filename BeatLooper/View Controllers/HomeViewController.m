@@ -68,6 +68,15 @@
     UITableViewCell *cell = [self.songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
     Beat *beat = self.songs[indexPath.row];
     cell.textLabel.text = beat.title;
+    if ([@"swag" isEqualToString:beat.title]) {
+        UILabel *nowPlayingView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, cell.frame.size.height)];
+        [nowPlayingView setText:@"Now Playing  →"];
+        [nowPlayingView setTextColor:UIColor.grayColor];
+        UIView *labelHolder = [[UIView alloc] initWithFrame:nowPlayingView.frame];
+        labelHolder.backgroundColor = UIColor.clearColor;
+        [labelHolder addSubview:nowPlayingView];
+        cell.accessoryView = labelHolder;
+    }
     return cell;
     
 }
@@ -113,5 +122,34 @@
     return [self.songs count];
 }
 
+
+// MARK: BLPPlayer Datasource
+- (void)currentItemDidChangeStatus:(AVPlayerItemStatus)status {
+    // do nothing
+}
+
+- (void)didUpdateCurrentProgressTo:(double)fractionCompleted {
+    // do nothing
+}
+
+- (void)playerDidChangeSongTitle:(nonnull NSString *)songTitle {
+    // do nothing
+}
+
+- (void)playerDidChangeState:(BLPPlayerState)state {
+    // do nothing
+}
+
+- (void)requestProgressBarUpdate {
+    // do nothing
+}
+
+- (void)requestTableViewUpdate {
+    // do nothing 
+}
+
+- (void)selectedIndexesChanged:(NSUInteger)count { 
+    // do nothing
+}
 
 @end

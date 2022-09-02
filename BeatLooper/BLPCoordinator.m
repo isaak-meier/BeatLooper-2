@@ -12,6 +12,7 @@
 @property UINavigationController *navigationController;
 @property PlayerViewController *playerController;
 @property LooperViewController *looperController;
+@property HomeViewController *homeController;
 
 // override songID setter so if we change songs we reload the player
 @end
@@ -37,6 +38,7 @@
     [[self window] makeKeyAndVisible];
     [self checkForFirstTimeUserOrUpdate];
     [homeViewController refreshSongsAndReloadData:YES];
+    self.homeController = homeViewController;
 }
 
 - (void)checkForFirstTimeUserOrUpdate {
@@ -62,7 +64,7 @@
 - (void)presentOnboardingAlert {
     UIAlertController *alert = [UIAlertController
                                      alertControllerWithTitle:@"Hello There"
-                                     message:@"Congrats on downloading this app. I hope you're having a wonderful day. To add songs, you need to open the file (mp3 or wav only) in this app, from another app. For example, from Files, select the share button and select Beat Looper in the list of apps. In Google Drive, select 'Open In', and then select Beat Looper in the list of apps. (Note, this is at time of writing. The exact process may change.) Basically you need to tap on Beat Looper from a different app that's holding the file to import it. \n I've added some sample beats for you, feel free to remove them. Try looping forgetMe or swish! (prod. credit No Gravity)\n Ok, that's all from me, everything else should be clear. Take it easy and enjoy."
+                                     message:@"Congrats on downloading this app. I hope you're having a wonderful day. To add songs, you need to open the file (mp3 or wav only) in this app, from another app. For example, from Files, select the share button and select Beat Looper in the list of apps. In Google Drive, select 'Open In', and then select Beat Looper in the list of apps. Basically you need to tap on Beat Looper from a different app that's holding the file to import it. \n I've added some sample beats for you, try looping forgetMe or swish! (prod. credit No Gravity)\n Ok, that's all from me. Take it easy and enjoy."
                                      preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* okButton = [UIAlertAction actionWithTitle:@"Got it."
                                                        style:UIAlertActionStyleDefault
@@ -106,7 +108,6 @@
             [model saveTempo:143 forSong:song.objectID];
         }
     }
-    
 }
 
 - (BOOL)didSongDirectoryPathChange {
@@ -164,6 +165,11 @@
         PlayerViewController *playerViewController = [[PlayerViewController alloc]
                                                       initWithSongs:songsForQueue
                                                       coordinator:self];
+
+        NSArray<id <BLPPlayerDelegate>> *delegates = @[playerViewController, self.homeController];
+        BLPPlayer *player = [[BLPPlayer alloc] initWithDelegates:delegates
+                                                        andSongs:songsForQueue];
+        [playerViewController setPlayerModel:player];
         self.playerController = playerViewController;
     } else if (songsForQueue.count != 0) {
             Beat *songTapped = songsForQueue[0];

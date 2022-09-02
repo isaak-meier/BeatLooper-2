@@ -24,8 +24,6 @@
 
 @property BOOL userIsHoldingSlider;
 @property int sliderUpdatesToIgnoreCount;
-@property BLPBeatModel *model;
-@property BLPPlayer *playerModel;
 @property NSArray *songsForPlayer; // need to delay playerModel init until viewDidLoad
 
 @end
@@ -36,7 +34,6 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"PlayerViewController"])) {
         // assign properties
-        _model = [[BLPBeatModel alloc] init];
         _coordinator = coordinator;
         _songsForPlayer = songs;
     }
@@ -47,7 +44,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     if (!self.playerModel) {
-        self.playerModel = [[BLPPlayer alloc] initWithDelegate:(id<BLPPlayerDelegate>)self andSongs:self.songsForPlayer];
+        NSLog(@"timing issue");
     }
 
     self.queueTableView.delegate = self.playerModel;
@@ -301,7 +298,6 @@
         // we ignore a few updates when we seek to a new time because
         // theres a gross visual glitch otherwise
         if (self.sliderUpdatesToIgnoreCount == 0) {
-            NSLog(@"setting fraction: %f", fractionCompleted);
             [self.songProgressSlider setValue:fractionCompleted];
         } else {
             self.sliderUpdatesToIgnoreCount--;
