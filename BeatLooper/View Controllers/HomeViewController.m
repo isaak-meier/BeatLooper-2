@@ -100,8 +100,8 @@
         NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
         NSArray *songsForQueue = [NSArray arrayWithArray:[self.songs objectsAtIndexes:indexes]];
         [[self coordinator] openPlayerWithSongs:songsForQueue];
-        [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
+    [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

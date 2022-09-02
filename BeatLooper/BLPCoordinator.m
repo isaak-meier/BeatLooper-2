@@ -163,13 +163,12 @@
 - (void)openPlayerWithSongs:(NSArray *)songsForQueue {
     if (!self.playerController) {
         PlayerViewController *playerViewController = [[PlayerViewController alloc]
-                                                      initWithSongs:songsForQueue
-                                                      coordinator:self];
+                                                      initWithCoordinator:self];
 
         NSArray<id <BLPPlayerDelegate>> *delegates = @[playerViewController, self.homeController];
         BLPPlayer *player = [[BLPPlayer alloc] initWithDelegates:delegates
                                                         andSongs:songsForQueue];
-        [playerViewController setPlayerModel:player];
+        [playerViewController setup:player];
         self.playerController = playerViewController;
     } else if (songsForQueue.count != 0) {
         Beat *songTapped = songsForQueue[0];

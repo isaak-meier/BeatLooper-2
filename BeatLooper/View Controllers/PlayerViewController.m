@@ -24,36 +24,37 @@
 
 @property BOOL userIsHoldingSlider;
 @property int sliderUpdatesToIgnoreCount;
-@property NSArray *songsForPlayer; // need to delay playerModel init until viewDidLoad
+@property BLPPlayer *playerModel;
 
 @end
 
 @implementation PlayerViewController
 
-- (id)initWithSongs:(NSArray *)songs coordinator:coordinator {
+- (id)initWithCoordinator:coordinator {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     if ((self = [storyboard instantiateViewControllerWithIdentifier:@"PlayerViewController"])) {
         // assign properties
         _coordinator = coordinator;
-        _songsForPlayer = songs;
     }
     return self;
+}
+
+- (void)setup:(BLPPlayer *)playerModel {
+    self.playerModel = playerModel;
+    [self.playerModel togglePlayOrPause];
+    BLPPlayerState state = self.playerModel.playerState;
+    [self playerDidChangeState:state];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    if (!self.playerModel) {
-        NSLog(@"timing issue");
-    }
     self.queueTableView.delegate = self.playerModel;
     self.queueTableView.dataSource = self.playerModel;
     [self.queueTableView setEditing:YES];
     [self.queueTableView setAllowsMultipleSelectionDuringEditing:YES];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-}
 
 - (void)updateNowPlayingInfoCenterWithTitle:(NSString *)title {
     MPNowPlayingInfoCenter *infoCenter = [MPNowPlayingInfoCenter defaultCenter];
@@ -80,11 +81,14 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    BLPPlayerState state = self.playerModel.playerState;
+    [self playerDidChangeState:state];
+}
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    BLPPlayerState state = self.playerModel.playerState;
     NSLog(@"view will appear");
-    [self playerDidChangeState:state];
 }
 
 
@@ -202,7 +206,7 @@
 - (void)handleErrorStartingLoop {
     UIAlertController *alert = [UIAlertController
                                      alertControllerWithTitle:@"Ay va voi"
-                                     message:@"Hey Buddy, we couldn't start the loop for some reason. If I had to make an educated guess, it's because you tried to loop what couldn't be looped. That is, the song probably couldn't be looped between the bars that you provided."
+                                     message:@"Hey Buddy, we couldn't start the loop. The song probably couldn't be looped between the bars that you provided."
                                      preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* okButton = [UIAlertAction
                                     actionWithTitle:@"Haha, Ok"
@@ -304,7 +308,6 @@
     }
 }
 
-// also updates progress bar
 - (void)requestTableViewUpdate {
     [self.queueTableView reloadData];
 }
