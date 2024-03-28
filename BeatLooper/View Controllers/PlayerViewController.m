@@ -88,7 +88,7 @@
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"view will appear");
+    [[self.loopButton imageView] setContentMode:UIViewContentModeScaleAspectFit];
 }
 
 
