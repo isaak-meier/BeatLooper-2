@@ -35,7 +35,7 @@
     NSArray *songs = [model getAllSongs];
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-variable"
-    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegate:self andSongs:songs];
+    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegates:@[self] andSongs:songs];
     #pragma clang diagnostic pop
     [self waitForExpectations:@[self.titleExpectation] timeout:2.0];
     [self waitForExpectations:@[self.stateExpectation] timeout:2.0];
@@ -49,7 +49,7 @@
     
     BLPBeatModel *model = [[BLPBeatModel alloc] init];
     NSArray *songs = [model getAllSongs];
-    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegate:self andSongs:songs];
+    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegates:@[self] andSongs:songs];
     XCTAssertTrue([player skipForward]);
     [self waitForExpectations:@[self.titleExpectation] timeout:5.0];
     
@@ -75,8 +75,8 @@
     
     BLPBeatModel *model = [[BLPBeatModel alloc] init];
     NSArray *songs = [model getAllSongs];
-    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegate:self andSongs:songs];
-    
+    BLPPlayer *player = [[BLPPlayer alloc] initWithDelegates:@[self] andSongs:songs];
+
     [player startLoopingTimeRange:[BLPBeatModel timeRangeFromBars:0 to:4 withTempo:150]];
     [self waitForExpectations:@[self.stateExpectation] timeout:1.0];
     

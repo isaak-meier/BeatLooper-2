@@ -24,7 +24,7 @@
     self.progressExpectation = [[XCTestExpectation alloc] initWithDescription:@"Status change"];
     // [self waitForExpectations:@[self.progressExpectation] timeout:1.0];
     self.model = [[BLPBeatModel alloc] init];
-    self.player = [[BLPPlayer alloc] initWithDelegate:self
+    self.player = [[BLPPlayer alloc] initWithDelegates:@[self]
                                              andSongs:[self.model getAllSongs]];
     [self waitForExpectations:@[self.progressExpectation] timeout:1.0];
 }

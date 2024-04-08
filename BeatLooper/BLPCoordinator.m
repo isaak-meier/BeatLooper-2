@@ -44,7 +44,9 @@
 - (void)checkForFirstTimeUserOrUpdate {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL isFirstTime = ![userDefaults boolForKey:@"firstTime?"];
+//    BOOL isFirstTime = YES;
     BOOL shouldSetUpSampleSongs = ![userDefaults boolForKey:@"addSampleSongs"];
+//    BOOL shouldSetUpSampleSongs = YES;
     BOOL applicationDidUpdate = [self didSongDirectoryPathChange];
 
     if (isFirstTime) {
@@ -64,7 +66,7 @@
 - (void)presentOnboardingAlert {
     UIAlertController *alert = [UIAlertController
                                      alertControllerWithTitle:@"Hello There"
-                                     message:@"Congrats on downloading this app. I hope you're having a wonderful day. To add songs, you need to open the file (mp3 or wav only) in this app, from another app. For example, from Files, select the share button and select Beat Looper in the list of apps. In Google Drive, select 'Open In', and then select Beat Looper in the list of apps. Basically you need to tap on Beat Looper from a different app that's holding the file to import it. \n I've added some sample beats for you, try looping forgetMe or swish! (prod. credit No Gravity)\n Ok, that's all from me. Take it easy and enjoy."
+                                     message:@"Congrats on downloading this app. I hope you're having a wonderful day. To add songs, you need to open the file (mp3 or wav only) in this app, from the share sheet. For example, from Files, select the share button and select Beat Looper in the list of apps. In Google Drive, select 'Open In', and then select Beat Looper in the list of apps. Basically you need to tap on Beat Looper from a different app that's holding the file to import it. \n I've added some sample beats for you, try looping forgetMe or swish! (prod. credit No Gravity)\n Ok, that's all from me. Take it easy and enjoy."
                                      preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction* okButton = [UIAlertAction actionWithTitle:@"Got it."
                                                        style:UIAlertActionStyleDefault

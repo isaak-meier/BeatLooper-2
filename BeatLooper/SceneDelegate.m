@@ -76,13 +76,17 @@
  TODO this doesn't work when app is first opening on device only
  */
 -(void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
-    NSURL *openedFileURL = URLContexts.anyObject.URL;
-    BLPBeatModel *model = [[BLPBeatModel alloc] init];
-    if ([model saveSongFromURL:openedFileURL]) {
-        [self.coordinator songAdded];
-    } else {
-        [self.coordinator failedToAddSong];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        NSURL *openedFileURL = URLContexts.anyObject.URL;
+        BLPBeatModel *model = [[BLPBeatModel alloc] init];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([model saveSongFromURL:openedFileURL]) {
+                [self.coordinator songAdded];
+            } else {
+                [self.coordinator failedToAddSong];
+            }
+        });
+    });
 }
 
 

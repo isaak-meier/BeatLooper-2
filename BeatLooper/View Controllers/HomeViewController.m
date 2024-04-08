@@ -14,6 +14,7 @@
 @property (strong, nonatomic) NSMutableArray *songs;
 @property (weak, nonatomic) IBOutlet UIImageView *rainbowMusicBanner;
 @property BOOL isAddSongsMode;
+@property BOOL rowSelected;
 @property NSString *currentlyPlayingSongTitle;
 
 @end
@@ -64,14 +65,15 @@
 }
 
 // MARK: UITableView Datasource
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView
+                 cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [self.songTableView dequeueReusableCellWithIdentifier:@"SongCell"];
     Beat *beat = self.songs[indexPath.row];
     cell.textLabel.text = beat.title;
     if ([self.currentlyPlayingSongTitle isEqualToString:beat.title]) {
         UILabel *nowPlayingView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, cell.frame.size.height)];
-        [nowPlayingView setText:@"Now Playing  →"];
+        [nowPlayingView setText:@"Now Playing"];
         [nowPlayingView setTextColor:UIColor.grayColor];
         UIView *labelHolder = [[UIView alloc] initWithFrame:nowPlayingView.frame];
         labelHolder.backgroundColor = UIColor.clearColor;
@@ -100,6 +102,7 @@
         NSIndexSet *indexes = [[NSIndexSet alloc] initWithIndexesInRange:queueRange];
         NSArray *songsForQueue = [NSArray arrayWithArray:[self.songs objectsAtIndexes:indexes]];
         [[self coordinator] openPlayerWithSongs:songsForQueue];
+        self.rowSelected = YES;
     }
     [self.songTableView deselectRowAtIndexPath:indexPath animated:NO];
 }

@@ -326,16 +326,18 @@
     NSProgress *progress = [[NSProgress alloc] init];
     NSLog(@"creating progress for %@", self.player.currentItem);
     CMTime songDuration = [self.player.currentItem duration];
-    int durationInSeconds = (int)(songDuration.value / songDuration.timescale);
-    [progress setTotalUnitCount:durationInSeconds];
-    self.progress = progress;
-    // set refresh timer so progress is updated
-    NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                                        target:self
-                                                                      selector:@selector(incrementProgress)
-                                                                      userInfo:nil
-                                                                       repeats:YES];
-    self.timer = progressBarRefreshTimer;
+    if (songDuration.value != 0) {
+        int durationInSeconds = (int)(songDuration.value / songDuration.timescale);
+        [progress setTotalUnitCount:durationInSeconds];
+        self.progress = progress;
+        // set refresh timer so progress is updated
+        NSTimer *progressBarRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                                            target:self
+                                                                          selector:@selector(incrementProgress)
+                                                                          userInfo:nil
+                                                                           repeats:YES];
+        self.timer = progressBarRefreshTimer;
+    }
     return self.progress;
 }
 
