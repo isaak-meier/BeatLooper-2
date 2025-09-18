@@ -51,8 +51,10 @@ class PlayerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let state = playerModel?.playerState {
-            playerDidChangeState(state)
+        Task {
+            if let state = await playerModel?.playerState {
+                playerDidChangeState(state)
+            }
         }
     }
     
@@ -70,36 +72,38 @@ class PlayerViewController: UIViewController {
     }
     
     // MARK: - Public Methods
-    func setup(player: Player) {
+    func setup(player: Player) async {
         self.playerModel = player
-        _ = player.togglePlayOrPause()
-        playerDidChangeState(player.playerState)
+        _ = await player.togglePlayOrPause()
+        let state = await player.playerState
+        playerDidChangeState(state)
     }
     
-    func startLoopWithTimeRange(_ timeRange: CMTimeRange) {
+    func startLoopWithTimeRange(_ timeRange: CMTimeRange) async {
         guard let player = playerModel else { return }
         
-        let success = player.startLoopingTimeRange(timeRange)
+        let success = await player.startLoopingTimeRange(timeRange)
         if !success {
             print("Loop failed.")
             handleErrorStartingLoop()
         }
     }
     
-    func stopLooping() {
-        playerModel?.stopLooping()
+    func stopLooping() async {
+        _ = await playerModel?.stopLooping()
     }
     
-    func changeCurrentSongTo(_ newSong: Beat) {
+    func changeCurrentSongTo(_ newSong: Beat) async {
         guard let player = playerModel else { return }
         
-        if player.currentSong != newSong.title {
-            _ = player.changeCurrentSongTo(newSong)
+        let currentSong = await player.currentSong
+        if currentSong != newSong.title {
+            _ = await player.changeCurrentSongTo(newSong)
         }
     }
     
-    func addSongToQueue(_ song: Beat) {
-        playerModel?.addSongToQueue(song)
+    func addSongToQueue(_ song: Beat) async {
+        _ = await playerModel?.addSongToQueue(song)
         queueTableView.reloadData()
     }
     
@@ -129,9 +133,9 @@ class PlayerViewController: UIViewController {
     private func updatePlayButtonFromState(_ state: PlayerState) {
         switch state {
         case .songPaused, .loopPaused:
-            animateButtonToPlayIcon(shouldAnimateToPlayIcon: true)
+            animateButtonToPlayIcon(true)
         case .songPlaying, .loopPlaying:
-            animateButtonToPlayIcon(shouldAnimateToPlayIcon: false)
+            animateButtonToPlayIcon(false)
         case .empty:
             break
         }
@@ -165,9 +169,9 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    private func setupProgressBar() {
+    private func setupProgressBar() async {
         print("Setting up progress bar")
-        if let progress = playerModel?.getProgressForCurrentItem() {
+        if let progress = await playerModel?.getProgressForCurrentItem() {
             songProgressBar.observedProgress = progress
         }
         songProgressSlider.value = 0
@@ -199,45 +203,66 @@ class PlayerViewController: UIViewController {
     @IBAction func playOrPauseSong(_ sender: UIButton) {
         guard let player = playerModel else { return }
         
-        let success = player.togglePlayOrPause()
-        if success {
-            updatePlayButtonFromState(player.playerState)
-        } else {
-            print("Play/pause failed on empty player")
+        Task {
+            let success = await player.togglePlayOrPause()
+            if success {
+                let state = await player.playerState
+                await MainActor.run {
+                    updatePlayButtonFromState(state)
+                }
+            } else {
+                print("Play/pause failed on empty player")
+            }
         }
     }
     
     @IBAction func skipBackButtonTapped(_ sender: UIButton) {
         guard let player = playerModel else { return }
         
-        let success = player.skipBackward()
-        if !success {
-            print("Skipping backward failed")
+        Task {
+            let success = await player.skipBackward()
+            if !success {
+                print("Skipping backward failed")
+            }
         }
     }
     
     @IBAction func skipForwardButtonTapped(_ sender: UIButton) {
         guard let player = playerModel else { return }
         
-        let success = player.skipForward()
-        if !success {
-            print("Skipping forward failed")
+        Task {
+            let success = await player.skipForward()
+            if !success {
+                print("Skipping forward failed")
+            }
+            await MainActor.run {
+                queueTableView.reloadData()
+            }
         }
-        queueTableView.reloadData()
     }
     
     @IBAction func loopButtonTapped(_ sender: UIButton) {
-        guard let player = playerModel, player.playerState != .empty else {
+        guard let player = playerModel else {
             print("Player state empty")
             return
         }
         
-        let model = BeatModel()
-        if let songToLoop = model.getSongFromSongName(songTitleLabel.text ?? "") {
-            let playerIsLooping = player.playerState == .loopPlaying || player.playerState == .loopPaused
-            coordinator?.openLooperViewForSong(songToLoop, isLooping: playerIsLooping)
-        } else {
-            print("ok")
+        Task {
+            let state = await player.playerState
+            guard state != .empty else {
+                print("Player state empty")
+                return
+            }
+            
+            let model = BeatModel()
+            if let songToLoop = model.getSongFromSongName(songTitleLabel.text ?? "") {
+                let playerIsLooping = state == .loopPlaying || state == .loopPaused
+                await MainActor.run {
+                    coordinator?.openLooperViewForSong(songToLoop, isLooping: playerIsLooping)
+                }
+            } else {
+                print("ok")
+            }
         }
     }
     
@@ -245,7 +270,9 @@ class PlayerViewController: UIViewController {
         if removeButton.currentTitle == "Remove" {
             queueTableView.reloadData()
             removeButton.setTitle("Add Songs", for: .normal)
-            playerModel?.removeSelectedSongs()
+            Task {
+                await playerModel?.removeSelectedSongs()
+            }
         } else {
             coordinator?.showAddSongsView()
         }
@@ -256,79 +283,102 @@ class PlayerViewController: UIViewController {
     }
     
     @IBAction func songSliderWasReleased(_ sender: UISlider) {
-        if playerModel?.playerState == .empty {
-            playerStatusLabel.text = "Just chillin' ;)"
-        } else {
-            playerModel?.seekToProgressValue(songProgressSlider.value)
-            sliderUpdatesToIgnoreCount = 5
+        Task {
+            let state = await playerModel?.playerState
+            if state == .empty {
+                await MainActor.run {
+                    playerStatusLabel.text = "Just chillin' ;)"
+                }
+            } else {
+                _ = await playerModel?.seekToProgressValue(songProgressSlider.value)
+                await MainActor.run {
+                    sliderUpdatesToIgnoreCount = 5
+                }
+            }
+            await MainActor.run {
+                userIsHoldingSlider = false
+            }
         }
-        userIsHoldingSlider = false
     }
 }
 
 // MARK: - PlayerDelegate
 extension PlayerViewController: PlayerDelegate {
     
-    func playerDidChangeSongTitle(_ songTitle: String) {
-        songTitleLabel.text = songTitle
-        updateNowPlayingInfoCenterWithTitle(songTitle)
-    }
-    
-    func playerDidChangeState(_ state: PlayerState) {
-        updatePlayButtonFromState(state)
-        updateSongSubtitleWithState(state)
-        updateButtonsWithState(state)
-        
-        if state == .empty {
-            // Please kill me
-            coordinator?.playerViewControllerRequestsDeath()
+    nonisolated func playerDidChangeSongTitle(_ songTitle: String) {
+        Task { @MainActor in
+            songTitleLabel.text = songTitle
+            updateNowPlayingInfoCenterWithTitle(songTitle)
         }
     }
     
-    func currentItemDidChangeStatus(_ status: AVPlayerItem.Status) {
-        switch status {
-        case .readyToPlay:
-            print("Item ready to play")
-            setupProgressBar()
-        case .failed:
-            playerStatusLabel.text = "Failed to load song. Please delete & re-add."
-            print("Failed. Examine AVPlayerItem.error")
-        case .unknown:
-            print("Not ready")
-        @unknown default:
-            break
-        }
-    }
-    
-    func didUpdateCurrentProgressTo(_ fractionCompleted: Double) {
-        if !userIsHoldingSlider {
-            songProgressBar.progress = Float(fractionCompleted)
+    nonisolated func playerDidChangeState(_ state: PlayerState) {
+        Task { @MainActor in
+            updatePlayButtonFromState(state)
+            updateSongSubtitleWithState(state)
+            updateButtonsWithState(state)
             
-            // We ignore a few updates when we seek to a new time because
-            // there's a gross visual glitch otherwise
-            if sliderUpdatesToIgnoreCount == 0 {
-                songProgressSlider.value = Float(fractionCompleted)
-            } else {
-                sliderUpdatesToIgnoreCount -= 1
+            if state == .empty {
+                // Please kill me
+                coordinator?.playerViewControllerRequestsDeath()
             }
         }
     }
     
-    func requestTableViewUpdate() {
-        queueTableView.reloadData()
+    nonisolated func currentItemDidChangeStatus(_ status: AVPlayerItem.Status) {
+        Task { @MainActor in
+            switch status {
+            case .readyToPlay:
+                print("Item ready to play")
+                await setupProgressBar()
+            case .failed:
+                playerStatusLabel.text = "Failed to load song. Please delete & re-add."
+                print("Failed. Examine AVPlayerItem.error")
+            case .unknown:
+                print("Not ready")
+            @unknown default:
+                break
+            }
+        }
     }
     
-    func requestProgressBarUpdate() {
-        songProgressSlider.value = 0.0
-        songProgressBar.progress = 0.0
-        setupProgressBar()
+    nonisolated func didUpdateCurrentProgressTo(_ fractionCompleted: Double) {
+        Task { @MainActor in
+            if !userIsHoldingSlider {
+                songProgressBar.progress = Float(fractionCompleted)
+                
+                // We ignore a few updates when we seek to a new time because
+                // there's a gross visual glitch otherwise
+                if sliderUpdatesToIgnoreCount == 0 {
+                    songProgressSlider.value = Float(fractionCompleted)
+                } else {
+                    sliderUpdatesToIgnoreCount -= 1
+                }
+            }
+        }
     }
     
-    func selectedIndexesChanged(_ count: Int) {
-        if count == 0 {
-            removeButton.setTitle("Add Songs", for: .normal)
-        } else {
-            removeButton.setTitle("Remove", for: .normal)
+    nonisolated func requestTableViewUpdate() {
+        Task { @MainActor in
+            queueTableView.reloadData()
+        }
+    }
+    
+    nonisolated func requestProgressBarUpdate() {
+        Task { @MainActor in
+            songProgressSlider.value = 0.0
+            songProgressBar.progress = 0.0
+            await setupProgressBar()
+        }
+    }
+    
+    nonisolated func selectedIndexesChanged(_ count: Int) {
+        Task { @MainActor in
+            if count == 0 {
+                removeButton.setTitle("Add Songs", for: .normal)
+            } else {
+                removeButton.setTitle("Remove", for: .normal)
+            }
         }
     }
 }

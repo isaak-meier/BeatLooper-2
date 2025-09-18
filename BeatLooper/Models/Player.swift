@@ -12,6 +12,121 @@ import CoreData
 import AVFoundation
 import CoreMedia
 
+// MARK: - Thread-Safe AVPlayer Wrapper
+class ThreadSafeAVPlayer {
+    private let player: AVPlayer
+    
+    init() {
+        self.player = AVPlayer()
+    }
+    
+    init(playerItem: AVPlayerItem) {
+        self.player = AVPlayer(playerItem: playerItem)
+    }
+    
+    // MARK: - Thread-Safe Properties
+    var rate: Float {
+        get { 
+            if Thread.isMainThread {
+                return player.rate
+            } else {
+                return DispatchQueue.main.sync { player.rate }
+            }
+        }
+    }
+    
+    var currentItem: AVPlayerItem? {
+        get { 
+            if Thread.isMainThread {
+                return player.currentItem
+            } else {
+                return DispatchQueue.main.sync { player.currentItem }
+            }
+        }
+    }
+    
+    var currentTime: CMTime {
+        get { 
+            if Thread.isMainThread {
+                return player.currentTime()
+            } else {
+                return DispatchQueue.main.sync { player.currentTime() }
+            }
+        }
+    }
+    
+    // MARK: - Thread-Safe Methods
+    func play() {
+        if Thread.isMainThread {
+            player.play()
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.player.play()
+            }
+        }
+    }
+    
+    func pause() {
+        if Thread.isMainThread {
+            player.pause()
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.player.pause()
+            }
+        }
+    }
+    
+    func seek(to time: CMTime) {
+        if Thread.isMainThread {
+            player.seek(to: time)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.player.seek(to: time)
+            }
+        }
+    }
+    
+    func replaceCurrentItem(with item: AVPlayerItem?) {
+        if Thread.isMainThread {
+            player.replaceCurrentItem(with: item)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.player.replaceCurrentItem(with: item)
+            }
+        }
+    }
+    
+    func addPeriodicTimeObserver(forInterval interval: CMTime, queue: DispatchQueue?, using block: @escaping @Sendable (CMTime) -> Void) -> Any {
+        if Thread.isMainThread {
+            return player.addPeriodicTimeObserver(forInterval: interval, queue: queue, using: block)
+        } else {
+            return DispatchQueue.main.sync {
+                return player.addPeriodicTimeObserver(forInterval: interval, queue: queue, using: block)
+            }
+        }
+    }
+    
+    func addBoundaryTimeObserver(forTimes times: [NSValue], queue: DispatchQueue?, using block: @escaping @Sendable () -> Void) -> Any {
+        if Thread.isMainThread {
+            return player.addBoundaryTimeObserver(forTimes: times, queue: queue, using: block)
+        } else {
+            return DispatchQueue.main.sync {
+                return player.addBoundaryTimeObserver(forTimes: times, queue: queue, using: block)
+            }
+        }
+    }
+    
+    func removeTimeObserver(_ observer: Any) {
+        if Thread.isMainThread {
+            player.removeTimeObserver(observer)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.player.removeTimeObserver(observer)
+            }
+        }
+    }
+}
+
 // MARK: - Player State Enum
 enum PlayerState {
     case songPlaying
@@ -22,7 +137,6 @@ enum PlayerState {
 }
 
 // MARK: - Player Delegate Protocol
-@MainActor
 protocol PlayerDelegate: AnyObject {
     func playerDidChangeSongTitle(_ songTitle: String)
     func playerDidChangeState(_ state: PlayerState)
@@ -34,10 +148,10 @@ protocol PlayerDelegate: AnyObject {
 }
 
 // MARK: - Player Class
-class Player: NSObject {
-    
+actor Player: NSObject {
+
     // MARK: - Properties
-    private var player: AVPlayer?
+    private var player: ThreadSafeAVPlayer?
     private var songs: [Beat] = []
     private var currentSongIndex: Int = 0
     private var delegates: [PlayerDelegate] = []
@@ -59,35 +173,41 @@ class Player: NSObject {
     
     var currentSong: String? {
         guard currentSongIndex < songs.count else { return nil }
-        return songs[currentSongIndex].songName
+        return songs[currentSongIndex].title
     }
     
     // MARK: - Initialization
     init(songs: [Beat]) {
         super.init()
         self.songs = songs
-        setupPlayer()
+        Task {
+            await setupPlayer()
+        }
     }
     
     init(delegates: [PlayerDelegate], songs: [Beat]) {
         super.init()
         self.delegates = delegates
         self.songs = songs
-        setupPlayer()
+        Task {
+            await setupPlayer()
+        }
     }
     
     deinit {
-        removeTimeObserver()
+        Task {
+            await removeTimeObserver()
+        }
     }
     
     // MARK: - Setup
-    private func setupPlayer() {
+    private func setupPlayer() async {
         guard !songs.isEmpty else { return }
         
-        player = AVPlayer()
+        player = ThreadSafeAVPlayer()
         setupAudioSession()
-        loadCurrentSong()
-        setupTimeObserver()
+        await loadCurrentSong()
+        await setupTimeObserver()
     }
     
     private func setupAudioSession() {
@@ -99,16 +219,18 @@ class Player: NSObject {
         }
     }
     
-    private func setupTimeObserver() {
+    private func setupTimeObserver() async {
         guard let player = player else { return }
         
         let interval = CMTime(seconds: 0.1, preferredTimescale: 600)
         timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
-            self?.updateProgress(time: time)
+            Task { @MainActor in
+                await self?.updateProgress(time: time)
+            }
         }
     }
     
-    private func removeTimeObserver() {
+    private func removeTimeObserver() async {
         if let timeObserver = timeObserver {
             player?.removeTimeObserver(timeObserver)
             self.timeObserver = nil
@@ -116,12 +238,12 @@ class Player: NSObject {
     }
     
     // MARK: - Song Loading
-    private func loadCurrentSong() {
+    private func loadCurrentSong() async {
         guard currentSongIndex < songs.count else { return }
         
         let song = songs[currentSongIndex]
-        guard let url = song.songURL else {
-            print("No URL for song: \(song.songName ?? "Unknown")")
+        guard let urlString = song.fileUrl, let url = URL(string: urlString) else {
+            print("No URL for song: \(song.title ?? "Unknown")")
             return
         }
         
@@ -129,11 +251,11 @@ class Player: NSObject {
         player?.replaceCurrentItem(with: playerItem)
         
         // Notify delegates
-        notifyDelegates { $0.playerDidChangeSongTitle(song.songName ?? "Unknown") }
+        notifyDelegates { $0.playerDidChangeSongTitle(song.title ?? "Unknown") }
         notifyDelegates { $0.playerDidChangeState(playerState) }
         
         // Add observer for item status
-        playerItem.addObserver(self, forKeyPath: "status", options: [.new], context: nil)
+        playerItem.addObserver(self, forKeyPath: "status", options: [NSKeyValueObservingOptions.new], context: nil)
     }
     
     // MARK: - Player Controls
@@ -150,19 +272,19 @@ class Player: NSObject {
         return true
     }
     
-    func skipForward() -> Bool {
+    func skipForward() async -> Bool {
         guard !songs.isEmpty else { return false }
         
         currentSongIndex = (currentSongIndex + 1) % songs.count
-        loadCurrentSong()
+        await loadCurrentSong()
         return true
     }
     
-    func skipBackward() -> Bool {
+    func skipBackward() async -> Bool {
         guard !songs.isEmpty else { return false }
         
         currentSongIndex = currentSongIndex > 0 ? currentSongIndex - 1 : songs.count - 1
-        loadCurrentSong()
+        await loadCurrentSong()
         return true
     }
     
@@ -180,7 +302,9 @@ class Player: NSObject {
         let times = [NSValue(time: endTime)]
         
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            self?.handleLoopEnd()
+            Task { @MainActor in
+                await self?.handleLoopEnd()
+            }
         }
         
         player.play()
@@ -208,11 +332,11 @@ class Player: NSObject {
     }
     
     // MARK: - Queue Management
-    func changeCurrentSongTo(_ song: Beat) -> Bool {
+    func changeCurrentSongTo(_ song: Beat) async -> Bool {
         guard let index = songs.firstIndex(of: song) else { return false }
         
         currentSongIndex = index
-        loadCurrentSong()
+        await loadCurrentSong()
         return true
     }
     
@@ -222,7 +346,7 @@ class Player: NSObject {
         return true
     }
     
-    func removeSelectedSongs() {
+    func removeSelectedSongs() async {
         let sortedIndexes = selectedIndexes.sorted(by: >)
         
         for index in sortedIndexes {
@@ -236,7 +360,7 @@ class Player: NSObject {
         // Adjust current song index if necessary
         if currentSongIndex >= songs.count {
             currentSongIndex = max(0, songs.count - 1)
-            loadCurrentSong()
+            await loadCurrentSong()
         }
         
         notifyDelegates { $0.requestTableViewUpdate() }
@@ -248,14 +372,16 @@ class Player: NSObject {
         guard let player = player,
               let duration = player.currentItem?.duration else { return nil }
         
-        let currentTime = player.currentTime()
+        let currentTime = player.currentTime
         let progress = CMTimeGetSeconds(currentTime) / CMTimeGetSeconds(duration)
         
-        return Progress(totalUnitCount: 100, completedUnitCount: Int64(progress * 100))
+        let progressObj = Progress(totalUnitCount: 100)
+        progressObj.completedUnitCount = Int64(progress * 100)
+        return progressObj
     }
     
     // MARK: - Helper Methods
-    private func updateProgress(time: CMTime) {
+    private func updateProgress(time: CMTime) async {
         guard let duration = player?.currentItem?.duration else { return }
         
         let progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(duration)
@@ -263,7 +389,7 @@ class Player: NSObject {
         notifyDelegates { $0.requestProgressBarUpdate() }
     }
     
-    private func handleLoopEnd() {
+    private func handleLoopEnd() async {
         guard let player = player,
               let loopTimeRange = loopTimeRange else { return }
         
@@ -275,43 +401,44 @@ class Player: NSObject {
     }
     
     // MARK: - KVO
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    nonisolated override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "status" {
             if let playerItem = object as? AVPlayerItem {
-                notifyDelegates { $0.currentItemDidChangeStatus(playerItem.status) }
+                let status = playerItem.status
+                Task { @MainActor in
+                    await self.notifyDelegates { $0.currentItemDidChangeStatus(status) }
+                }
             }
         }
     }
 }
 
-// MARK: - UITableViewDataSource & UITableViewDelegate
-extension Player: UITableViewDataSource, UITableViewDelegate {
+// MARK: - Table View Data Source Methods
+extension Player {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func getNumberOfSongs() -> Int {
         return songs.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath)
-        let song = songs[indexPath.row]
-        
-        cell.textLabel?.text = song.songName
-        cell.accessoryType = indexPath.row == currentSongIndex ? .checkmark : .none
-        cell.backgroundColor = selectedIndexes.contains(indexPath.row) ? .systemBlue.withAlphaComponent(0.3) : .clear
-        
-        return cell
+    func getSongAtIndex(_ index: Int) -> Beat? {
+        guard index < songs.count else { return nil }
+        return songs[index]
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        if selectedIndexes.contains(indexPath.row) {
-            selectedIndexes.remove(indexPath.row)
+    func isCurrentSongAtIndex(_ index: Int) -> Bool {
+        return index == currentSongIndex
+    }
+    
+    func isIndexSelected(_ index: Int) -> Bool {
+        return selectedIndexes.contains(index)
+    }
+    
+    func toggleSelectionAtIndex(_ index: Int) {
+        if selectedIndexes.contains(index) {
+            selectedIndexes.remove(index)
         } else {
-            selectedIndexes.insert(indexPath.row)
+            selectedIndexes.insert(index)
         }
-        
-        tableView.reloadRows(at: [indexPath], with: .none)
         notifyDelegates { $0.selectedIndexesChanged(selectedIndexes.count) }
     }
 }
