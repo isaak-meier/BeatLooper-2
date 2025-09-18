@@ -28,6 +28,7 @@
 		EAC4ECF726176072006C9E87 /* BeatLooperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECF626176072006C9E87 /* BeatLooperTests.m */; };
 		EAC4ED0226176072006C9E87 /* BeatLooperUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */; };
 		EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
+		EAC4ED1B26176730006C9E87 /* Touching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1C26176730006C9E87 /* Touching.mp3 */; };
 		EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
 		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
 		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
@@ -83,6 +84,7 @@
 		EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeatLooperUITests.m; sourceTree = "<group>"; };
 		EAC4ED0326176072006C9E87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAC4ED1926176730006C9E87 /* dunevibes.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dunevibes.mp3; sourceTree = "<group>"; };
+		EAC4ED1C26176730006C9E87 /* Touching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Touching.mp3; sourceTree = "<group>"; };
 		EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BeatModel.xcdatamodel; sourceTree = "<group>"; };
 		EAC4ED45261978AE006C9E87 /* BLPCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPCoordinator.h; sourceTree = "<group>"; };
 		EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPCoordinator.m; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
+				EAC4ED1C26176730006C9E87 /* Touching.mp3 */,
 				EAC4ECEC26176072006C9E87 /* main.m */,
 				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
 			);
@@ -340,6 +343,7 @@
 				EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */,
 				EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */,
 				EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */,
+				EAC4ED1B26176730006C9E87 /* Touching.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
