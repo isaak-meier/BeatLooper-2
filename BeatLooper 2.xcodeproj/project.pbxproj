@@ -134,7 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
-			EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */,
+				EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */,
 				EAC4ECEC26176072006C9E87 /* main.m */,
 				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
 			);
@@ -315,7 +315,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EAC4ECD226176072006C9E87 /* Build configuration list for PBXProject "BeatLooper" */;
+			buildConfigurationList = EAC4ECD226176072006C9E87 /* Build configuration list for PBXProject "BeatLooper 2" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -675,7 +675,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EAC4ECD226176072006C9E87 /* Build configuration list for PBXProject "BeatLooper" */ = {
+		EAC4ECD226176072006C9E87 /* Build configuration list for PBXProject "BeatLooper 2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EAC4ED0426176072006C9E87 /* Debug */,

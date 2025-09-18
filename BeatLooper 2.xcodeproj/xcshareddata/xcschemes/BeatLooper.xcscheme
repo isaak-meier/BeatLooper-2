@@ -17,7 +17,7 @@
                BlueprintIdentifier = "EAC4ECD626176072006C9E87"
                BuildableName = "BeatLooper.app"
                BlueprintName = "BeatLooper"
-               ReferencedContainer = "container:BeatLooper.xcodeproj">
+               ReferencedContainer = "container:BeatLooper 2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,7 +36,7 @@
                BlueprintIdentifier = "EAC4ECF126176072006C9E87"
                BuildableName = "BeatLooperTests.xctest"
                BlueprintName = "BeatLooperTests"
-               ReferencedContainer = "container:BeatLooper.xcodeproj">
+               ReferencedContainer = "container:BeatLooper 2.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -46,7 +46,7 @@
                BlueprintIdentifier = "EAC4ECFC26176072006C9E87"
                BuildableName = "BeatLooperUITests.xctest"
                BlueprintName = "BeatLooperUITests"
-               ReferencedContainer = "container:BeatLooper.xcodeproj">
+               ReferencedContainer = "container:BeatLooper 2.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -68,7 +68,7 @@
             BlueprintIdentifier = "EAC4ECD626176072006C9E87"
             BuildableName = "BeatLooper.app"
             BlueprintName = "BeatLooper"
-            ReferencedContainer = "container:BeatLooper.xcodeproj">
+            ReferencedContainer = "container:BeatLooper 2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,7 +85,7 @@
             BlueprintIdentifier = "EAC4ECD626176072006C9E87"
             BuildableName = "BeatLooper.app"
             BlueprintName = "BeatLooper"
-            ReferencedContainer = "container:BeatLooper.xcodeproj">
+            ReferencedContainer = "container:BeatLooper 2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
