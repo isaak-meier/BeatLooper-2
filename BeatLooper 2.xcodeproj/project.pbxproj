@@ -34,6 +34,9 @@
 		EAC4ED2126176730006C9E87 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2226176730006C9E87 /* Coordinator.swift */; };
 		EAC4ED2326176730006C9E87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2426176730006C9E87 /* AppDelegate.swift */; };
 		EAC4ED2526176730006C9E87 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2626176730006C9E87 /* SceneDelegate.swift */; };
+		EAC4ED2726176730006C9E87 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2826176730006C9E87 /* HomeViewController.swift */; };
+		EAC4ED2926176730006C9E87 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261767300006C9E87 /* PlayerViewController.swift */; };
+		EAC4ED2B261767300006C9E87 /* LooperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2C261767300006C9E87 /* LooperViewController.swift */; };
 		EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
 		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
 		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
@@ -95,6 +98,9 @@
 		EAC4ED2226176730006C9E87 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		EAC4ED2426176730006C9E87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAC4ED2626176730006C9E87 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		EAC4ED2826176730006C9E87 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		EAC4ED2A261767300006C9E87 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		EAC4ED2C261767300006C9E87 /* LooperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LooperViewController.swift; sourceTree = "<group>"; };
 		EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BeatModel.xcdatamodel; sourceTree = "<group>"; };
 		EAC4ED45261978AE006C9E87 /* BLPCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPCoordinator.h; sourceTree = "<group>"; };
 		EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPCoordinator.m; sourceTree = "<group>"; };
@@ -159,6 +165,9 @@
 				EAB5ECA32644A89300C4D535 /* PlayerViewController.m */,
 				EAFE2511277EA7B30054E069 /* LooperViewController.h */,
 				EAFE250F277EA7A20054E069 /* LooperViewController.m */,
+				EAC4ED2826176730006C9E87 /* HomeViewController.swift */,
+				EAC4ED2A261767300006C9E87 /* PlayerViewController.swift */,
+				EAC4ED2C261767300006C9E87 /* LooperViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -364,6 +373,9 @@
 				EAC4ED2126176730006C9E87 /* Coordinator.swift in Sources */,
 				EAC4ED2326176730006C9E87 /* AppDelegate.swift in Sources */,
 				EAC4ED2526176730006C9E87 /* SceneDelegate.swift in Sources */,
+				EAC4ED2726176730006C9E87 /* HomeViewController.swift in Sources */,
+				EAC4ED2926176730006C9E87 /* PlayerViewController.swift in Sources */,
+				EAC4ED2B261767300006C9E87 /* LooperViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

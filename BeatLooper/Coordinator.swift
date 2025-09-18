@@ -95,12 +95,10 @@ class Coordinator {
         openPlayerWithoutSong()
     }
     
-    /// Open player without song
     func openPlayerWithoutSong() {
         navigationController.pushViewController(playerController!, animated: true)
     }
     
-    /// Open looper view for song
     func openLooperViewForSong(_ song: Beat, isLooping: Bool) {
         if looperController == nil || looperController?.song.objectID != song.objectID {
             if song.objectID != nil {
