@@ -32,8 +32,6 @@
 		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
 		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EADF783C278D5A6900D796A8 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
-		EADF783E278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */; };
-		EADF783F278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */; };
 		EADF7842278E97B900D796A8 /* BLPPlayerDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EADF7841278E97B900D796A8 /* BLPPlayerDelegateTests.m */; };
 		EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE250F277EA7A20054E069 /* LooperViewController.m */; };
 /* End PBXBuildFile section */
@@ -90,7 +88,6 @@
 		EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPCoordinator.m; sourceTree = "<group>"; };
 		EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPBeatModel.h; sourceTree = "<group>"; };
 		EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPBeatModel.m; sourceTree = "<group>"; };
-		EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "life's good (ft. double trouble).mp3"; sourceTree = "<group>"; };
 		EADF7841278E97B900D796A8 /* BLPPlayerDelegateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerDelegateTests.m; sourceTree = "<group>"; };
 		EAFE250F277EA7A20054E069 /* LooperViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LooperViewController.m; sourceTree = "<group>"; };
 		EAFE2511277EA7B30054E069 /* LooperViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LooperViewController.h; sourceTree = "<group>"; };
@@ -134,7 +131,6 @@
 			isa = PBXGroup;
 			children = (
 				EAC4ED1926176730006C9E87 /* dunevibes.mp3 */,
-				EADF783D278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 */,
 				EAC4ECEC26176072006C9E87 /* main.m */,
 				EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */,
 			);
@@ -341,7 +337,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAC4ECEA26176072006C9E87 /* LaunchScreen.storyboard in Resources */,
-				EADF783E278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */,
 				EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */,
 				EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */,
 				EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */,
@@ -352,7 +347,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EADF783F278E5B3A00D796A8 /* life's good (ft. double trouble).mp3 in Resources */,
 				EADF783C278D5A6900D796A8 /* dunevibes.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

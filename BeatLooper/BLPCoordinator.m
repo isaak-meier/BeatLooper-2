@@ -45,8 +45,8 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL isFirstTime = ![userDefaults boolForKey:@"firstTime?"];
 //    BOOL isFirstTime = YES;
-    BOOL shouldSetUpSampleSongs = ![userDefaults boolForKey:@"addSampleSongs"];
-//    BOOL shouldSetUpSampleSongs = YES;
+//    BOOL shouldSetUpSampleSongs = ![userDefaults boolForKey:@"addSampleSongs"];
+    BOOL shouldSetUpSampleSongs = YES;
     BOOL applicationDidUpdate = [self didSongDirectoryPathChange];
 
     if (isFirstTime) {
@@ -88,28 +88,19 @@
 - (void)setupSampleSongs {
     BLPBeatModel *model = [[BLPBeatModel alloc] init];
     [model deleteAllEntities]; // clear out
+    
     NSBundle *main = [NSBundle mainBundle];
-    NSString *resourceURL1 = [main pathForResource:@"forgetMe" ofType:@"mp3"];
-    NSString *resourceURL2 = [main pathForResource:@"swish" ofType:@"wav"];
-    NSString *resourceURL4 = [main pathForResource:@"'84" ofType:@"mp3"];
-    NSString *resourceURL5 = [main pathForResource:@"rise" ofType:@"mp3"];
-    NSString *resourceURL6 = [main pathForResource:@"swag" ofType:@"mp3"];
-
-    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL1]];
-    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL2]];
-    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL4]];
-    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL5]];
-    [model saveSongFromURL:[NSURL fileURLWithPath:resourceURL6]];
-
-    NSArray<Beat *> *songs = [model getAllSongs];
-    for (Beat *song in songs) {
-        if ([song.title isEqualToString:@"forgetMe"]) {
-            [model saveTempo:150 forSong:song.objectID];
-        }
-        if ([song.title isEqualToString:@"swish"]) {
-            [model saveTempo:143 forSong:song.objectID];
+    NSArray *audioExtensions = @[@"mp3", @"wav", @"m4a", @"aac"];
+    
+    for (NSString *extension in audioExtensions) {
+        NSArray *audioFiles = [main pathsForResourcesOfType:extension inDirectory:nil];
+        for (NSString *audioPath in audioFiles) {
+            [model saveSongFromURL:[NSURL fileURLWithPath:audioPath]];
         }
     }
+    
+    // can update tempo here if you want
+    // [model saveTempo:120 forSong:song.objectID];
 }
 
 - (BOOL)didSongDirectoryPathChange {
