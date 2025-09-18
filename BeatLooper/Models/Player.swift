@@ -13,6 +13,7 @@ import AVFoundation
 import CoreMedia
 
 // MARK: - Thread-Safe AVPlayer Wrapper
+@MainActor
 class ThreadSafeAVPlayer {
     private let player: AVPlayer
     
@@ -26,104 +27,44 @@ class ThreadSafeAVPlayer {
     
     // MARK: - Thread-Safe Properties
     var rate: Float {
-        get { 
-            if Thread.isMainThread {
-                return player.rate
-            } else {
-                return DispatchQueue.main.sync { player.rate }
-            }
-        }
+        get { player.rate }
     }
     
     var currentItem: AVPlayerItem? {
-        get { 
-            if Thread.isMainThread {
-                return player.currentItem
-            } else {
-                return DispatchQueue.main.sync { player.currentItem }
-            }
-        }
+        get { player.currentItem }
     }
     
     var currentTime: CMTime {
-        get { 
-            if Thread.isMainThread {
-                return player.currentTime()
-            } else {
-                return DispatchQueue.main.sync { player.currentTime() }
-            }
-        }
+        get { player.currentTime() }
     }
     
     // MARK: - Thread-Safe Methods
     func play() {
-        if Thread.isMainThread {
-            player.play()
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.player.play()
-            }
-        }
+        player.play()
     }
     
     func pause() {
-        if Thread.isMainThread {
-            player.pause()
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.player.pause()
-            }
-        }
+        player.pause()
     }
     
     func seek(to time: CMTime) {
-        if Thread.isMainThread {
-            player.seek(to: time)
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.player.seek(to: time)
-            }
-        }
+        player.seek(to: time)
     }
     
     func replaceCurrentItem(with item: AVPlayerItem?) {
-        if Thread.isMainThread {
-            player.replaceCurrentItem(with: item)
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.player.replaceCurrentItem(with: item)
-            }
-        }
+        player.replaceCurrentItem(with: item)
     }
     
     func addPeriodicTimeObserver(forInterval interval: CMTime, queue: DispatchQueue?, using block: @escaping @Sendable (CMTime) -> Void) -> Any {
-        if Thread.isMainThread {
-            return player.addPeriodicTimeObserver(forInterval: interval, queue: queue, using: block)
-        } else {
-            return DispatchQueue.main.sync {
-                return player.addPeriodicTimeObserver(forInterval: interval, queue: queue, using: block)
-            }
-        }
+        return player.addPeriodicTimeObserver(forInterval: interval, queue: queue, using: block)
     }
     
     func addBoundaryTimeObserver(forTimes times: [NSValue], queue: DispatchQueue?, using block: @escaping @Sendable () -> Void) -> Any {
-        if Thread.isMainThread {
-            return player.addBoundaryTimeObserver(forTimes: times, queue: queue, using: block)
-        } else {
-            return DispatchQueue.main.sync {
-                return player.addBoundaryTimeObserver(forTimes: times, queue: queue, using: block)
-            }
-        }
+        return player.addBoundaryTimeObserver(forTimes: times, queue: queue, using: block)
     }
     
     func removeTimeObserver(_ observer: Any) {
-        if Thread.isMainThread {
-            player.removeTimeObserver(observer)
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.player.removeTimeObserver(observer)
-            }
-        }
+        player.removeTimeObserver(observer)
     }
 }
 
@@ -195,16 +136,17 @@ actor Player: NSObject {
     }
     
     deinit {
-        Task {
-            await removeTimeObserver()
-        }
+        // Note: We can't use async operations in deinit
+        // The time observer will be cleaned up when the player is deallocated
     }
     
     // MARK: - Setup
     private func setupPlayer() async {
         guard !songs.isEmpty else { return }
         
-        player = ThreadSafeAVPlayer()
+        await MainActor.run {
+            player = ThreadSafeAVPlayer()
+        }
         setupAudioSession()
         await loadCurrentSong()
         await setupTimeObserver()
@@ -223,17 +165,21 @@ actor Player: NSObject {
         guard let player = player else { return }
         
         let interval = CMTime(seconds: 0.1, preferredTimescale: 600)
-        timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
-            Task { @MainActor in
-                await self?.updateProgress(time: time)
+        await MainActor.run {
+            timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+                Task { @MainActor in
+                    await self?.updateProgress(time: time)
+                }
             }
         }
     }
     
     private func removeTimeObserver() async {
         if let timeObserver = timeObserver {
-            player?.removeTimeObserver(timeObserver)
-            self.timeObserver = nil
+            await MainActor.run {
+                player?.removeTimeObserver(timeObserver)
+                self.timeObserver = nil
+            }
         }
     }
     
@@ -248,7 +194,9 @@ actor Player: NSObject {
         }
         
         let playerItem = AVPlayerItem(url: url)
-        player?.replaceCurrentItem(with: playerItem)
+        await MainActor.run {
+            player?.replaceCurrentItem(with: playerItem)
+        }
         
         // Notify delegates
         notifyDelegates { $0.playerDidChangeSongTitle(song.title ?? "Unknown") }
@@ -259,13 +207,15 @@ actor Player: NSObject {
     }
     
     // MARK: - Player Controls
-    func togglePlayOrPause() -> Bool {
+    func togglePlayOrPause() async -> Bool {
         guard let player = player else { return false }
         
-        if player.rate > 0 {
-            player.pause()
-        } else {
-            player.play()
+        await MainActor.run {
+            if player.rate > 0 {
+                player.pause()
+            } else {
+                player.play()
+            }
         }
         
         notifyDelegates { $0.playerDidChangeState(playerState) }
@@ -288,26 +238,29 @@ actor Player: NSObject {
         return true
     }
     
-    func startLoopingTimeRange(_ timeRange: CMTimeRange) -> Bool {
+    func startLoopingTimeRange(_ timeRange: CMTimeRange) async -> Bool {
         guard let player = player else { return false }
         
         isLooping = true
         loopTimeRange = timeRange
         
-        // Seek to start of loop
-        player.seek(to: timeRange.start)
-        
-        // Set up boundary time observer for loop end
-        let endTime = CMTimeAdd(timeRange.start, timeRange.duration)
-        let times = [NSValue(time: endTime)]
-        
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            Task { @MainActor in
-                await self?.handleLoopEnd()
+        await MainActor.run {
+            // Seek to start of loop
+            player.seek(to: timeRange.start)
+            
+            // Set up boundary time observer for loop end
+            let endTime = CMTimeAdd(timeRange.start, timeRange.duration)
+            let times = [NSValue(time: endTime)]
+            
+            _ = player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+                Task { @MainActor in
+                    await self?.handleLoopEnd()
+                }
             }
+            
+            player.play()
         }
         
-        player.play()
         notifyDelegates { $0.playerDidChangeState(playerState) }
         return true
     }
@@ -322,12 +275,14 @@ actor Player: NSObject {
         return true
     }
     
-    func seekToProgressValue(_ value: Float) -> Bool {
+    func seekToProgressValue(_ value: Float) async -> Bool {
         guard let player = player,
-              let duration = player.currentItem?.duration else { return false }
+              let duration = await MainActor.run({ player.currentItem?.duration }) else { return false }
         
         let time = CMTimeMultiplyByFloat64(duration, multiplier: Float64(value))
-        player.seek(to: time)
+        await MainActor.run {
+            player.seek(to: time)
+        }
         return true
     }
     
@@ -368,11 +323,15 @@ actor Player: NSObject {
     }
     
     // MARK: - Progress
-    func getProgressForCurrentItem() -> Progress? {
-        guard let player = player,
-              let duration = player.currentItem?.duration else { return nil }
+    func getProgressForCurrentItem() async -> Progress? {
+        guard let player = player else { return nil }
         
-        let currentTime = player.currentTime
+        let (currentTime, duration) = await MainActor.run {
+            (player.currentTime, player.currentItem?.duration)
+        }
+        
+        guard let duration = duration else { return nil }
+        
         let progress = CMTimeGetSeconds(currentTime) / CMTimeGetSeconds(duration)
         
         let progressObj = Progress(totalUnitCount: 100)
@@ -382,7 +341,10 @@ actor Player: NSObject {
     
     // MARK: - Helper Methods
     private func updateProgress(time: CMTime) async {
-        guard let duration = player?.currentItem?.duration else { return }
+        guard let player = player else { return }
+        
+        let duration = await MainActor.run { player.currentItem?.duration }
+        guard let duration = duration else { return }
         
         let progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(duration)
         notifyDelegates { $0.didUpdateCurrentProgressTo(progress) }
@@ -393,7 +355,9 @@ actor Player: NSObject {
         guard let player = player,
               let loopTimeRange = loopTimeRange else { return }
         
-        player.seek(to: loopTimeRange.start)
+        await MainActor.run {
+            player.seek(to: loopTimeRange.start)
+        }
     }
     
     private func notifyDelegates(_ action: (PlayerDelegate) -> Void) {
