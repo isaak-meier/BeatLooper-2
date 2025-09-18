@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+import AVFoundation
 
 class HomeViewController: UIViewController {
     

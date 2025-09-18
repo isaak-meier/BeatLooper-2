@@ -73,8 +73,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
      TODO: this doesn't work when app is first opening on device only
      */
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let openedFileURL = URLContexts.first?.url else { return }
+        
         DispatchQueue.global(qos: .utility).async { [weak self] in
-            guard let openedFileURL = URLContexts.first?.url else { return }
             let model = BeatModel()
             
             DispatchQueue.main.async {

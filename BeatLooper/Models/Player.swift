@@ -22,6 +22,7 @@ enum PlayerState {
 }
 
 // MARK: - Player Delegate Protocol
+@MainActor
 protocol PlayerDelegate: AnyObject {
     func playerDidChangeSongTitle(_ songTitle: String)
     func playerDidChangeState(_ state: PlayerState)

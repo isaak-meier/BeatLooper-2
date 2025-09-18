@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>colors</key>
+	<array/>
+	<key>images</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameBLPLogo</string>
+			<key>relativePath</key>
+			<string>./BLPLogo.imageset</string>
+			<key>swiftSymbol</key>
+			<string>blpLogo</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameIcons8End100</string>
+			<key>relativePath</key>
+			<string>./icons8-end-100.imageset</string>
+			<key>swiftSymbol</key>
+			<string>icons8End100</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameIcons8PauseButton100</string>
+			<key>relativePath</key>
+			<string>./icons8-pause-button-100.imageset</string>
+			<key>swiftSymbol</key>
+			<string>icons8PauseButton100</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameIcons8PlayButton100</string>
+			<key>relativePath</key>
+			<string>./icons8-play-button-100.imageset</string>
+			<key>swiftSymbol</key>
+			<string>icons8PlayButton100</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameIcons8SkipToStart100</string>
+			<key>relativePath</key>
+			<string>./icons8-skip-to-start-100.imageset</string>
+			<key>swiftSymbol</key>
+			<string>icons8SkipToStart100</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameRainbowMusicBanner</string>
+			<key>relativePath</key>
+			<string>./rainbow-music-banner.imageset</string>
+			<key>swiftSymbol</key>
+			<string>rainbowMusicBanner</string>
+		</dict>
+	</array>
+	<key>symbols</key>
+	<array/>
+</dict>
+</plist>

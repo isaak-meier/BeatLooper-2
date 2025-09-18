@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import CoreData
+import CoreMedia
+import MediaPlayer
 import MediaPlayer
 import CoreMedia
 
@@ -70,9 +73,7 @@ class PlayerViewController: UIViewController {
     func setup(player: Player) {
         self.playerModel = player
         _ = player.togglePlayOrPause()
-        if let state = player.playerState {
-            playerDidChangeState(state)
-        }
+        playerDidChangeState(player.playerState)
     }
     
     func startLoopWithTimeRange(_ timeRange: CMTimeRange) {

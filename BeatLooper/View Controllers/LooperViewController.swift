@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+import CoreMedia
 import CoreMedia
 
 class LooperViewController: UIViewController {

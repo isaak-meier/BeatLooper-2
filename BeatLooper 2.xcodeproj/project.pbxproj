@@ -7,20 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA18671D2E7BE1760066D39D /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA18671C2E7BE1760066D39D /* Coordinator.swift */; };
+		EAC4ED1D26176730006C9E87 /* BeatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED1E26176730006C9E87 /* BeatModel.swift */; };
+		EAC4ED1F26176730006C9E87 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2026176730006C9E87 /* Player.swift */; };
+		EAC4ED2326176730006C9E87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2426176730006C9E87 /* AppDelegate.swift */; };
+		EAC4ED2526176730006C9E87 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2626176730006C9E87 /* SceneDelegate.swift */; };
+		EAC4ED2726176730006C9E87 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2826176730006C9E87 /* HomeViewController.swift */; };
+		EAC4ED2926176730006C9E87 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261767300006C9E87 /* PlayerViewController.swift */; };
+		EAC4ED2B261767300006C9E87 /* LooperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2C261767300006C9E87 /* LooperViewController.swift */; };
 		EA32C4BE2798F2EE00492991 /* BLPPlayerProgressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA32C4BD2798F2EE00492991 /* BLPPlayerProgressTests.m */; };
 		EA41C5E72786CE65001E8C53 /* BLPPlayerStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */; };
 		EA41C5EB278B7D44001E8C53 /* BLPModelSongsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA41C5EA278B7D44001E8C53 /* BLPModelSongsTests.m */; };
-		EA4504A3278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
-		EA4504A4278529860054516E /* BLPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4504A2278529860054516E /* BLPPlayer.m */; };
 		EA8D4D5227A3111100E7BEAF /* BLPPlayerChangeSongTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8D4D5127A3111100E7BEAF /* BLPPlayerChangeSongTests.m */; };
 		EAA1051C26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA1051B26ED8A4B0052CF24 /* BLPModelTimeRangeTests.m */; };
 		EAA1051D26ED8ADE0052CF24 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
 		EAA3FA4F264B06AB008FFF92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA34221E263DDD4A0046EB1B /* AVFoundation.framework */; };
-		EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB5ECA32644A89300C4D535 /* PlayerViewController.m */; };
-		EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDB26176072006C9E87 /* AppDelegate.m */; };
-		EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECDE26176072006C9E87 /* SceneDelegate.m */; };
-		EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ECE126176072006C9E87 /* HomeViewController.m */; };
 		EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ECE326176072006C9E87 /* Main.storyboard */; };
 		EAC4ECE726176072006C9E87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ECE626176072006C9E87 /* Assets.xcassets */; };
 		EAC4ECEA26176072006C9E87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ECE826176072006C9E87 /* LaunchScreen.storyboard */; };
@@ -29,20 +31,9 @@
 		EAC4ED0226176072006C9E87 /* BeatLooperUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED0126176072006C9E87 /* BeatLooperUITests.m */; };
 		EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
 		EAC4ED1B26176730006C9E87 /* Touching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1C26176730006C9E87 /* Touching.mp3 */; };
-		EAC4ED1D26176730006C9E87 /* BeatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED1E26176730006C9E87 /* BeatModel.swift */; };
-		EAC4ED1F26176730006C9E87 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2026176730006C9E87 /* Player.swift */; };
-		EAC4ED2126176730006C9E87 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2226176730006C9E87 /* Coordinator.swift */; };
-		EAC4ED2326176730006C9E87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2426176730006C9E87 /* AppDelegate.swift */; };
-		EAC4ED2526176730006C9E87 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2626176730006C9E87 /* SceneDelegate.swift */; };
-		EAC4ED2726176730006C9E87 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2826176730006C9E87 /* HomeViewController.swift */; };
-		EAC4ED2926176730006C9E87 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261767300006C9E87 /* PlayerViewController.swift */; };
-		EAC4ED2B261767300006C9E87 /* LooperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2C261767300006C9E87 /* LooperViewController.swift */; };
 		EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED2A261969A0006C9E87 /* BeatModel.xcdatamodeld */; };
-		EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */; };
-		EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EACEEF93261E2F5C00B4ECA8 /* BLPBeatModel.m */; };
 		EADF783C278D5A6900D796A8 /* dunevibes.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC4ED1926176730006C9E87 /* dunevibes.mp3 */; };
 		EADF7842278E97B900D796A8 /* BLPPlayerDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EADF7841278E97B900D796A8 /* BLPPlayerDelegateTests.m */; };
-		EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE250F277EA7A20054E069 /* LooperViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA18671C2E7BE1760066D39D /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		EA18671E2E7BE18A0066D39D /* BeatLooper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BeatLooper-Bridging-Header.h"; sourceTree = "<group>"; };
 		EA32C4BD2798F2EE00492991 /* BLPPlayerProgressTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerProgressTests.m; sourceTree = "<group>"; };
 		EA34221E263DDD4A0046EB1B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EA41C5E62786CE65001E8C53 /* BLPPlayerStateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPPlayerStateTests.m; sourceTree = "<group>"; };
@@ -95,13 +88,12 @@
 		EAC4ED1C26176730006C9E87 /* Touching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Touching.mp3; sourceTree = "<group>"; };
 		EAC4ED1E26176730006C9E87 /* BeatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeatModel.swift; sourceTree = "<group>"; };
 		EAC4ED2026176730006C9E87 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		EAC4ED2226176730006C9E87 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		EAC4ED2426176730006C9E87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAC4ED2626176730006C9E87 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		EAC4ED2826176730006C9E87 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		EAC4ED2A261767300006C9E87 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
-		EAC4ED2C261767300006C9E87 /* LooperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LooperViewController.swift; sourceTree = "<group>"; };
 		EAC4ED2B261969A0006C9E87 /* BeatModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BeatModel.xcdatamodel; sourceTree = "<group>"; };
+		EAC4ED2C261767300006C9E87 /* LooperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LooperViewController.swift; sourceTree = "<group>"; };
 		EAC4ED45261978AE006C9E87 /* BLPCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPCoordinator.h; sourceTree = "<group>"; };
 		EAC4ED46261978AE006C9E87 /* BLPCoordinator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLPCoordinator.m; sourceTree = "<group>"; };
 		EACEEF92261E2F5C00B4ECA8 /* BLPBeatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLPBeatModel.h; sourceTree = "<group>"; };
@@ -181,7 +173,8 @@
 				EA4504A2278529860054516E /* BLPPlayer.m */,
 				EAC4ED1E26176730006C9E87 /* BeatModel.swift */,
 				EAC4ED2026176730006C9E87 /* Player.swift */,
-				EAC4ED2226176730006C9E87 /* Coordinator.swift */,
+				EA18671C2E7BE1760066D39D /* Coordinator.swift */,
+				EA18671E2E7BE18A0066D39D /* BeatLooper-Bridging-Header.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -327,6 +320,7 @@
 				TargetAttributes = {
 					EAC4ECD626176072006C9E87 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1640;
 					};
 					EAC4ECF126176072006C9E87 = {
 						CreatedOnToolsVersion = 12.4;
@@ -368,14 +362,6 @@
 				EAC4ECE526176072006C9E87 /* Main.storyboard in Resources */,
 				EAC4ED1A26176730006C9E87 /* dunevibes.mp3 in Resources */,
 				EAC4ED1B26176730006C9E87 /* Touching.mp3 in Resources */,
-				EAC4ED1D26176730006C9E87 /* BeatModel.swift in Sources */,
-				EAC4ED1F26176730006C9E87 /* Player.swift in Sources */,
-				EAC4ED2126176730006C9E87 /* Coordinator.swift in Sources */,
-				EAC4ED2326176730006C9E87 /* AppDelegate.swift in Sources */,
-				EAC4ED2526176730006C9E87 /* SceneDelegate.swift in Sources */,
-				EAC4ED2726176730006C9E87 /* HomeViewController.swift in Sources */,
-				EAC4ED2926176730006C9E87 /* PlayerViewController.swift in Sources */,
-				EAC4ED2B261767300006C9E87 /* LooperViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,16 +387,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAC4ED47261978AE006C9E87 /* BLPCoordinator.m in Sources */,
-				EAC4ECE226176072006C9E87 /* HomeViewController.m in Sources */,
 				EAC4ED2C261969A0006C9E87 /* BeatModel.xcdatamodeld in Sources */,
-				EAC4ECDC26176072006C9E87 /* AppDelegate.m in Sources */,
 				EAC4ECED26176072006C9E87 /* main.m in Sources */,
-				EAB5ECA42644A89300C4D535 /* PlayerViewController.m in Sources */,
-				EAFE2510277EA7A20054E069 /* LooperViewController.m in Sources */,
-				EACEEF94261E2F5C00B4ECA8 /* BLPBeatModel.m in Sources */,
-				EAC4ECDF26176072006C9E87 /* SceneDelegate.m in Sources */,
-				EA4504A3278529860054516E /* BLPPlayer.m in Sources */,
+				EA18671D2E7BE1760066D39D /* Coordinator.swift in Sources */,
+				EAC4ED1D26176730006C9E87 /* BeatModel.swift in Sources */,
+				EAC4ED1F26176730006C9E87 /* Player.swift in Sources */,
+				EAC4ED2326176730006C9E87 /* AppDelegate.swift in Sources */,
+				EAC4ED2526176730006C9E87 /* SceneDelegate.swift in Sources */,
+				EAC4ED2726176730006C9E87 /* HomeViewController.swift in Sources */,
+				EAC4ED2926176730006C9E87 /* PlayerViewController.swift in Sources */,
+				EAC4ED2B261767300006C9E87 /* LooperViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,7 +413,6 @@
 				EAA1051E26EDB2CB0052CF24 /* BeatModel.xcdatamodeld in Sources */,
 				EA32C4BE2798F2EE00492991 /* BLPPlayerProgressTests.m in Sources */,
 				EA8D4D5227A3111100E7BEAF /* BLPPlayerChangeSongTests.m in Sources */,
-				EA4504A4278529860054516E /* BLPPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,6 +576,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MKB6ZK5V3B;
 				INFOPLIST_FILE = BeatLooper/Info.plist;
@@ -601,6 +587,9 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Meier.BeatLooper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "BeatLooper/Models/BeatLooper-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -610,6 +599,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MKB6ZK5V3B;
@@ -622,6 +612,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Meier.BeatLooper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "BeatLooper/Models/BeatLooper-Bridging-Header.h";
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

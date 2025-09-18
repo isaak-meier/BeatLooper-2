@@ -1,0 +1,98 @@
+{
+  "" : {
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatLooper-master.dia",
+    "emit-module-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatLooper-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatLooper-master-emit-module.dia",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatLooper-master.swiftdeps"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/AppDelegate.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/AppDelegate-8524753f19e22f520851adec0abf2f17~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Models/BeatModel.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/BeatModel-990c97cad7ba2ce8b21b04eb083f1507~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Models/Coordinator.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Coordinator~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/Models/Player.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/Player~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/SceneDelegate.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/SceneDelegate-9262cf4a8af96b98dfbf7b9527f88a76~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/View Controllers/HomeViewController.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/HomeViewController-7d362991594efad1e1f9278df82e3629~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/View Controllers/LooperViewController.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/LooperViewController-8c0d3c81f51ad02c8202861df91becae~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/BeatLooper/View Controllers/PlayerViewController.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/PlayerViewController-32715d1f78538dae77bf749ab9666170~partial.swiftmodule"
+  },
+  "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/isaak/Local System/Super Code/Git/BeatLooper 2/DerivedData/Build/Intermediates.noindex/BeatLooper 2.build/Debug-iphonesimulator/BeatLooper.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
